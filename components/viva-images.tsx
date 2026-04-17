@@ -203,7 +203,7 @@ export function AnimatedHeroImage({
   const aspectClass =
     aspect === 'video' ? 'aspect-video' :
     aspect === 'square' ? 'aspect-square' :
-    'aspect-[16/10]';
+    'aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/10] min-h-[480px] sm:min-h-[560px] md:min-h-0';
 
   return (
     <div
