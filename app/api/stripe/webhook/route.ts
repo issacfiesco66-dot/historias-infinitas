@@ -133,7 +133,7 @@ export async function POST(req: Request) {
   const memorialLookup = await withRetry(
     () => admin
       .from('memorials')
-      .select('id, name, slug, type, owner_id, cover_photo_url')
+      .select('id, name, slug, type, owner_id, cover_photo_url, partner_id')
       .eq('id', memorialId)
       .single(),
     'memorials.select',
@@ -194,6 +194,27 @@ export async function POST(req: Request) {
   // Referencia legible para el cliente (no hay order_number en el esquema).
   const orderRef = `HI-${order.id.slice(0, 8).toUpperCase()}`;
   console.info(`[stripe-webhook] orden creada ${orderRef} (${order.id})`);
+
+  /* ---------- 6c-bis. Comisión 15% al partner si el memorial fue
+                       originado por un socio ---------- */
+  if (memorial.partner_id) {
+    try {
+      const commissionRate = 0.15;
+      const commissionAmount = Math.round(amountTotal * commissionRate * 100) / 100;
+      await admin.from('partner_commissions').insert({
+        partner_id:        memorial.partner_id,
+        memorial_id:       memorialId,
+        order_id:          order.id,
+        commission_amount: commissionAmount,
+        commission_rate:   commissionRate,
+        currency,
+        status:            'pending',
+      });
+      console.info(`[stripe-webhook] comisión registrada para partner ${memorial.partner_id}: ${commissionAmount}`);
+    } catch (err) {
+      console.error('[stripe-webhook] fallo al registrar comisión:', err);
+    }
+  }
 
   /* ---------- 6c. UPDATE memorials ---------- */
   const updateMemorial = await withRetry(

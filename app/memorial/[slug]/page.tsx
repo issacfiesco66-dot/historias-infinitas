@@ -92,6 +92,17 @@ export default async function PublicMemorialPage({ params }: Props) {
   // Contador de visitas (fire-and-forget)
   supabase.rpc('increment_memorial_views', { m_id: memorial.id }).then(() => {});
 
+  // Partner que originó el memorial (para mostrar su logo como cortesía)
+  let partnerInfo: { business_name: string; logo_url: string | null } | null = null;
+  if (memorial.partner_id) {
+    const { data: p } = await supabase
+      .from('partner_accounts')
+      .select('business_name, logo_url')
+      .eq('id', memorial.partner_id)
+      .maybeSingle();
+    if (p && p.logo_url) partnerInfo = p;
+  }
+
   const m = memorial as Memorial;
   const all = (media ?? []) as MemorialMedia[];
   const photos = all.filter((x) => x.kind === 'foto');
@@ -337,6 +348,22 @@ export default async function PublicMemorialPage({ params }: Props) {
       </section>
 
       <footer className="py-10 text-center text-sm text-pizarra-400 border-t border-pizarra-100">
+        {partnerInfo && (
+          <div className="max-w-xl mx-auto mb-6 px-6 py-4 bg-marfil-100 rounded-xl border border-pizarra-100 flex items-center justify-center gap-4">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={partnerInfo.logo_url ?? undefined}
+              alt={partnerInfo.business_name}
+              className="h-10 w-auto max-w-[120px] object-contain"
+            />
+            <div className="text-left">
+              <p className="text-[10px] uppercase tracking-widest text-dorado-600">
+                Cortesía de
+              </p>
+              <p className="font-serif text-pizarra-700">{partnerInfo.business_name}</p>
+            </div>
+          </div>
+        )}
         <p>
           Creado con amor en{' '}
           <Link href="/" className="text-dorado-600 hover:underline">
