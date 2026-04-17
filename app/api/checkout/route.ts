@@ -58,12 +58,12 @@ export async function POST(req: Request) {
     const line_items: Stripe.Checkout.SessionCreateParams.LineItem[] = [
       {
         price_data: {
-          currency: 'usd',
+          currency: 'mxn',
           product_data: {
             name: `Plan ${plan.name} — Historias Infinitas`,
             description: `Memorial: ${memorial.name}`,
           },
-          unit_amount: plan.priceUSD * 100,
+          unit_amount: plan.priceMXN * 100,
         },
         quantity: 1,
       },
@@ -72,12 +72,12 @@ export async function POST(req: Request) {
     if (addAr) {
       line_items.push({
         price_data: {
-          currency: 'usd',
+          currency: 'mxn',
           product_data: {
             name: AR_ADDON.name,
             description: AR_ADDON.description,
           },
-          unit_amount: AR_ADDON.priceUSD * 100,
+          unit_amount: AR_ADDON.priceMXN * 100,
         },
         quantity: 1,
       });

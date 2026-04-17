@@ -4,7 +4,7 @@ import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { isAdminEmail } from '@/lib/admin';
 import { AdminClient, type AdminOrderRow } from './admin-client';
-import { formatUSD } from '@/lib/plans';
+import { formatMXN } from '@/lib/plans';
 
 export const metadata = {
   title: 'Panel de administración — Historias Infinitas',
@@ -125,7 +125,7 @@ export default async function AdminPage() {
       <div className="grid md:grid-cols-3 gap-4">
         <KpiCard
           label="Ingresos (pagado + enviado)"
-          value={formatUSD(Math.round(totalRevenue))}
+          value={formatMXN(Math.round(totalRevenue))}
           hint="Suma de amount_total sin órdenes canceladas"
           accent="dorado"
         />

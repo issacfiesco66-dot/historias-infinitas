@@ -13,9 +13,10 @@ import { Skeleton } from '@/components/ui/skeleton';
 import {
   Upload, Sparkles, Loader2, CheckCircle2, Lock, Globe,
   Wand2, Film, Image as ImageIcon, Save, QrCode, Eye, AlertCircle,
-  Palette, CreditCard, Trash2,
+  Palette, CreditCard, Trash2, ArrowRight, Share2,
 } from 'lucide-react';
 import { MemorialPreview } from './memorial-preview';
+import { ShareButtons } from '@/components/share-buttons';
 import { PORTRAIT_STYLES, type PortraitStyleId } from '@/lib/portrait-styles';
 import type { Memorial, MemorialMedia, MemorialStatus } from '@/types/database';
 
@@ -97,6 +98,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
   const [toast, setToast] = useState<string | null>(null);
   const [publishing, setPublishing] = useTransition();
   const [publishError, setPublishError] = useState<string | null>(null);
+  const [activeTab, setActiveTab] = useState<'info' | 'recuerdos' | 'retrato' | 'ar' | 'preview'>('info');
 
   const locked = status === 'publicado';
 
@@ -266,41 +268,24 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
     }
   }
 
-  // ---------------- PUBLICAR ----------------
-  function validateForPublish(): string | null {
+  // ---------------- VALIDACIÓN para ir a pago ----------------
+  function validateForCheckout(): string | null {
     if (!form.name.trim()) return 'Añade al menos el nombre.';
     if (media.length === 0 && !coverUrl) return 'Sube al menos una fotografía.';
     if (form.epitaph.length > EPITAPH_MAX) return `El epitafio supera los ${EPITAPH_MAX} caracteres.`;
     return null;
   }
 
-  function onPublish() {
-    const err = validateForPublish();
+  async function onContinueToCheckout() {
+    const err = validateForCheckout();
     if (err) { setPublishError(err); return; }
     setPublishError(null);
 
     setPublishing(async () => {
-      // Aseguramos que los últimos cambios del formulario queden persistidos antes de publicar
       await persistForm(form);
-
-      const { error } = await supabase
-        .from('memorials')
-        .update({ status: 'publicado' })
-        .eq('id', memorial.id);
-      if (error) { setPublishError(error.message); return; }
-      setStatus('publicado');
-      setToast('Memorial publicado. El QR está listo.');
-    });
-  }
-
-  function onUnlock() {
-    setPublishing(async () => {
-      const { error } = await supabase
-        .from('memorials')
-        .update({ status: 'borrador' })
-        .eq('id', memorial.id);
-      if (error) { setToast(error.message); return; }
-      setStatus('borrador');
+      // El memorial se publica SOLO tras el webhook de Stripe. Aquí solo validamos
+      // y navegamos al checkout.
+      window.location.href = `/dashboard/memorial/${memorial.id}/checkout`;
     });
   }
 
@@ -321,14 +306,14 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
 
   return (
     <div className="space-y-6">
-      {/* ========== BARRA SUPERIOR: estado + guardar + publicar ========== */}
+      {/* ========== BARRA SUPERIOR: estado + guardar + CTA ========== */}
       <div className="flex flex-wrap items-center justify-between gap-4 bg-marfil/80 backdrop-blur border border-pizarra-100 rounded-xl px-5 py-3 shadow-solemn">
         <div className="flex items-center gap-4">
           <SaveIndicator state={saveState} at={lastSavedAt} />
           <span className="hidden md:inline h-5 w-px bg-pizarra-100" />
           <span className="text-xs uppercase tracking-widest text-pizarra-500 flex items-center gap-1">
             {locked ? <Globe className="h-3.5 w-3.5 text-green-600" /> : <Lock className="h-3.5 w-3.5" />}
-            {locked ? 'Publicado · edición bloqueada' : 'Borrador · edición en vivo'}
+            {locked ? 'Activo y público' : 'Borrador privado · se activa al pagar'}
           </span>
         </div>
 
@@ -341,27 +326,17 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                 </Link>
               </Button>
               <Button asChild variant="dorado" size="sm">
-                <Link href={`/dashboard/memorial/${memorial.id}/checkout`}>
-                  <CreditCard className="h-4 w-4 mr-2" /> Finalizar tributo
+                <Link href={`/memorial/${memorial.slug}`} target="_blank">
+                  <Share2 className="h-4 w-4 mr-2" /> Compartir
                 </Link>
-              </Button>
-              <Button onClick={onUnlock} variant="ghost" size="sm" disabled={publishing}>
-                <Lock className="h-4 w-4 mr-2" /> Desbloquear edición
               </Button>
             </>
           ) : (
-            <>
-              <Button asChild variant="outline" size="sm">
-                <Link href={`/dashboard/memorial/${memorial.id}/checkout`}>
-                  <CreditCard className="h-4 w-4 mr-2" /> Ver planes
-                </Link>
-              </Button>
-              <Button onClick={onPublish} variant="dorado" disabled={publishing}>
-                {publishing
-                  ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Publicando</>
-                  : <><CheckCircle2 className="h-4 w-4 mr-2" /> Publicar y generar QR</>}
-              </Button>
-            </>
+            <Button onClick={onContinueToCheckout} variant="dorado" disabled={publishing}>
+              {publishing
+                ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Cargando</>
+                : <><CreditCard className="h-4 w-4 mr-2" /> Continuar a pago <ArrowRight className="h-4 w-4 ml-2" /></>}
+            </Button>
           )}
         </div>
       </div>
@@ -373,18 +348,30 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
         </div>
       )}
 
+      {/* ========== COMPARTIR — solo cuando el memorial está activo/pagado ========== */}
+      {locked && (
+        <ShareButtons
+          url={typeof window !== 'undefined'
+            ? `${window.location.origin}/memorial/${memorial.slug}`
+            : `/memorial/${memorial.slug}`}
+          name={form.name}
+          epitaph={form.epitaph}
+        />
+      )}
+
       {/* ========== DOS COLUMNAS: FORM + PREVIEW ========== */}
       <div className="grid lg:grid-cols-[minmax(0,1fr),minmax(0,1.1fr)] gap-8 items-start">
         {/* ======================================== */}
         {/* COLUMNA IZQUIERDA — Formulario           */}
         {/* ======================================== */}
         <div className={locked ? 'pointer-events-none opacity-75' : ''}>
-          <Tabs defaultValue="info">
+          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)}>
             <TabsList>
-              <TabsTrigger value="info">Información</TabsTrigger>
-              <TabsTrigger value="retrato">Retrato IA</TabsTrigger>
-              <TabsTrigger value="recuerdos">Recuerdos</TabsTrigger>
-              <TabsTrigger value="ar">Portal AR</TabsTrigger>
+              <TabsTrigger value="info">1 · Información</TabsTrigger>
+              <TabsTrigger value="recuerdos">2 · Recuerdos</TabsTrigger>
+              <TabsTrigger value="retrato">3 · Retrato IA</TabsTrigger>
+              <TabsTrigger value="ar">4 · Portal AR</TabsTrigger>
+              <TabsTrigger value="preview">5 · Vista previa</TabsTrigger>
             </TabsList>
 
             {/* ---------------- TAB: INFORMACIÓN ---------------- */}
@@ -455,6 +442,11 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                       className="font-serif text-base leading-relaxed"
                     />
                   </div>
+
+                  <StepNav
+                    onNext={() => setActiveTab('recuerdos')}
+                    nextLabel="Siguiente: Recuerdos"
+                  />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -557,6 +549,13 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                       </div>
                     )}
                   </div>
+
+                  <StepNav
+                    onPrev={() => setActiveTab('recuerdos')}
+                    onNext={() => setActiveTab('ar')}
+                    prevLabel="Recuerdos"
+                    nextLabel="Siguiente: Portal AR"
+                  />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -614,6 +613,13 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                       ))}
                     </div>
                   )}
+
+                  <StepNav
+                    onPrev={() => setActiveTab('info')}
+                    onNext={() => setActiveTab('retrato')}
+                    prevLabel="Información"
+                    nextLabel="Siguiente: Retrato IA"
+                  />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -662,6 +668,61 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                       <video src={arVideoUrl} controls className="w-full aspect-video object-cover" />
                     </div>
                   )}
+
+                  <StepNav
+                    onPrev={() => setActiveTab('retrato')}
+                    onNext={() => setActiveTab('preview')}
+                    prevLabel="Retrato IA"
+                    nextLabel="Siguiente: Vista previa"
+                  />
+                </CardContent>
+              </Card>
+            </TabsContent>
+
+            {/* ---------------- TAB: VISTA PREVIA + PAGO ---------------- */}
+            <TabsContent value="preview">
+              <Card>
+                <CardContent className="p-6 space-y-5">
+                  <div className="flex items-start gap-3 bg-dorado-50 border border-dorado-200 rounded-xl p-4">
+                    <Eye className="h-5 w-5 text-dorado-600 shrink-0 mt-0.5" />
+                    <div className="text-sm text-pizarra-700">
+                      <p className="font-medium text-pizarra-800">Así se verá tu memorial.</p>
+                      <p className="text-pizarra-600 mt-1">
+                        La vista previa es privada. Para que tu memorial sea público,
+                        con su URL única, QR y botones de compartir,{' '}
+                        <strong>necesitas completar el pago</strong>.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl overflow-hidden border border-pizarra-100">
+                    <MemorialPreview data={previewData} />
+                  </div>
+
+                  {/* Checklist para pagar */}
+                  <div className="bg-marfil-100 rounded-xl p-5 border border-pizarra-100">
+                    <p className="uppercase tracking-widest text-[11px] text-pizarra-500 mb-3">
+                      Antes de pagar, revisa:
+                    </p>
+                    <ul className="space-y-2 text-sm">
+                      <CheckRow done={Boolean(form.name.trim())} label="Nombre añadido" />
+                      <CheckRow done={Boolean(coverUrl || media.length)} label="Al menos una fotografía" />
+                      <CheckRow done={Boolean(form.epitaph.trim())} label="Epitafio (opcional pero recomendado)" optional />
+                      <CheckRow done={Boolean(form.biography.trim())} label="Biografía (opcional pero recomendado)" optional />
+                    </ul>
+                  </div>
+
+                  <StepNav
+                    onPrev={() => setActiveTab('ar')}
+                    prevLabel="Portal AR"
+                    customNext={
+                      <Button onClick={onContinueToCheckout} variant="dorado" disabled={publishing}>
+                        {publishing
+                          ? <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Cargando</>
+                          : <><CreditCard className="h-4 w-4 mr-2" /> Continuar a pago <ArrowRight className="h-4 w-4 ml-2" /></>}
+                      </Button>
+                    }
+                  />
                 </CardContent>
               </Card>
             </TabsContent>
@@ -671,20 +732,27 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
         {/* ======================================== */}
         {/* COLUMNA DERECHA — Preview en vivo        */}
         {/* ======================================== */}
-        <div className="lg:sticky lg:top-24 space-y-3">
+        <div className="hidden lg:block lg:sticky lg:top-24 space-y-3">
           <div className="flex items-center justify-between px-1">
             <p className="uppercase tracking-widest text-[11px] text-dorado-600 flex items-center gap-1.5">
-              <Eye className="h-3.5 w-3.5" /> Vista previa en vivo
+              <Eye className="h-3.5 w-3.5" /> Vista previa {locked ? 'en vivo' : 'privada'}
             </p>
-            <Link
-              href={`/memorial/${memorial.slug}`}
-              target="_blank"
-              className="text-[11px] text-pizarra-500 hover:text-pizarra-800"
-            >
-              Abrir en nueva pestaña →
-            </Link>
+            {locked && (
+              <Link
+                href={`/memorial/${memorial.slug}`}
+                target="_blank"
+                className="text-[11px] text-pizarra-500 hover:text-pizarra-800"
+              >
+                Abrir en nueva pestaña →
+              </Link>
+            )}
           </div>
           <MemorialPreview data={previewData} />
+          {!locked && (
+            <p className="text-[11px] text-pizarra-400 px-1 text-center">
+              El memorial se activa en su URL pública tras el pago.
+            </p>
+          )}
         </div>
       </div>
 
@@ -740,4 +808,48 @@ function relativeTime(date: Date) {
   const min = Math.round(sec / 60);
   if (min < 60) return `hace ${min} min`;
   return date.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit' });
+}
+
+/* ============================================================================
+ *  Navegación entre pasos del wizard
+ * ========================================================================== */
+function StepNav({
+  onPrev, onNext, prevLabel, nextLabel, customNext,
+}: {
+  onPrev?: () => void;
+  onNext?: () => void;
+  prevLabel?: string;
+  nextLabel?: string;
+  customNext?: React.ReactNode;
+}) {
+  return (
+    <div className="flex items-center justify-between pt-4 border-t border-pizarra-100">
+      {onPrev ? (
+        <Button type="button" variant="ghost" size="sm" onClick={onPrev}>
+          ← {prevLabel}
+        </Button>
+      ) : <span />}
+      {customNext
+        ? customNext
+        : onNext && (
+          <Button type="button" variant="outline" size="sm" onClick={onNext}>
+            {nextLabel} <ArrowRight className="h-4 w-4 ml-2" />
+          </Button>
+        )}
+    </div>
+  );
+}
+
+function CheckRow({ done, label, optional }: { done: boolean; label: string; optional?: boolean }) {
+  return (
+    <li className="flex items-start gap-2 text-pizarra-700">
+      <CheckCircle2
+        className={`h-4 w-4 mt-0.5 shrink-0 ${done ? 'text-green-600' : 'text-pizarra-300'}`}
+      />
+      <span className={done ? '' : 'text-pizarra-500'}>
+        {label}
+        {optional && <span className="text-pizarra-400 text-[11px]"> · opcional</span>}
+      </span>
+    </li>
+  );
 }

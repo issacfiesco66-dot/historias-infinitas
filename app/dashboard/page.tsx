@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { PlusCircle, Eye, QrCode, Sparkles } from 'lucide-react';
+import { PlusCircle, Eye, QrCode, Sparkles, CreditCard, Lock } from 'lucide-react';
 import type { Memorial } from '@/types/database';
 import { formatDate } from '@/lib/utils';
 
@@ -52,47 +52,69 @@ export default async function DashboardHome() {
         </Card>
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {list.map((m) => (
-            <Card key={m.id} className="overflow-hidden hover:shadow-dorado transition-shadow">
-              <div
-                className="aspect-[4/3] bg-pizarra-100 bg-cover bg-center"
-                style={{ backgroundImage: m.cover_photo_url ? `url(${m.cover_photo_url})` : undefined }}
-              />
-              <CardContent className="p-6">
-                <div className="flex items-center gap-2 mb-2">
-                  <span className="text-xs uppercase tracking-widest text-dorado-600">
-                    {m.type === 'mascota' ? 'Mascota' : 'Ser querido'}
-                  </span>
-                  <span className={`ml-auto text-[10px] px-2 py-0.5 rounded-full ${
-                    m.status === 'publicado' ? 'bg-green-50 text-green-700' :
-                    m.status === 'privado' ? 'bg-amber-50 text-amber-700' :
-                    'bg-pizarra-100 text-pizarra-600'
-                  }`}>
-                    {m.status}
-                  </span>
+          {list.map((m) => {
+            const paid = m.status === 'publicado';
+            return (
+              <Card key={m.id} className="overflow-hidden hover:shadow-dorado transition-shadow">
+                <div
+                  className="aspect-[4/3] bg-pizarra-100 bg-cover bg-center relative"
+                  style={{ backgroundImage: m.cover_photo_url ? `url(${m.cover_photo_url})` : undefined }}
+                >
+                  {!paid && (
+                    <div className="absolute inset-0 bg-pizarra-900/50 flex items-center justify-center">
+                      <div className="flex items-center gap-2 bg-marfil/95 rounded-full px-4 py-1.5 text-xs text-pizarra-700 shadow">
+                        <Lock className="h-3.5 w-3.5 text-dorado-600" />
+                        Borrador — no público
+                      </div>
+                    </div>
+                  )}
                 </div>
-                <h3 className="font-serif text-2xl text-pizarra-800 mb-1">{m.name}</h3>
-                <p className="text-xs text-pizarra-500">
-                  {formatDate(m.birth_date)} — {formatDate(m.passing_date)}
-                </p>
-                <div className="mt-4 flex gap-2">
-                  <Button asChild size="sm" variant="outline" className="flex-1">
-                    <Link href={`/dashboard/memorial/${m.id}`}>Editar</Link>
-                  </Button>
-                  <Button asChild size="icon" variant="ghost" title="Ver público">
-                    <Link href={`/memorial/${m.slug}`} target="_blank">
-                      <Eye className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                  <Button asChild size="icon" variant="ghost" title="QR">
-                    <Link href={`/dashboard/memorial/${m.id}/qr`}>
-                      <QrCode className="h-4 w-4" />
-                    </Link>
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ))}
+                <CardContent className="p-6">
+                  <div className="flex items-center gap-2 mb-2">
+                    <span className="text-xs uppercase tracking-widest text-dorado-600">
+                      {m.type === 'mascota' ? 'Mascota' : 'Ser querido'}
+                    </span>
+                    <span className={`ml-auto text-[10px] px-2 py-0.5 rounded-full ${
+                      paid ? 'bg-green-50 text-green-700' :
+                      m.status === 'privado' ? 'bg-amber-50 text-amber-700' :
+                      'bg-pizarra-100 text-pizarra-600'
+                    }`}>
+                      {paid ? 'activo' : 'borrador'}
+                    </span>
+                  </div>
+                  <h3 className="font-serif text-2xl text-pizarra-800 mb-1">{m.name}</h3>
+                  <p className="text-xs text-pizarra-500">
+                    {formatDate(m.birth_date)} — {formatDate(m.passing_date)}
+                  </p>
+                  <div className="mt-4 flex gap-2">
+                    <Button asChild size="sm" variant="outline" className="flex-1">
+                      <Link href={`/dashboard/memorial/${m.id}`}>Editar</Link>
+                    </Button>
+                    {paid ? (
+                      <>
+                        <Button asChild size="icon" variant="ghost" title="Ver público">
+                          <Link href={`/memorial/${m.slug}`} target="_blank">
+                            <Eye className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                        <Button asChild size="icon" variant="ghost" title="QR">
+                          <Link href={`/dashboard/memorial/${m.id}/qr`}>
+                            <QrCode className="h-4 w-4" />
+                          </Link>
+                        </Button>
+                      </>
+                    ) : (
+                      <Button asChild size="sm" variant="dorado" title="Completar pago">
+                        <Link href={`/dashboard/memorial/${m.id}/checkout`}>
+                          <CreditCard className="h-4 w-4 mr-1.5" /> Pagar
+                        </Link>
+                      </Button>
+                    )}
+                  </div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       )}
     </div>

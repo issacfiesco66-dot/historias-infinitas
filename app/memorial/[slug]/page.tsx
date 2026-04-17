@@ -7,6 +7,7 @@ import { ARPortal } from './ar-portal';
 import { BannerHero } from './banner-hero';
 import { MemorialOpening } from './memorial-opening';
 import { Reveal, FadeH2, FadeP } from '@/components/viva-images';
+import { HexGallery } from '@/components/hex-gallery';
 import type { Memorial, MemorialMedia } from '@/types/database';
 
 interface Props { params: { slug: string } }
@@ -274,40 +275,45 @@ export default async function PublicMemorialPage({ params }: Props) {
         </section>
       )}
 
-      {/* ============ GALERÍA — MASONRY SUTIL ============ */}
-      {(photos.length > 0 || galleryVideos.length > 0) && (
+      {/* ============ GALERÍA — PANAL HEXAGONAL (con rotación) ============ */}
+      {photos.length > 0 && (
         <section className="container-solemn py-16">
           <Reveal className="text-center mb-12">
             <FadeP className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-3">Galería</FadeP>
             <FadeH2 className="font-serif text-3xl md:text-4xl text-pizarra-800">
-              Un álbum de momentos
+              Un panal de momentos
             </FadeH2>
+            {photos.length > 7 && (
+              <FadeP delay={0.1} className="text-sm text-pizarra-500 mt-3">
+                Las fotografías se turnan — cada recuerdo tiene su momento.
+              </FadeP>
+            )}
           </Reveal>
 
+          <Reveal delay={0.15}>
+            <HexGallery
+              photos={photos.map((p) => ({ id: p.id, url: p.url, caption: p.caption }))}
+            />
+          </Reveal>
+        </section>
+      )}
+
+      {/* ============ VIDEOS de galería (si hay más de uno) ============ */}
+      {galleryVideos.length > 0 && (
+        <section className="container-solemn py-8">
           <Reveal delay={0.1}>
-            {/* Masonry CSS Columns — ligero, sin JS, preserva proporciones */}
-            <div className="columns-2 md:columns-3 lg:columns-4 gap-4 [column-fill:_balance]">
-              {[...photos, ...galleryVideos].map((mm) => (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {galleryVideos.map((mm) => (
                 <figure
                   key={mm.id}
-                  className="mb-4 break-inside-avoid rounded-xl overflow-hidden bg-pizarra-100 shadow-solemn transition-transform duration-500 hover:scale-[1.01] hover:shadow-dorado"
+                  className="rounded-xl overflow-hidden bg-pizarra-100 shadow-solemn"
                 >
-                  {mm.kind === 'foto' ? (
-                    // eslint-disable-next-line @next/next/no-img-element
-                    <img
-                      src={mm.url}
-                      alt={mm.caption ?? ''}
-                      loading="lazy"
-                      className="w-full h-auto block"
-                    />
-                  ) : (
-                    <video
-                      src={mm.url}
-                      controls
-                      preload="metadata"
-                      className="w-full h-auto block"
-                    />
-                  )}
+                  <video
+                    src={mm.url}
+                    controls
+                    preload="metadata"
+                    className="w-full h-auto block"
+                  />
                   {mm.caption && (
                     <figcaption className="px-3 py-2 text-xs italic text-pizarra-500 bg-marfil-100">
                       {mm.caption}

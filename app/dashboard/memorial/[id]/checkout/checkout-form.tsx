@@ -9,7 +9,7 @@ import {
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { formatDate, cn } from '@/lib/utils';
-import { PLANS, AR_ADDON, formatUSD, type PlanId } from '@/lib/plans';
+import { PLANS, AR_ADDON, formatMXN, type PlanId } from '@/lib/plans';
 import type { Memorial } from '@/types/database';
 
 /* ============================================================================
@@ -29,7 +29,7 @@ export function CheckoutForm({ memorial }: { memorial: Memorial }) {
   const [error, setError] = useState<string | null>(null);
 
   const plan = useMemo(() => PLANS.find((p) => p.id === selected)!, [selected]);
-  const total = plan.priceUSD + (addAr ? AR_ADDON.priceUSD : 0);
+  const total = plan.priceMXN + (addAr ? AR_ADDON.priceMXN : 0);
 
   async function onCheckout() {
     setSubmitting(true);
@@ -99,8 +99,8 @@ export function CheckoutForm({ memorial }: { memorial: Memorial }) {
                   <p className="text-xs text-pizarra-500 italic mb-5">{p.tagline}</p>
 
                   <div className="flex items-baseline gap-1 mb-5">
-                    <span className="font-serif text-4xl text-pizarra-800">{formatUSD(p.priceUSD)}</span>
-                    <span className="text-xs text-pizarra-400 uppercase tracking-widest">USD</span>
+                    <span className="font-serif text-4xl text-pizarra-800">{formatMXN(p.priceMXN)}</span>
+                    <span className="text-xs text-pizarra-400 uppercase tracking-widest">MXN</span>
                   </div>
 
                   <ul className="space-y-2 mb-2">
@@ -156,7 +156,7 @@ export function CheckoutForm({ memorial }: { memorial: Memorial }) {
             </div>
             <p className="font-serif text-lg text-pizarra-800">
               Añadir Realidad Aumentada (Portal de Video)
-              <span className="text-dorado-600"> por solo {formatUSD(AR_ADDON.priceUSD)} más</span>
+              <span className="text-dorado-600"> por solo {formatMXN(AR_ADDON.priceMXN)} más</span>
             </p>
             <p className="text-sm text-pizarra-500 mt-1">
               Al escanear el QR aparecerá un video flotando en el espacio, como si estuviera contigo.
@@ -235,7 +235,7 @@ export function CheckoutForm({ memorial }: { memorial: Memorial }) {
                     <p className="font-serif text-base text-pizarra-800">Plan {plan.name}</p>
                     <p className="text-xs text-pizarra-500">{plan.tagline}</p>
                   </div>
-                  <span className="font-medium text-pizarra-800">{formatUSD(plan.priceUSD)}</span>
+                  <span className="font-medium text-pizarra-800">{formatMXN(plan.priceMXN)}</span>
                 </motion.div>
               </AnimatePresence>
 
@@ -253,7 +253,7 @@ export function CheckoutForm({ memorial }: { memorial: Memorial }) {
                       <p className="font-serif text-base text-pizarra-800">{AR_ADDON.name}</p>
                       <p className="text-xs text-pizarra-500">Portal de video en AR</p>
                     </div>
-                    <span className="font-medium text-pizarra-800">{formatUSD(AR_ADDON.priceUSD)}</span>
+                    <span className="font-medium text-pizarra-800">{formatMXN(AR_ADDON.priceMXN)}</span>
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -273,7 +273,7 @@ export function CheckoutForm({ memorial }: { memorial: Memorial }) {
                   transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
                   className="font-serif text-4xl text-pizarra-800"
                 >
-                  {formatUSD(total)}
+                  {formatMXN(total)}
                 </motion.span>
               </AnimatePresence>
             </div>

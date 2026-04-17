@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Lock, CreditCard } from 'lucide-react';
 import QRCode from 'qrcode';
 
 export default async function MemorialQrPage({ params }: { params: { id: string } }) {
@@ -12,12 +13,41 @@ export default async function MemorialQrPage({ params }: { params: { id: string 
 
   const { data: memorial } = await supabase
     .from('memorials')
-    .select('id, slug, name')
+    .select('id, slug, name, status')
     .eq('id', params.id)
     .eq('owner_id', user.id)
     .single();
 
   if (!memorial) notFound();
+
+  // El QR solo se genera para memoriales ya pagados (status = publicado).
+  if (memorial.status !== 'publicado') {
+    return (
+      <div className="max-w-xl mx-auto text-center py-12">
+        <Link
+          href={`/dashboard/memorial/${memorial.id}`}
+          className="text-sm text-pizarra-500 hover:text-pizarra-800"
+        >
+          ← Volver al memorial
+        </Link>
+        <div className="mx-auto w-14 h-14 rounded-full bg-dorado-100 flex items-center justify-center my-6">
+          <Lock className="h-6 w-6 text-dorado-600" />
+        </div>
+        <h1 className="font-serif text-3xl text-pizarra-800 mb-3">
+          El QR se activa con el pago
+        </h1>
+        <p className="text-pizarra-500 mb-8">
+          Para generar el QR único y el subdominio permanente de {memorial.name},
+          necesitas completar el pago. Es un único cargo — sin suscripciones.
+        </p>
+        <Button asChild variant="dorado" size="lg">
+          <Link href={`/dashboard/memorial/${memorial.id}/checkout`}>
+            <CreditCard className="h-4 w-4 mr-2" /> Ver planes y pagar
+          </Link>
+        </Button>
+      </div>
+    );
+  }
 
   const appUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
   const publicUrl = `${appUrl}/memorial/${memorial.slug}`;

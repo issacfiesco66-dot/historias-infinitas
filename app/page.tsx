@@ -14,10 +14,15 @@ import {
   FadeP,
 } from '@/components/viva-images';
 
-// Imágenes de apoyo — picsum.photos con seeds estables (reemplazables por assets propios).
-const HERO_IMG  = 'https://picsum.photos/seed/hi-hero/1800/1100';
-const PET_IMG   = 'https://picsum.photos/seed/hi-pet/1400/1050';
-const HUMAN_IMG = 'https://picsum.photos/seed/hi-human/1400/1050';
+// Imágenes de Unsplash (CDN gratuito, licencia libre) alineadas con el tono
+// solemne del proyecto: velas encendidas, mascotas en retrato cálido, y
+// un retrato familiar evocador.
+//  - Hero: vela y atardecer cálido → memoria eterna
+//  - Pet:  retrato íntimo de mascota
+//  - Human: manos entrelazadas / figura reflexiva
+const HERO_IMG  = 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?auto=format&fit=crop&w=1800&q=80';
+const PET_IMG   = 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=1400&q=80';
+const HUMAN_IMG = 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1400&q=80';
 
 export default function HomePage() {
   return (
@@ -86,7 +91,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ DOS NICHOS ============ */}
-      <section className="container-solemn py-16">
+      <section className="container-wide py-20">
         <div className="text-center mb-14">
           <FadeP className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-4">
             Dos caminos, un mismo amor
@@ -96,7 +101,7 @@ export default function HomePage() {
           </FadeH2>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-8">
+        <div className="grid md:grid-cols-2 gap-8 lg:gap-12">
           <ParallaxNichoCard
             id="mascotas"
             src={PET_IMG}
@@ -134,7 +139,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ CÓMO FUNCIONA ============ */}
-      <section id="como-funciona" className="container-solemn py-24">
+      <section id="como-funciona" className="container-wide py-24">
         <div className="text-center mb-16">
           <FadeP className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-4">
             El ritual
@@ -147,7 +152,7 @@ export default function HomePage() {
           </FadeP>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
+        <div className="grid md:grid-cols-3 gap-8 lg:gap-10">
           <Reveal delay={0.0}>
             <FeatureStep
               step="01"
@@ -176,7 +181,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ CTA FINAL ============ */}
-      <section className="container-solemn py-20">
+      <section className="container-wide py-20">
         <Reveal>
           <div className="relative overflow-hidden rounded-2xl bg-pizarra-700 p-12 md:p-20 text-center">
             <DustParticles count={30} />
@@ -214,7 +219,7 @@ export default function HomePage() {
       </section>
 
       {/* ============ GROWTH PARTNER / B2B ============ */}
-      <section className="container-solemn pb-24">
+      <section className="container-wide pb-24">
         <Reveal>
           <div className="relative overflow-hidden rounded-xl border border-pizarra-200/60 bg-pizarra-800 p-10 md:p-14">
             <div

@@ -6,6 +6,8 @@
  *
  * Nunca confíes en precios enviados desde el cliente: el API valida el
  * planId y añade el precio desde este archivo antes de crear la sesión.
+ *
+ * Moneda: MXN (peso mexicano). Stripe recibe centavos (× 100).
  */
 
 export type PlanId = 'digital' | 'artistico' | 'eterno';
@@ -14,7 +16,7 @@ export interface Plan {
   id: PlanId;
   name: string;
   tagline: string;
-  priceUSD: number;      // en USD enteros; Stripe recibe centavos (× 100)
+  priceMXN: number;      // en MXN enteros; Stripe recibe centavos (× 100)
   popular?: boolean;
   includes: string[];
 }
@@ -24,7 +26,7 @@ export const PLANS: readonly Plan[] = [
     id: 'digital',
     name: 'Digital',
     tagline: 'Un hogar sereno en internet.',
-    priceUSD: 499,
+    priceMXN: 299,
     includes: [
       'QR único con URL permanente',
       'Hosting eterno del memorial',
@@ -36,7 +38,7 @@ export const PLANS: readonly Plan[] = [
     id: 'artistico',
     name: 'Artístico',
     tagline: 'Un retrato que vuelve a respirar.',
-    priceUSD: 849,
+    priceMXN: 599,
     popular: true,
     includes: [
       'Todo lo del plan Digital',
@@ -49,12 +51,12 @@ export const PLANS: readonly Plan[] = [
     id: 'eterno',
     name: 'Eterno',
     tagline: 'Un legado que se sostiene en tus manos.',
-    priceUSD: 2499,
+    priceMXN: 1799,
     includes: [
       'Todo lo del plan Artístico',
       'Placa física en acero inoxidable',
       'Grabado del QR con acabado dorado',
-      'Envío internacional sin costo',
+      'Envío a todo México sin costo',
     ],
   },
 ] as const;
@@ -62,8 +64,8 @@ export const PLANS: readonly Plan[] = [
 export const AR_ADDON = {
   id: 'ar_portal',
   name: 'Portal de Realidad Aumentada',
-  description: 'Añade un video flotante que aparece al escanear el QR.',
-  priceUSD: 299,
+  description: 'Añade un recuerdo en AR que aparece al escanear el QR.',
+  priceMXN: 199,
 } as const;
 
 export function getPlan(id: PlanId): Plan {
@@ -72,10 +74,10 @@ export function getPlan(id: PlanId): Plan {
   return p;
 }
 
-export function formatUSD(amount: number): string {
-  return new Intl.NumberFormat('en-US', {
+export function formatMXN(amount: number): string {
+  return new Intl.NumberFormat('es-MX', {
     style: 'currency',
-    currency: 'USD',
+    currency: 'MXN',
     maximumFractionDigits: 0,
   }).format(amount);
 }
