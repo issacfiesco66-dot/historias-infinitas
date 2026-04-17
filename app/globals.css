@@ -37,6 +37,33 @@
     @apply h-px w-16 bg-dorado-400/60;
   }
 
+  /* Tipografía para documentos legales y contenido largo */
+  .prose-legal h1 {
+    @apply font-serif text-4xl md:text-5xl text-pizarra-800 mb-4 leading-tight;
+  }
+  .prose-legal h2 {
+    @apply font-serif text-2xl md:text-3xl text-pizarra-800 mt-12 mb-3;
+  }
+  .prose-legal h3 {
+    @apply font-serif text-xl text-pizarra-800 mt-8 mb-2;
+  }
+  .prose-legal p {
+    @apply text-pizarra-700 leading-relaxed mb-4;
+  }
+  .prose-legal ul, .prose-legal ol {
+    @apply text-pizarra-700 leading-relaxed mb-4 pl-6 list-outside;
+  }
+  .prose-legal ul { @apply list-disc; }
+  .prose-legal ol { @apply list-decimal; }
+  .prose-legal li { @apply mb-1.5; }
+  .prose-legal strong { @apply text-pizarra-800; }
+  .prose-legal a {
+    @apply text-dorado-600 underline hover:text-dorado-700;
+  }
+  .prose-legal .meta {
+    @apply uppercase tracking-[0.3em] text-xs text-dorado-600 mb-4;
+  }
+
   .text-gradient-dorado {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, #B7945A 0%, #E2CC99 50%, #B7945A 100%);

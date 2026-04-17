@@ -21,9 +21,9 @@ export function SiteFooter() {
         </div>
         <div className="text-sm space-y-2">
           <p className="uppercase tracking-widest text-xs text-dorado-300 mb-2">Legal</p>
-          <Link className="block hover:text-dorado-300" href="#">Privacidad</Link>
-          <Link className="block hover:text-dorado-300" href="#">Términos</Link>
-          <Link className="block hover:text-dorado-300" href="#">Contacto</Link>
+          <Link className="block hover:text-dorado-300" href="/privacidad">Aviso de Privacidad</Link>
+          <Link className="block hover:text-dorado-300" href="/terminos">Términos y Condiciones</Link>
+          <Link className="block hover:text-dorado-300" href="/contacto">Contacto</Link>
         </div>
       </div>
       <div className="border-t border-marfil/10 py-6 text-center text-xs text-marfil/50">
