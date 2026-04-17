@@ -3,7 +3,7 @@ import { randomBytes } from 'crypto';
 import Stripe from 'stripe';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { sendTransactional } from '@/lib/emails/send';
-import { getPlan, type PlanId } from '@/lib/plans';
+import { getPlan, AR_ADDON, type PlanId } from '@/lib/plans';
 import { getPartnerPlan, type PartnerPlanId } from '@/lib/partner-plans';
 import { buildPortraitPrompt } from '@/lib/replicate';
 
@@ -114,6 +114,17 @@ export async function POST(req: Request) {
 
   const amountTotal = (session.amount_total ?? 0) / 100;
   const currency = (session.currency ?? 'usd').toLowerCase();
+
+  // Anti-tampering: el monto cobrado debe coincidir con el catálogo local.
+  // Si no coincide, no activamos el memorial y dejamos la orden registrada
+  // con status 'pending' para revisión manual (nunca status 'paid' a ciegas).
+  const expectedAmount = plan.priceMXN + (hasArAddon ? AR_ADDON.priceMXN : 0);
+  if (Math.abs(amountTotal - expectedAmount) > 0.01) {
+    console.error('[stripe-webhook] monto no coincide', {
+      paid: amountTotal, expected: expectedAmount, plan: plan.id, ar: hasArAddon,
+    });
+    return NextResponse.json({ error: 'amount_mismatch' }, { status: 400 });
+  }
 
   // Dirección de envío (si Stripe la recogió — requiere shipping_address_collection
   // en la creación de la Checkout Session).
@@ -389,6 +400,17 @@ async function handlePartnerPack(
   let plan;
   try { plan = getPartnerPlan(planIdRaw); } catch {
     return NextResponse.json({ ok: false, reason: 'invalid_partner_plan' });
+  }
+
+  // Anti-tampering: valida que el monto cobrado coincide con el catálogo.
+  if (plan.priceMXN && session.amount_total) {
+    const expected = plan.priceMXN * 100; // Stripe usa centavos
+    if (Math.abs(session.amount_total - expected) > 1) {
+      console.error('[stripe-webhook] partner amount mismatch', {
+        paid: session.amount_total, expected, plan: plan.id,
+      });
+      return NextResponse.json({ error: 'partner_amount_mismatch' }, { status: 400 });
+    }
   }
 
   // Idempotencia: si ya existe la cuenta para este session_id, devuelve OK.

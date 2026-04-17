@@ -4,15 +4,17 @@ import { createClient } from '@/lib/supabase/server';
 
 /**
  * GET /api/debug/whoami
- * Debug endpoint — muestra qué ve el servidor sobre tu sesión.
+ * Debug endpoint — SOLO disponible en development.
  *
- * Visita http://localhost:3002/api/debug/whoami y deberías ver:
+ * En producción devuelve 404 para no filtrar información de la sesión.
+ * Útil en local para diagnosticar problemas de cookies:
  *   { user: { id, email }, hasSession: true, cookieNames: [...] }
- *
- * Si hasSession es false o user es null, el problema está en cookies.
- * Borra las cookies de localhost, vuelve a loguearte y reintenta.
  */
 export async function GET() {
+  if (process.env.NODE_ENV === 'production') {
+    return new NextResponse('Not Found', { status: 404 });
+  }
+
   const supabase = createClient();
 
   const [{ data: userData, error: userErr }, { data: sessionData }] = await Promise.all([

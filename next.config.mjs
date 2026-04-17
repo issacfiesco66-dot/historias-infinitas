@@ -1,17 +1,124 @@
 /** @type {import('next').NextConfig} */
+
+// Dominio del proyecto Supabase (para restringir remotePatterns al tuyo).
+// Derivado de NEXT_PUBLIC_SUPABASE_URL para que no se pueda cargar imágenes
+// de OTROS tenants Supabase por mis Image Optimizer (mitigación DoS CVE).
+const supabaseHost = (() => {
+  try {
+    const u = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    if (!u) return null;
+    return new URL(u).hostname;
+  } catch {
+    return null;
+  }
+})();
+
+// Orígenes permitidos para Server Actions. En dev añadimos localhost.
+const serverActionOrigins = [
+  'historias-infinitas.com',
+  'www.historias-infinitas.com',
+  ...(process.env.NODE_ENV === 'development' ? ['localhost:3000', 'localhost:3002'] : []),
+];
+
+/**
+ * Security headers globales.
+ *
+ * CSP: estricta para la app. Permitimos:
+ *  - self: nuestro propio origen.
+ *  - fonts.googleapis / fonts.gstatic: las fuentes del layout.
+ *  - ajax.googleapis.com: el <model-viewer> de Google (WebAR).
+ *  - *.supabase.co (solo el nuestro si lo detectamos) para imágenes/media.
+ *  - replicate.delivery: retratos AI.
+ *  - blob: / data: para previews de upload.
+ *  - 'unsafe-inline' en style-src (Tailwind genera inline styles) — aceptado.
+ *  - 'unsafe-inline' en script-src para compatibilidad con Next.js 14 inline
+ *    runtime chunks. Next 14 no soporta CSP con nonces sin custom work.
+ */
+const supabaseCsp = supabaseHost ? `https://${supabaseHost}` : 'https://*.supabase.co';
+const csp = [
+  `default-src 'self'`,
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ajax.googleapis.com https://js.stripe.com`,
+  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
+  `img-src 'self' data: blob: ${supabaseCsp} https://replicate.delivery https://pbxt.replicate.delivery`,
+  `font-src 'self' https://fonts.gstatic.com data:`,
+  `connect-src 'self' ${supabaseCsp} wss://${supabaseHost || '*.supabase.co'} https://api.stripe.com https://api.replicate.com`,
+  `frame-src 'self' https://js.stripe.com https://hooks.stripe.com`,
+  `media-src 'self' blob: data: ${supabaseCsp}`,
+  `worker-src 'self' blob:`,
+  `object-src 'none'`,
+  `base-uri 'self'`,
+  `form-action 'self' https://checkout.stripe.com`,
+  `frame-ancestors 'none'`,
+  `upgrade-insecure-requests`,
+].join('; ');
+
+const securityHeaders = [
+  { key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' },
+  { key: 'X-Content-Type-Options',    value: 'nosniff' },
+  { key: 'X-Frame-Options',            value: 'DENY' },
+  { key: 'Referrer-Policy',            value: 'strict-origin-when-cross-origin' },
+  { key: 'Permissions-Policy',         value: 'camera=(self), microphone=(), geolocation=(), interest-cohort=()' },
+  { key: 'Cross-Origin-Opener-Policy', value: 'same-origin' },
+  { key: 'Cross-Origin-Resource-Policy', value: 'same-site' },
+  { key: 'X-DNS-Prefetch-Control',     value: 'on' },
+  { key: 'Content-Security-Policy',    value: csp },
+];
+
 const nextConfig = {
+  // No revelar el stack en el header de respuesta.
+  poweredByHeader: false,
+
+  // Compresión a cargo del runtime (ya activa por defecto, explícito por claridad).
+  compress: true,
+
+  // React strict mode activo (detecta efectos no idempotentes).
+  reactStrictMode: true,
+
   images: {
     remotePatterns: [
-      { protocol: 'https', hostname: '*.supabase.co' },
+      // Solo el bucket/hostname de NUESTRO Supabase (si está disponible).
+      ...(supabaseHost
+        ? [{ protocol: 'https', hostname: supabaseHost }]
+        : [{ protocol: 'https', hostname: '*.supabase.co' }]),
       { protocol: 'https', hostname: 'replicate.delivery' },
       { protocol: 'https', hostname: 'pbxt.replicate.delivery' },
-      { protocol: 'https', hostname: 'images.unsplash.com' },
-      { protocol: 'https', hostname: 'picsum.photos' },
-      { protocol: 'https', hostname: 'fastly.picsum.photos' },
+      // Placeholders SOLO en dev — evita DoS del Image Optimizer en prod.
+      ...(process.env.NODE_ENV === 'development'
+        ? [
+            { protocol: 'https', hostname: 'images.unsplash.com' },
+            { protocol: 'https', hostname: 'picsum.photos' },
+            { protocol: 'https', hostname: 'fastly.picsum.photos' },
+          ]
+        : []),
     ],
+    // Limita formatos que el Image Optimizer puede procesar (mitiga DoS).
+    formats: ['image/avif', 'image/webp'],
+    // Rangos acotados — el Optimizer solo atiende estos tamaños, no arbitrarios.
+    deviceSizes: [640, 750, 828, 1080, 1200, 1920, 2048],
+    imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
+    // TTL mínimo en caché para no acumular disco infinito (CVE-2025-cache-growth).
+    minimumCacheTTL: 60,
+    // Bloquea SVG remoto (XSS vector en SVG).
+    dangerouslyAllowSVG: false,
+    contentSecurityPolicy: "default-src 'self'; script-src 'none'; sandbox;",
   },
+
   experimental: {
-    serverActions: { allowedOrigins: ['localhost:3000', 'historias-infinitas.com'] },
+    serverActions: { allowedOrigins: serverActionOrigins },
+  },
+
+  async headers() {
+    return [
+      {
+        source: '/:path*',
+        headers: securityHeaders,
+      },
+      // Cache inmutable para assets estáticos que ya llevan hash en el nombre.
+      {
+        source: '/_next/static/:path*',
+        headers: [{ key: 'Cache-Control', value: 'public, max-age=31536000, immutable' }],
+      },
+    ];
   },
 };
 

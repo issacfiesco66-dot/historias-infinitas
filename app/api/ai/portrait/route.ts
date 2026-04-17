@@ -20,6 +20,34 @@ interface Body {
 }
 
 /**
+ * Allowlist de hosts desde los que aceptamos imágenes para enviar a Replicate.
+ * Evita SSRF hacia recursos internos (169.254.169.254 AWS metadata, localhost,
+ * servicios internos de Vercel, etc.) y ataques de rebind-DNS.
+ */
+const ALLOWED_IMAGE_HOSTS = (() => {
+  const list = new Set<string>([
+    'replicate.delivery',
+    'pbxt.replicate.delivery',
+  ]);
+  try {
+    const u = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    if (u) list.add(new URL(u).hostname); // e.g. lwiigdttrxvqsyglpool.supabase.co
+  } catch { /* ignore */ }
+  return list;
+})();
+
+function isSafeImageUrl(raw: string): boolean {
+  let url: URL;
+  try { url = new URL(raw); } catch { return false; }
+  if (url.protocol !== 'https:') return false;
+  if (!ALLOWED_IMAGE_HOSTS.has(url.hostname)) return false;
+  // Bloquea credenciales inline (user@host) y puertos raros.
+  if (url.username || url.password) return false;
+  if (url.port && url.port !== '443') return false;
+  return true;
+}
+
+/**
  * POST /api/ai/portrait
  *
  * Genera un retrato artístico (SDXL + refiner) a partir de una foto base.
@@ -40,6 +68,15 @@ export async function POST(req: Request) {
     const body = (await req.json()) as Body;
     if (!body.memorialId || !body.imageUrl) {
       return NextResponse.json({ error: 'Parámetros incompletos' }, { status: 400 });
+    }
+    if (typeof body.memorialId !== 'string' || body.memorialId.length > 64) {
+      return NextResponse.json({ error: 'memorial_id_invalido' }, { status: 400 });
+    }
+    if (!isSafeImageUrl(body.imageUrl)) {
+      return NextResponse.json(
+        { error: 'imagen_no_permitida', hint: 'La imagen debe venir de nuestro almacenamiento.' },
+        { status: 400 },
+      );
     }
 
     // Valida el id del estilo (si viene) contra el catálogo canónico.
