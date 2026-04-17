@@ -5,6 +5,7 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import { Button } from '@/components/ui/button';
 import { Eye, QrCode } from 'lucide-react';
 import { MemorialEditor } from './editor';
+import { DeleteMemorialButton } from '@/components/delete-memorial-button';
 import type { Memorial, MemorialMedia } from '@/types/database';
 
 export default async function EditMemorialPage({ params }: { params: { id: string } }) {
@@ -66,20 +67,28 @@ export default async function EditMemorialPage({ params }: { params: { id: strin
             /{memorial.slug}
           </p>
         </div>
-        {paid && (
-          <div className="flex gap-2">
-            <Button asChild variant="outline">
-              <Link href={`/memorial/${memorial.slug}`} target="_blank">
-                <Eye className="h-4 w-4 mr-2" /> Ver público
-              </Link>
-            </Button>
-            <Button asChild variant="dorado">
-              <Link href={`/dashboard/memorial/${memorial.id}/qr`}>
-                <QrCode className="h-4 w-4 mr-2" /> QR
-              </Link>
-            </Button>
-          </div>
-        )}
+        <div className="flex gap-2 items-center">
+          {paid && (
+            <>
+              <Button asChild variant="outline">
+                <Link href={`/memorial/${memorial.slug}`} target="_blank">
+                  <Eye className="h-4 w-4 mr-2" /> Ver público
+                </Link>
+              </Button>
+              <Button asChild variant="dorado">
+                <Link href={`/dashboard/memorial/${memorial.id}/qr`}>
+                  <QrCode className="h-4 w-4 mr-2" /> QR
+                </Link>
+              </Button>
+            </>
+          )}
+          <DeleteMemorialButton
+            memorialId={memorial.id}
+            memorialName={memorial.name}
+            variant="full"
+            redirectTo="/dashboard"
+          />
+        </div>
       </div>
 
       <MemorialEditor

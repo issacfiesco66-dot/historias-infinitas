@@ -3,6 +3,7 @@ import { createClient } from '@/lib/supabase/server';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlusCircle, Eye, QrCode, Sparkles, CreditCard, Lock } from 'lucide-react';
+import { DeleteMemorialButton } from '@/components/delete-memorial-button';
 import type { Memorial } from '@/types/database';
 import { formatDate } from '@/lib/utils';
 
@@ -110,6 +111,11 @@ export default async function DashboardHome() {
                         </Link>
                       </Button>
                     )}
+                    <DeleteMemorialButton
+                      memorialId={m.id}
+                      memorialName={m.name}
+                      variant="icon"
+                    />
                   </div>
                 </CardContent>
               </Card>
