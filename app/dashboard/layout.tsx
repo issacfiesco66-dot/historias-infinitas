@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { isAdminEmail } from '@/lib/admin';
 import { Button } from '@/components/ui/button';
-import { LogOut, Home, PlusCircle, ShieldCheck } from 'lucide-react';
+import { LogOut, Home, PlusCircle, ShieldCheck, Handshake } from 'lucide-react';
 
 // Área privada — nunca indexar
 export const metadata: Metadata = {
@@ -25,6 +25,15 @@ export default async function DashboardLayout({ children }: { children: React.Re
 
   const isAdmin = isAdminEmail(user.email);
 
+  // ¿Es socio? (partner_accounts.user_id = user.id)
+  const { data: partnerAccount } = await supabase
+    .from('partner_accounts')
+    .select('id, status')
+    .eq('user_id', user.id)
+    .eq('status', 'active')
+    .maybeSingle();
+  const isPartner = Boolean(partnerAccount);
+
   return (
     <div className="min-h-screen bg-marfil-100">
       <header className="border-b border-pizarra-100 bg-marfil/80 backdrop-blur sticky top-0 z-30">
@@ -39,6 +48,11 @@ export default async function DashboardLayout({ children }: { children: React.Re
             <Link href="/dashboard/new" className="hover:text-pizarra-900 flex items-center gap-1">
               <PlusCircle className="h-4 w-4" /> Nuevo
             </Link>
+            {isPartner && (
+              <Link href="/dashboard/partner" className="hover:text-pizarra-900 flex items-center gap-1 text-dorado-600">
+                <Handshake className="h-4 w-4" /> Panel Socio
+              </Link>
+            )}
             {isAdmin && (
               <Link href="/dashboard/admin" className="hover:text-pizarra-900 flex items-center gap-1 text-dorado-600">
                 <ShieldCheck className="h-4 w-4" /> Admin

@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from 'next/server';
 import { createServerClient } from '@supabase/ssr';
+import { PARTNER_REF_COOKIE, PARTNER_REF_MAX_AGE, isLikelyPartnerId } from '@/lib/partner-referral';
 
 /**
  * Middleware — protege /dashboard y refresca las cookies de sesión de
@@ -38,6 +39,20 @@ export async function middleware(request: NextRequest) {
   const isDashboard = request.nextUrl.pathname.startsWith('/dashboard');
   if (isDashboard && !user) {
     return NextResponse.redirect(new URL('/login', request.url));
+  }
+
+  // Captura de referido de partner: si llega ?ref=<uuid> guardamos la
+  // cookie `hi_ref` para asociar cualquier memorial futuro al partner.
+  const ref = request.nextUrl.searchParams.get('ref');
+  if (ref && isLikelyPartnerId(ref)) {
+    response.cookies.set({
+      name:    PARTNER_REF_COOKIE,
+      value:   ref,
+      path:    '/',
+      maxAge:  PARTNER_REF_MAX_AGE,
+      sameSite: 'lax',
+      httpOnly: true,
+    });
   }
 
   return response;

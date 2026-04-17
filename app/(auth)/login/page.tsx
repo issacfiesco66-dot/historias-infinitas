@@ -1,15 +1,27 @@
 'use client';
 
 import Link from 'next/link';
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { Suspense, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { createClient } from '@/lib/supabase/client';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 
 export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="h-96" />}>
+      <LoginForm />
+    </Suspense>
+  );
+}
+
+function LoginForm() {
   const router = useRouter();
+  const params = useSearchParams();
+  const next = params?.get('next') ?? '/dashboard';
+  const presetEmail = params?.get('email') ?? '';
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,7 +37,7 @@ export default function LoginPage() {
     });
     setLoading(false);
     if (error) return setError(error.message);
-    router.replace('/dashboard');
+    router.replace(next);
     router.refresh();
   }
 
@@ -40,7 +52,15 @@ export default function LoginPage() {
       <form onSubmit={onSubmit} className="space-y-5">
         <div className="space-y-2">
           <Label htmlFor="email">Correo electrónico</Label>
-          <Input id="email" name="email" type="email" placeholder="tu@correo.com" required />
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="tu@correo.com"
+            required
+            defaultValue={presetEmail}
+            readOnly={Boolean(presetEmail)}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">Contraseña</Label>
@@ -58,7 +78,12 @@ export default function LoginPage() {
 
       <p className="mt-8 text-sm text-center text-pizarra-500">
         ¿No tienes cuenta?{' '}
-        <Link href="/register" className="text-dorado-600 hover:underline">Crea una</Link>
+        <Link
+          href={`/register${presetEmail ? `?email=${encodeURIComponent(presetEmail)}&next=${encodeURIComponent(next)}` : ''}`}
+          className="text-dorado-600 hover:underline"
+        >
+          Crea una
+        </Link>
       </p>
     </div>
   );

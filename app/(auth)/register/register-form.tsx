@@ -12,6 +12,9 @@ export default function RegisterForm() {
   const router = useRouter();
   const params = useSearchParams();
   const type = params.get('type'); // mascota | ser_querido
+  const presetEmail = params.get('email') ?? '';
+  const nextPath = params.get('next') ?? (type ? `/dashboard?type=${type}` : '/dashboard');
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [sent, setSent] = useState(false);
@@ -27,7 +30,7 @@ export default function RegisterForm() {
       password: String(form.get('password')),
       options: {
         data: { full_name: String(form.get('full_name')) },
-        emailRedirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(`/dashboard${type ? `?type=${type}` : ''}`)}`,
+        emailRedirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
       },
     });
     setLoading(false);
@@ -61,7 +64,15 @@ export default function RegisterForm() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="email">Correo electrónico</Label>
-          <Input id="email" name="email" type="email" placeholder="tu@correo.com" required />
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            placeholder="tu@correo.com"
+            required
+            defaultValue={presetEmail}
+            readOnly={Boolean(presetEmail)}
+          />
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">Contraseña</Label>

@@ -2,8 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
-import { slugify } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -11,6 +9,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent } from '@/components/ui/card';
 import { PawPrint, Users } from 'lucide-react';
 import type { MemorialType } from '@/types/database';
+import { createMemorial } from './actions';
 
 export default function NewMemorialPage() {
   const router = useRouter();
@@ -27,31 +26,18 @@ export default function NewMemorialPage() {
     setError(null);
 
     const form = new FormData(e.currentTarget);
-    const name = String(form.get('name'));
-    const supabase = createClient();
-
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) { setError('Sesión no válida'); setLoading(false); return; }
-
-    const { data, error } = await supabase
-      .from('memorials')
-      .insert({
-        owner_id: user.id,
-        slug: slugify(name),
-        type,
-        status: 'borrador',
-        name,
-        birth_date: form.get('birth_date') || null,
-        passing_date: form.get('passing_date') || null,
-        biography: form.get('biography') || null,
-        epitaph: form.get('epitaph') || null,
-      })
-      .select('id')
-      .single();
+    const res = await createMemorial({
+      name:         String(form.get('name')),
+      type,
+      birth_date:   String(form.get('birth_date') ?? '') || null,
+      passing_date: String(form.get('passing_date') ?? '') || null,
+      biography:    String(form.get('biography') ?? '') || null,
+      epitaph:      String(form.get('epitaph') ?? '') || null,
+    });
 
     setLoading(false);
-    if (error) return setError(error.message);
-    router.push(`/dashboard/memorial/${data!.id}`);
+    if (!res.ok || !res.id) return setError(res.error ?? 'No se pudo crear');
+    router.push(`/dashboard/memorial/${res.id}`);
   }
 
   return (
