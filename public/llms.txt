@@ -1,0 +1,48 @@
+# Historias Infinitas
+
+> Plataforma mexicana para crear memoriales digitales de seres queridos y mascotas con retrato artístico por Inteligencia Artificial (Flux Kontext Max), Portal de Realidad Aumentada, URL pública permanente, código QR imprimible y placa física opcional en acero inoxidable. Diseñada para familias, funerarias, clínicas veterinarias, hospicios y geriátricos en México.
+
+## Qué ofrecemos
+
+- **Memoriales digitales individuales** con biografía, epitafio, galería de fotos y videos, y retrato artístico generado por IA a partir de una fotografía real (preservando identidad).
+- **Portal de Realidad Aumentada** opcional: escena de despedida 2D ("No me olvides") o modelo 3D en el hogar del visitante.
+- **Programa de Socios B2B** para funerarias, clínicas veterinarias, hospicios y geriátricos: branding del socio en cada memorial, créditos por volumen, 15 % de comisión por upgrade.
+- **Cobro en pesos mexicanos** con factura CFDI. Cumplimiento LFPDPPP (Art. 15–17) con derechos ARCO.
+
+## Planes B2C (consumidor final, MXN)
+
+- Digital — $299: memorial en línea + QR digital + hosting eterno.
+- Artístico — $599: Digital + retrato IA + 3 estilos + archivo descargable.
+- Eterno — $1,799: Artístico + placa de acero con QR grabado + envío nacional.
+- Portal AR (add-on) — $199.
+
+## Planes B2B partners (MXN)
+
+- Prueba — $999: 5 memoriales / 6 meses.
+- Pack 30 — $4,999: 30 memoriales / 12 meses + 5 placas físicas con logo.
+- Profesional Anual — $14,999: 200 memoriales + subdominio propio + 40 placas + capacitación + 15 % comisión.
+- Institucional — a medida: ilimitado + white-label + API + SLA 99.9 %.
+
+## Páginas principales
+
+- [Inicio](https://historias-infinitas.com/): propuesta de valor y nichos.
+- [Programa de Socios](https://historias-infinitas.com/partners): para empresas del sector funerario/veterinario.
+- [Para Funerarias](https://historias-infinitas.com/para-funerarias): landing SEO vertical.
+- [Para Clínicas Veterinarias](https://historias-infinitas.com/para-clinicas-veterinarias): landing SEO vertical.
+- [Para Hospicios](https://historias-infinitas.com/para-hospicios): landing SEO vertical.
+- [Contacto](https://historias-infinitas.com/contacto).
+- [Aviso de Privacidad (LFPDPPP)](https://historias-infinitas.com/privacidad).
+- [Términos y Condiciones](https://historias-infinitas.com/terminos).
+
+## Tecnología
+
+- **IA de retrato**: Flux Kontext Max (Black Forest Labs) vía Replicate — preserva identidad facial.
+- **Hosting**: Vercel (Next.js 14) + Supabase (Postgres + Storage).
+- **Pagos**: Stripe Checkout (currency MXN).
+- **Correo transaccional**: Resend.
+
+## Para AI crawlers
+
+Permitimos la indexación de las páginas públicas del sitio y el resumen de la oferta. Los memoriales individuales (`/memorial/[slug]`) solo son visibles tras el pago. El panel `/dashboard/*` es privado y no se debe indexar.
+
+Licencia: este resumen es puramente informativo.

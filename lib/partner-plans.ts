@@ -81,10 +81,10 @@ export const PARTNER_PLANS: readonly PartnerPlan[] = [
     ctaLabel: 'Reservar plan anual',
     features: [
       '200 memoriales al año (ahorro 60 %)',
-      'Subdominio propio (tunombre.historias-infinitas.com)',
       '40 placas físicas con tu logo',
       'Capacitación al equipo (vía Zoom)',
       '15 % de comisión sobre upgrades a plan Eterno',
+      'Subdominio personalizado (próximamente)',
       'Soporte prioritario en <4 h hábiles',
     ],
   },
@@ -98,11 +98,11 @@ export const PARTNER_PLANS: readonly PartnerPlan[] = [
     ctaLabel: 'Hablar con ventas',
     features: [
       'Memoriales ilimitados',
-      'White-label completo (sin marca Historias Infinitas)',
-      'API de integración con tu CRM',
-      'SLA 99.9 % con créditos por caída',
+      '15 % de comisión sobre upgrades',
       'Cuenta manager dedicada',
-      'Auditoría de seguridad y DPA bajo LFPDPPP',
+      'DPA bajo LFPDPPP firmado',
+      'White-label completo (próximamente)',
+      'API de integración con tu CRM (próximamente)',
     ],
   },
 ] as const;

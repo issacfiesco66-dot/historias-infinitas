@@ -14,24 +14,16 @@ const SITE_URL =
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes: MetadataRoute.Sitemap = [
-    {
-      url: `${SITE_URL}/`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 1,
-    },
-    {
-      url: `${SITE_URL}/login`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.3,
-    },
-    {
-      url: `${SITE_URL}/register`,
-      lastModified: new Date(),
-      changeFrequency: 'yearly',
-      priority: 0.4,
-    },
+    { url: `${SITE_URL}/`,                       changeFrequency: 'weekly',  priority: 1.0, lastModified: new Date() },
+    { url: `${SITE_URL}/partners`,               changeFrequency: 'weekly',  priority: 0.9, lastModified: new Date() },
+    { url: `${SITE_URL}/para-funerarias`,        changeFrequency: 'weekly',  priority: 0.9, lastModified: new Date() },
+    { url: `${SITE_URL}/para-clinicas-veterinarias`, changeFrequency: 'weekly', priority: 0.9, lastModified: new Date() },
+    { url: `${SITE_URL}/para-hospicios`,         changeFrequency: 'weekly',  priority: 0.8, lastModified: new Date() },
+    { url: `${SITE_URL}/contacto`,               changeFrequency: 'monthly', priority: 0.5, lastModified: new Date() },
+    { url: `${SITE_URL}/privacidad`,             changeFrequency: 'yearly',  priority: 0.3, lastModified: new Date() },
+    { url: `${SITE_URL}/terminos`,               changeFrequency: 'yearly',  priority: 0.3, lastModified: new Date() },
+    { url: `${SITE_URL}/login`,                  changeFrequency: 'yearly',  priority: 0.2, lastModified: new Date() },
+    { url: `${SITE_URL}/register`,               changeFrequency: 'yearly',  priority: 0.4, lastModified: new Date() },
   ];
 
   // Memoriales públicos

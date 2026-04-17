@@ -113,16 +113,41 @@ const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: SITE_NAME,
+  legalName: SITE_NAME,
   url: SITE_URL,
   logo: `${SITE_URL}/icon.svg`,
+  image: `${SITE_URL}/og-default.jpg`,
   description: DESCRIPTION,
+  areaServed: { '@type': 'Country', name: 'México' },
+  priceRange: '$299 – $14,999 MXN',
+  foundingDate: '2026',
   sameAs: [] as string[],
   contactPoint: [
     {
       '@type': 'ContactPoint',
       contactType: 'customer support',
+      email: 'hola@historias-infinitas.com',
       availableLanguage: ['Spanish'],
     },
+    {
+      '@type': 'ContactPoint',
+      contactType: 'privacy',
+      email: 'privacidad@historias-infinitas.com',
+      availableLanguage: ['Spanish'],
+    },
+    {
+      '@type': 'ContactPoint',
+      contactType: 'sales',
+      email: 'socios@historias-infinitas.com',
+      availableLanguage: ['Spanish'],
+    },
+  ],
+  makesOffer: [
+    { '@type': 'Offer', name: 'Memorial Digital',   price: 299,   priceCurrency: 'MXN' },
+    { '@type': 'Offer', name: 'Memorial Artístico', price: 599,   priceCurrency: 'MXN' },
+    { '@type': 'Offer', name: 'Memorial Eterno',    price: 1799,  priceCurrency: 'MXN' },
+    { '@type': 'Offer', name: 'Partner · Pack 30',  price: 4999,  priceCurrency: 'MXN' },
+    { '@type': 'Offer', name: 'Partner · Anual Pro',price: 14999, priceCurrency: 'MXN' },
   ],
 };
 
@@ -133,6 +158,11 @@ const websiteJsonLd = {
   url: SITE_URL,
   inLanguage: 'es',
   publisher: { '@type': 'Organization', name: SITE_NAME },
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: `${SITE_URL}/memorial/{search_term_string}`,
+    'query-input': 'required name=search_term_string',
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
