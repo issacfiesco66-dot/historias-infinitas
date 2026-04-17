@@ -187,8 +187,8 @@ interface AnimatedHeroImageProps {
   alt: string;
   priority?: boolean;
   className?: string;
-  /** Relación de aspecto del contenedor: "video" | "hero" | "square" */
-  aspect?: 'video' | 'hero' | 'square';
+  /** Relación de aspecto del contenedor. */
+  aspect?: 'video' | 'hero' | 'square' | 'cinematic';
 }
 
 export function AnimatedHeroImage({
@@ -203,7 +203,9 @@ export function AnimatedHeroImage({
   const aspectClass =
     aspect === 'video' ? 'aspect-video' :
     aspect === 'square' ? 'aspect-square' :
-    'aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/10] min-h-[480px] sm:min-h-[560px] md:min-h-0';
+    aspect === 'cinematic'
+      ? 'aspect-[4/5] sm:aspect-[16/10] md:aspect-[21/9] min-h-[560px] sm:min-h-[640px] md:min-h-[720px] lg:min-h-[780px]'
+      : 'aspect-[4/5] sm:aspect-[3/4] md:aspect-[16/10] min-h-[480px] sm:min-h-[560px] md:min-h-0';
 
   return (
     <div

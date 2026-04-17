@@ -15,12 +15,13 @@ import {
 } from '@/components/viva-images';
 
 // Imágenes de Unsplash (CDN gratuito, licencia libre) alineadas con el tono
-// solemne del proyecto: velas encendidas, mascotas en retrato cálido, y
-// un retrato familiar evocador.
-//  - Hero: vela y atardecer cálido → memoria eterna
-//  - Pet:  retrato íntimo de mascota
-//  - Human: manos entrelazadas / figura reflexiva
-const HERO_IMG  = 'https://images.unsplash.com/photo-1518568814500-bf0f8d125f46?auto=format&fit=crop&w=1800&q=80';
+// solemne del proyecto.
+//  - Hero: manos entrelazadas intergeneracionales → legado, conexión y
+//    memoria. Universal: aplica a seres queridos y, simbólicamente, a
+//    mascotas (manos que sostienen / sostuvieron).
+//  - Pet: retrato íntimo de mascota con mirada expresiva.
+//  - Human: figura serena al atardecer.
+const HERO_IMG  = 'https://images.unsplash.com/photo-1516307365426-bea591f05011?auto=format&fit=crop&w=2400&q=85';
 const PET_IMG   = 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=1400&q=80';
 const HUMAN_IMG = 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1400&q=80';
 
@@ -29,42 +30,44 @@ export default function HomePage() {
     <>
       <SiteHeader />
 
-      {/* ============ HERO ============ */}
+      {/* ============ HERO — full-bleed, cinematográfico ============ */}
       <section className="relative overflow-hidden">
-        <div className="container-solemn pt-16 pb-24">
-          <Reveal>
-            <div className="relative">
-              <AnimatedHeroImage
-                src={HERO_IMG}
-                alt="Un amanecer sereno que evoca la memoria eterna"
-                priority
-                aspect="hero"
-                className="mb-12"
-              />
+        {/* Imagen a TODO EL ANCHO de la ventana, sin padding lateral */}
+        <Reveal>
+          <div className="relative w-full">
+            <AnimatedHeroImage
+              src={HERO_IMG}
+              alt="Dos manos entrelazadas — legado, conexión y memoria eterna"
+              priority
+              aspect="cinematic"
+              className="!rounded-none"
+            />
 
-              {/* Texto superpuesto — marfil sobre pizarra 40% */}
-              <div className="absolute inset-0 flex items-center justify-center text-center px-6">
-                <div className="max-w-3xl">
-                  <FadeP
-                    delay={0.2}
-                    className="uppercase tracking-[0.3em] text-xs text-dorado-200 mb-6"
-                  >
-                    · Un legado · Una presencia · Un hogar eterno ·
-                  </FadeP>
+            {/* Texto superpuesto — marfil sobre pizarra */}
+            <div className="absolute inset-0 flex items-center justify-center text-center px-6">
+              <div className="max-w-4xl">
+                <FadeP
+                  delay={0.2}
+                  className="uppercase tracking-[0.3em] text-xs md:text-sm text-dorado-200 mb-6"
+                >
+                  · Un legado · Una presencia · Un hogar eterno ·
+                </FadeP>
 
-                  <FadeH1
-                    delay={0.35}
-                    duration={1.4}
-                    className="font-serif text-5xl md:text-7xl leading-[1.05] text-marfil drop-shadow-[0_2px_20px_rgba(0,0,0,0.35)]"
-                  >
-                    Donde los recuerdos <br />
-                    <span className="text-gradient-dorado italic">respiran para siempre.</span>
-                  </FadeH1>
-                </div>
+                <FadeH1
+                  delay={0.35}
+                  duration={1.4}
+                  className="font-serif text-5xl md:text-7xl lg:text-8xl leading-[1.02] text-marfil drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]"
+                >
+                  Donde los recuerdos <br />
+                  <span className="text-gradient-dorado italic">respiran para siempre.</span>
+                </FadeH1>
               </div>
             </div>
-          </Reveal>
+          </div>
+        </Reveal>
 
+        {/* Texto + CTAs debajo del hero, centrados en el container */}
+        <div className="container-solemn pt-14 pb-24">
           <Reveal delay={0.2} className="text-center">
             <FadeP className="max-w-2xl mx-auto text-lg text-pizarra-600 leading-relaxed">
               Transforma una simple fotografía en un tributo vivo. Con Realidad Aumentada
