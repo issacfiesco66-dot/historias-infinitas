@@ -15,8 +15,8 @@ import {
 
 // Hero: ilustración personalizada del "árbol de memoria" — ya incluye título
 // "Historias Infinitas" y el tagline, así que NO superponemos texto encima.
-// Coloca el archivo en /public/images/hero-arbol-memoria.jpg
-const HERO_IMG  = '/images/hero-arbol-memoria.jpg';
+// Archivo en /public/images/hero-arbol-memoria.png
+const HERO_IMG  = '/images/hero-arbol-memoria.png';
 
 // Imágenes de Unsplash para las dos tarjetas de nichos.
 const PET_IMG   = 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=1400&q=80';
