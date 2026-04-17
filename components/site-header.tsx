@@ -7,7 +7,7 @@ export function SiteHeader() {
       <div className="container-solemn flex h-16 items-center justify-between">
         <Link href="/" className="flex items-center gap-2">
           <span className="inline-block h-2 w-2 rounded-full bg-dorado-500 animate-glow" />
-          <span className="font-serif text-xl tracking-wide text-pizarra-800">
+          <span className="font-serif text-base sm:text-lg md:text-xl tracking-wide text-pizarra-800">
             Historias <span className="text-gradient-dorado">Infinitas</span>
           </span>
         </Link>

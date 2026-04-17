@@ -27,7 +27,7 @@ export default function RegisterForm() {
       password: String(form.get('password')),
       options: {
         data: { full_name: String(form.get('full_name')) },
-        emailRedirectTo: `${location.origin}/dashboard${type ? `?type=${type}` : ''}`,
+        emailRedirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(`/dashboard${type ? `?type=${type}` : ''}`)}`,
       },
     });
     setLoading(false);
