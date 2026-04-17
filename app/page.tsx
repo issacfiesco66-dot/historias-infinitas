@@ -29,11 +29,14 @@ export default function HomePage() {
 
       {/* ============ HERO — ilustración personalizada, sin overlays ============ */}
       {/* La imagen ya trae título y tagline pintados, así que no superponemos
-          ningún texto encima. Fondo pizarra para que encaje el ciclo nocturno
-          de la ilustración al borde de la pantalla. */}
-      <section className="relative overflow-hidden bg-pizarra-900">
+          ningún texto encima. El contenedor de la imagen usa 100vw para
+          cubrir toda la pantalla aunque el viewport sea más ancho que el
+          container padre — evita barras negras en pantallas grandes. */}
+      <section className="relative">
         <Reveal>
-          <div className="relative w-full mx-auto">
+          {/* 100vw + left-1/2/-translate garantiza full-bleed sin importar
+              el ancho del container padre */}
+          <div className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden bg-pizarra-900">
             {/* Aspect nativo de la imagen: ~1456x816 ≈ 16/9 */}
             <div className="relative w-full aspect-[16/9] min-h-[320px] sm:min-h-[420px] md:min-h-[560px] lg:min-h-[700px] max-h-[900px]">
               <Image
@@ -57,7 +60,7 @@ export default function HomePage() {
         </Reveal>
 
         {/* Copy + CTAs DEBAJO de la imagen */}
-        <div className="container-solemn pt-10 pb-24 bg-marfil">
+        <div className="container-solemn pt-10 pb-24">
           <Reveal delay={0.1} className="text-center">
             <FadeP className="max-w-2xl mx-auto text-lg text-pizarra-600 leading-relaxed">
               Transforma una simple fotografía en un tributo vivo. Con Realidad Aumentada

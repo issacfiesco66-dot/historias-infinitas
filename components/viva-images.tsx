@@ -355,7 +355,7 @@ export function ParallaxNichoCard({
       onMouseEnter={() => setHover(true)}
       onMouseLeave={handleLeave}
       className={cn(
-        'group relative overflow-hidden rounded-2xl border border-pizarra-100 bg-marfil/80 shadow-solemn',
+        'group relative overflow-hidden rounded-2xl border border-pizarra-200 bg-pizarra-900 shadow-solemn',
         'transition-shadow duration-500 hover:shadow-dorado',
         className,
       )}
@@ -405,9 +405,10 @@ export function ParallaxNichoCard({
         </motion.div>
       </div>
 
-      {/* CONTENIDO — emerge y se desplaza suavemente */}
+      {/* CONTENIDO — emerge sobre la imagen con fondo propio que garantiza
+          legibilidad del texto aun cuando desborda la imagen en mobile. */}
       <motion.div
-        className="relative p-10 -mt-28"
+        className="relative p-6 md:p-10 pt-20 md:pt-28 -mt-20 md:-mt-28 bg-gradient-to-b from-transparent via-pizarra-900/92 via-30% to-pizarra-900"
         style={{
           x: reduced ? 0 : textX,
           y: reduced ? 0 : textY,
@@ -423,7 +424,7 @@ export function ParallaxNichoCard({
         </motion.div>
 
         <motion.h2
-          className="font-serif text-4xl text-marfil mb-4 origin-left"
+          className="font-serif text-3xl md:text-4xl text-marfil mb-4 origin-left leading-tight"
           animate={{
             scale: hover ? 1.04 : 1,
             letterSpacing: hover ? '0.01em' : '0em',
@@ -434,8 +435,8 @@ export function ParallaxNichoCard({
         </motion.h2>
 
         <motion.p
-          className="text-marfil/85 leading-relaxed mb-6 max-w-md"
-          animate={{ opacity: hover ? 1 : 0.85 }}
+          className="text-marfil/90 text-sm md:text-base leading-relaxed mb-6 md:max-w-md"
+          animate={{ opacity: hover ? 1 : 0.9 }}
           transition={{ duration: 0.6 }}
         >
           {description}
