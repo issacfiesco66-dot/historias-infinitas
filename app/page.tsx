@@ -19,8 +19,11 @@ import {
 const HERO_IMG  = '/images/hero-arbol-memoria.png';
 
 // Imágenes de Unsplash para las dos tarjetas de nichos.
+//  - Pet:   retrato íntimo de mascota con mirada expresiva.
+//  - Human: pareja de abuelos en un momento tierno — legado familiar,
+//           amor que dura toda una vida.
 const PET_IMG   = 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=1400&q=80';
-const HUMAN_IMG = 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1400&q=80';
+const HUMAN_IMG = 'https://images.unsplash.com/photo-1488716820095-cbe80883c496?auto=format&fit=crop&w=1400&q=85';
 
 export default function HomePage() {
   return (
