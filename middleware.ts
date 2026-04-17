@@ -29,7 +29,9 @@ export async function middleware(request: NextRequest) {
     },
   );
 
-  // IMPORTANTE: llamar getUser() aquí dispara la refresco de cookies.
+  // IMPORTANTE: llamar getUser() aquí dispara el refresh de cookies en CADA
+  // navegación — así la sesión no muere cuando el usuario vuelve al sitio
+  // desde otra pestaña o tras un rato inactivo.
   const { data: { user } } = await supabase.auth.getUser();
 
   // Rutas protegidas
@@ -41,6 +43,19 @@ export async function middleware(request: NextRequest) {
   return response;
 }
 
+// Corremos el middleware en TODAS las rutas excepto assets y webhooks.
+// Antes sólo se ejecutaba en /dashboard/*, lo que causaba que la sesión
+// caducara al volver al sitio desde la landing o el memorial público.
 export const config = {
-  matcher: ['/dashboard/:path*'],
+  matcher: [
+    /*
+     * Excluye:
+     *   - _next/static  (archivos estáticos de build)
+     *   - _next/image   (optimización de imágenes)
+     *   - favicon / icon / robots / sitemap / manifest
+     *   - archivos con extensión (png, jpg, svg, etc.)
+     *   - /api/stripe/webhook  (necesita raw body sin cookies intermediarias)
+     */
+    '/((?!_next/static|_next/image|favicon.ico|icon.svg|robots.txt|sitemap.xml|manifest.webmanifest|api/stripe/webhook|.*\\.(?:png|jpg|jpeg|gif|webp|svg|ico)).*)',
+  ],
 };

@@ -33,32 +33,44 @@ export interface BuildPromptInput {
 export function buildPortraitPrompt({ style, type }: BuildPromptInput) {
   const s = getStyle(style);
   const subjectWord = type === 'mascota' ? 'animal' : 'person';
+  const preserveList = type === 'mascota'
+    ? 'breed, fur color, fur length, markings, ear shape, eye color and snout shape'
+    : 'skin tone, hair color, hair style, eye color, jawline and facial structure';
 
-  // Flux Kontext responde mejor a instrucciones naturales en inglés.
-  // La clave: pedir transformación de ESTILO, no de contenido — y dejar
-  // explícito qué se debe preservar.
+  // Flux Kontext espera instrucciones naturales. Estrategia:
+  //  1. Anclar primero la PRESERVACIÓN (antes del cambio).
+  //  2. Luego pedir sólo el cambio estilístico.
+  //  3. Cerrar con una restricción explícita anti-deformación.
   return [
-    `Transform this photograph into a ${s.stylePrompt}.`,
-    `Keep the exact same ${subjectWord}, identity, face, features, ${
-      type === 'mascota' ? 'breed, fur color, markings' : 'skin tone, hair'
-    }, proportions, pose and expression from the original image.`,
-    `Do not alter the subject's anatomy or identity. This is a memorial portrait — fidelity to the original person or animal is essential.`,
-    `Add cinematic lighting, a soft ethereal atmosphere and emotional depth, museum-quality fine-art finish.`,
+    // Anclaje identidad: Kontext Max responde mejor si la preservación
+    // llega ANTES del prompt de estilo.
+    `Preserve identity exactly. This is a memorial portrait — the ${subjectWord} in the input photograph must remain 100% recognizable.`,
+    `Keep the exact same face, ${preserveList}, proportions, pose, expression and framing.`,
+    // Transformación sólo de estilo / medio:
+    `Repaint the image in the style of ${s.stylePrompt}.`,
+    `Only the artistic medium and lighting may change. Do not redraw, restructure or idealize the subject.`,
+    `Add cinematic soft lighting and a gentle, reverent atmosphere — museum-quality fine-art finish.`,
+    // Restricciones negativas explícitas:
+    `Do not alter anatomy, age, weight, breed or gender. Do not add or remove accessories. Do not stylize the face into a different person or animal.`,
   ].join(' ');
 }
 
 /* ============================================================================
- *  Generación — Flux Kontext Pro (identity-preserving image editing)
+ *  Generación — Flux Kontext Max (identity-preserving image editing, premium)
  *
  *  Por qué este modelo:
- *   - SDXL img2img, incluso con prompt_strength bajo, deforma rasgos (rostro,
- *     raza, proporciones). No fue entrenado para preservar identidad.
- *   - Flux Kontext es un modelo de EDICIÓN: toma la foto de entrada como
- *     referencia fija y solo cambia el estilo pedido en el prompt.
- *   - Coste ~$0.04/imagen, perfectamente viable para un memorial.
+ *   - Flux Kontext Max duplica la fidelidad de Pro a rasgos faciales y
+ *     anatomía. Específicamente diseñado para edición preservando sujeto.
+ *   - SDXL img2img deforma rasgos aún con prompt_strength bajo.
+ *   - Coste ~$0.08/imagen (vs $0.04 de Pro) — aceptable para un memorial.
+ *
+ *  Parámetros clave:
+ *   - `prompt_upsampling: true` → Kontext Max se beneficia de esto para
+ *     captar mejor la instrucción de "preservar identidad".
+ *   - `safety_tolerance: 2` → balance entre permisividad y seguridad.
  * ========================================================================== */
 
-const FLUX_KONTEXT_MODEL = 'black-forest-labs/flux-kontext-pro';
+const FLUX_KONTEXT_MODEL = 'black-forest-labs/flux-kontext-max';
 
 export interface GenerateArtisticPortraitInput {
   imageUrl: string;
@@ -83,7 +95,7 @@ export async function generateArtisticPortrait(input: GenerateArtisticPortraitIn
       aspect_ratio: 'match_input_image',
       output_format: 'jpg',
       safety_tolerance: 2,
-      prompt_upsampling: false,
+      prompt_upsampling: true,
     },
   });
 

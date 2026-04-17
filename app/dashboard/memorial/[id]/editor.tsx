@@ -348,6 +348,18 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
         </div>
       )}
 
+      {/* ========== RESCATE DE PAGO: ¿ya pagaste y sigue en borrador? ========== */}
+      {!locked && (
+        <ReconcileBanner
+          memorialId={memorial.id}
+          onActivated={() => {
+            setStatus('publicado');
+            setToast('Memorial activado. Recargando…');
+            setTimeout(() => window.location.reload(), 1200);
+          }}
+        />
+      )}
+
       {/* ========== COMPARTIR — solo cuando el memorial está activo/pagado ========== */}
       {locked && (
         <ShareButtons
@@ -861,6 +873,61 @@ function StepNav({
             {nextLabel} <ArrowRight className="h-4 w-4 ml-2" />
           </Button>
         )}
+    </div>
+  );
+}
+
+/* ============================================================================
+ *  BANNER DE RESCATE DE PAGO
+ *  Se muestra si el memorial está en borrador, con un botón que invoca
+ *  /api/checkout/reconcile para buscar en Stripe la sesión ya pagada.
+ * ========================================================================== */
+function ReconcileBanner({
+  memorialId, onActivated,
+}: { memorialId: string; onActivated: () => void }) {
+  const [trying, setTrying] = useState(false);
+  const [msg, setMsg] = useState<string | null>(null);
+
+  async function tryReconcile() {
+    setTrying(true);
+    setMsg(null);
+    try {
+      const res = await fetch('/api/checkout/reconcile', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ memorialId }),
+      });
+      const data = await res.json();
+      if (data.ok) {
+        onActivated();
+        return;
+      }
+      if (data.reason === 'no_paid_session_found') {
+        setMsg('No encontramos un pago confirmado con tu correo. Si crees que ya pagaste, escríbenos con la referencia de Stripe.');
+      } else {
+        setMsg(data.error ?? 'No pudimos verificar tu pago.');
+      }
+    } catch (err: any) {
+      setMsg(err.message);
+    } finally {
+      setTrying(false);
+    }
+  }
+
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-3 bg-dorado-50 border border-dorado-200 rounded-xl px-4 py-3 text-sm text-pizarra-700">
+      <div className="flex items-start gap-2">
+        <AlertCircle className="h-4 w-4 mt-0.5 shrink-0 text-dorado-600" />
+        <div>
+          <p><strong>¿Ya pagaste y aún no se activa?</strong> A veces Stripe tarda unos minutos.</p>
+          {msg && <p className="text-xs text-pizarra-500 mt-1">{msg}</p>}
+        </div>
+      </div>
+      <Button type="button" variant="outline" size="sm" onClick={tryReconcile} disabled={trying}>
+        {trying
+          ? <><Loader2 className="h-3.5 w-3.5 mr-2 animate-spin" /> Verificando…</>
+          : 'Intentar activar'}
+      </Button>
     </div>
   );
 }

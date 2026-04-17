@@ -1,7 +1,7 @@
 import { notFound, redirect } from 'next/navigation';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
-import { Card, CardContent } from '@/components/ui/card';
+import { createAdminClient } from '@/lib/supabase/admin';
 import { Button } from '@/components/ui/button';
 import { Eye, QrCode } from 'lucide-react';
 import { MemorialEditor } from './editor';
@@ -12,7 +12,7 @@ export default async function EditMemorialPage({ params }: { params: { id: strin
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect('/login');
 
-  const { data: memorial } = await supabase
+  let { data: memorial } = await supabase
     .from('memorials')
     .select('*')
     .eq('id', params.id)
@@ -21,11 +21,38 @@ export default async function EditMemorialPage({ params }: { params: { id: strin
 
   if (!memorial) notFound();
 
+  // ---- Rescate de memorial huérfano ---------------------------------------
+  // Si el memorial sigue en borrador PERO ya existe una orden `paid` para
+  // este memorial del usuario, el webhook no llegó (o falló). Auto-activamos.
+  if (memorial.status !== 'publicado') {
+    const { data: order } = await supabase
+      .from('orders')
+      .select('id, plan_id, status')
+      .eq('memorial_id', memorial.id)
+      .eq('user_id', user.id)
+      .eq('status', 'paid')
+      .maybeSingle();
+
+    if (order) {
+      const admin = createAdminClient();
+      const { data: updated } = await admin
+        .from('memorials')
+        .update({ status: 'publicado', plan_id: order.plan_id })
+        .eq('id', memorial.id)
+        .eq('owner_id', user.id)
+        .select('*')
+        .single();
+      if (updated) memorial = updated;
+    }
+  }
+
   const { data: media } = await supabase
     .from('memorial_media')
     .select('*')
     .eq('memorial_id', params.id)
     .order('sort_order', { ascending: true });
+
+  const paid = memorial.status === 'publicado';
 
   return (
     <div className="space-y-8">
@@ -39,18 +66,20 @@ export default async function EditMemorialPage({ params }: { params: { id: strin
             /{memorial.slug}
           </p>
         </div>
-        <div className="flex gap-2">
-          <Button asChild variant="outline">
-            <Link href={`/memorial/${memorial.slug}`} target="_blank">
-              <Eye className="h-4 w-4 mr-2" /> Ver público
-            </Link>
-          </Button>
-          <Button asChild variant="dorado">
-            <Link href={`/dashboard/memorial/${memorial.id}/qr`}>
-              <QrCode className="h-4 w-4 mr-2" /> QR
-            </Link>
-          </Button>
-        </div>
+        {paid && (
+          <div className="flex gap-2">
+            <Button asChild variant="outline">
+              <Link href={`/memorial/${memorial.slug}`} target="_blank">
+                <Eye className="h-4 w-4 mr-2" /> Ver público
+              </Link>
+            </Button>
+            <Button asChild variant="dorado">
+              <Link href={`/dashboard/memorial/${memorial.id}/qr`}>
+                <QrCode className="h-4 w-4 mr-2" /> QR
+              </Link>
+            </Button>
+          </div>
+        )}
       </div>
 
       <MemorialEditor
