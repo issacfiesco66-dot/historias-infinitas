@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 251 249 244;
+    --foreground: 46 52 64;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-marfil text-pizarra-700 font-sans antialiased;
+    background-image:
+      radial-gradient(at 15% 10%, rgba(183, 148, 90, 0.08) 0px, transparent 55%),
+      radial-gradient(at 85% 90%, rgba(46, 52, 64, 0.05) 0px, transparent 55%);
+  }
+
+  h1, h2, h3, h4 {
+    @apply font-serif text-pizarra-800;
+  }
+}
+
+@layer components {
+  .container-solemn {
+    @apply max-w-6xl mx-auto px-6;
+  }
+
+  .hairline {
+    @apply h-px w-16 bg-dorado-400/60;
+  }
+
+  .text-gradient-dorado {
+    @apply bg-clip-text text-transparent;
+    background-image: linear-gradient(135deg, #B7945A 0%, #E2CC99 50%, #B7945A 100%);
+  }
+}
+
+@keyframes shimmer {
+  100% { transform: translateX(100%); }
+}

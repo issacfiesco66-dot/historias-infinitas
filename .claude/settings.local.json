@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install:*)",
+      "Bash(npm run:*)",
+      "Bash(curl -s -o /dev/null -w \"HTTP %{http_code} · %{size_download} bytes · %{time_total}s\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" -X POST http://localhost:3000/api/stripe/webhook -H \"Content-Type: application/json\" -d '{}')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" -X POST http://localhost:3000/api/ai/portrait -H \"Content-Type: application/json\" -d '{}')",
+      "Bash(curl -s -o /dev/null -w \"stripe:%{http_code} notify:\" -X POST http://localhost:3000/api/stripe/webhook -H \"Content-Type: application/json\" -d '{}')",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\\\\n\" -X POST http://localhost:3000/api/notify -H \"Content-Type: application/json\" -d '{}')",
+      "Bash(npx tsc:*)",
+      "Bash(node -e \"console.log\\('hi_notify_' + require\\('crypto'\\).randomBytes\\(24\\).toString\\('hex'\\)\\)\")",
+      "Bash(curl -s -o /dev/null -w \"landing: %{http_code}\\\\n\" http://localhost:3000/)",
+      "Bash(curl -s -o /dev/null -w \"qr:      %{http_code}  \\(%{size_download} bytes\\)\\\\n\" http://localhost:3000/api/qr/test-slug)",
+      "Bash(curl -s -o /dev/null -w \"memorial:%{http_code}\\\\n\" http://localhost:3000/memorial/no-existe)",
+      "Bash(curl -s -o /dev/null -w \"landing:  %{http_code}\\\\n\" http://localhost:3001/)",
+      "Bash(curl -s -o /tmp/qr.png -w \"qr:       %{http_code}  \\(%{size_download} bytes\\)\\\\n\" http://localhost:3001/api/qr/test-slug)",
+      "Bash(curl -s -o /dev/null -w \"memorial: %{http_code}\\\\n\" http://localhost:3001/memorial/no-existe)",
+      "Bash(curl -s -o /dev/null -w \"stripe webhook sin firma: %{http_code}\\\\n\" -X POST http://localhost:3001/api/stripe/webhook -H \"Content-Type: application/json\" -d '{}')",
+      "Bash(curl -s -o /dev/null -w \"notify con secreto malo:  %{http_code}\\\\n\" -X POST http://localhost:3001/api/notify -H \"Content-Type: application/json\" -H \"x-webhook-secret: wrong\" -d '{}')",
+      "Bash(curl -s -o /dev/null -w \"notify con secreto bueno: %{http_code}\\\\n\" -X POST http://localhost:3001/api/notify -H \"Content-Type: application/json\" -H \"x-webhook-secret: hi_notify_16bf3b9ed9a38dabf6014558bef131064c06d3fa12500475\" -d '{\"event\":\"welcome\",\"to\":\"nadie@test.com\",\"data\":{\"email\":\"nadie@test.com\",\"name\":\"Test\"}}')",
+      "Bash(curl -s -o /dev/null -w \"landing 3001: %{http_code}\\\\n\" http://localhost:3001/)",
+      "Bash(curl -s -X POST 'https://lwiigdttrxvqsyglpool.supabase.co/auth/v1/token?grant_type=password' -H 'apikey: sb_publishable_EyjVQZzcQXtvjdZVzfeRDA_7CoBheev' -H 'Content-Type: application/json' -d '{\"email\":\"issacfiesco66@gmail.com\",\"password\":\"Test12345!\"}')",
+      "Bash(taskkill //F //IM node.exe)",
+      "Bash(ls E:/Historias-Infinitas/app/memorial/[slug]/)",
+      "Bash(gh auth:*)"
+    ]
+  }
+}

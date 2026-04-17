@@ -1,0 +1,46 @@
+-- =========================================================================
+-- HISTORIAS-INFINITAS :: Webhooks de BD → /api/notify
+-- =========================================================================
+-- Ejecutar DESPUÉS de: schema.sql → functions.sql → orders.sql
+--
+-- Cómo funciona:
+--   Supabase llama a /api/notify cada vez que se inserta o actualiza una
+--   fila en las tablas monitoreadas. El endpoint exige el header
+--   x-webhook-secret igual a NOTIFY_WEBHOOK_SECRET.
+-- =========================================================================
+
+-- -------------------------------------------------------------------------
+-- DATABASE WEBHOOKS (UI — Dashboard → Database → Webhooks)
+-- -------------------------------------------------------------------------
+--
+--   ┌─ Webhook 1: "Welcome"
+--   │    Table:      public.profiles
+--   │    Events:     INSERT
+--   │    URL:        https://<tu-app>/api/notify
+--   │    HTTP:       POST
+--   │    Headers:    Content-Type: application/json
+--   │                x-webhook-secret: <NOTIFY_WEBHOOK_SECRET>
+--   │
+--   ├─ Webhook 2: "AI Ready"
+--   │    Table:      public.ai_generations
+--   │    Events:     UPDATE
+--   │    URL:        https://<tu-app>/api/notify
+--   │    Headers:    x-webhook-secret: <NOTIFY_WEBHOOK_SECRET>
+--   │    (filtra cuando status pasa a 'completado')
+--   │
+--   └─ Webhook 3: "Orders (envío)"
+--        Table:      public.orders
+--        Events:     UPDATE
+--        URL:        https://<tu-app>/api/notify
+--        Headers:    x-webhook-secret: <NOTIFY_WEBHOOK_SECRET>
+--        (dispara correo plate_shipped cuando status pasa a 'shipped'
+--         y hay tracking_number)
+--
+-- Nota importante:
+--   El correo payment_confirmed NO se dispara desde este webhook. Lo envía
+--   directamente /api/stripe/webhook tras insertar la orden, porque así
+--   garantizamos la secuencia pago → correo sin depender de reintentos de BD.
+--
+-- Desarrollo local:
+--   Supabase Cloud no alcanza localhost. Usa ngrok o Cloudflare Tunnel para
+--   exponer http://localhost:3000 mientras pruebas los webhooks.
