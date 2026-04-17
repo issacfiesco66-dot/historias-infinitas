@@ -1,8 +1,10 @@
 import { NextResponse } from 'next/server';
+import { randomBytes } from 'crypto';
 import Stripe from 'stripe';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { sendTransactional } from '@/lib/emails/send';
 import { getPlan, type PlanId } from '@/lib/plans';
+import { getPartnerPlan, type PartnerPlanId } from '@/lib/partner-plans';
 import { buildPortraitPrompt } from '@/lib/replicate';
 
 /* ============================================================================
@@ -85,7 +87,14 @@ export async function POST(req: Request) {
     console.warn('[stripe-webhook] stripe_events insert:', err);
   }
 
-  /* ---------- 4. Extracción y validación de metadata ---------- */
+  /* ---------- 4. Detección de KIND (memorial vs partner) ---------- */
+  const kind = session.metadata?.kind; // 'partner_pack' | undefined (legacy = memorial)
+
+  if (kind === 'partner_pack') {
+    return handlePartnerPack(session, admin);
+  }
+
+  /* ---------- 4b. Flujo memorial (legacy, por defecto) ---------- */
   const memorialId = session.metadata?.memorial_id;
   const userId     = session.metadata?.user_id;
   const planIdRaw  = session.metadata?.plan_id;
@@ -336,4 +345,108 @@ function formatMoney(amount: number, currency: string): string {
   } catch {
     return `${amount.toFixed(2)} ${currency.toUpperCase()}`;
   }
+}
+
+/* ============================================================================
+ *  Handler: compra de un pack del programa de socios
+ * ========================================================================== */
+async function handlePartnerPack(
+  session: Stripe.Checkout.Session,
+  admin: ReturnType<typeof createAdminClient>,
+) {
+  const planIdRaw   = session.metadata?.partner_plan_id as PartnerPlanId | undefined;
+  const businessName = session.metadata?.business_name ?? '';
+  const contactEmail = (session.metadata?.contact_email ?? session.customer_email ?? '').toLowerCase();
+  const creditsIncluded = Number(session.metadata?.memorials_included ?? 0);
+  const validityMonths  = Number(session.metadata?.validity_months ?? 12);
+
+  if (!planIdRaw || !businessName || !contactEmail) {
+    console.error('[stripe-webhook] partner metadata incompleta:', session.metadata);
+    return NextResponse.json({ ok: false, reason: 'missing_partner_metadata' });
+  }
+
+  let plan;
+  try { plan = getPartnerPlan(planIdRaw); } catch {
+    return NextResponse.json({ ok: false, reason: 'invalid_partner_plan' });
+  }
+
+  // Idempotencia: si ya existe la cuenta para este session_id, devuelve OK.
+  const { data: existing } = await admin
+    .from('partner_accounts')
+    .select('id')
+    .eq('stripe_session_id', session.id)
+    .maybeSingle();
+  if (existing) {
+    console.info(`[stripe-webhook] partner ${existing.id} ya existía para sesión ${session.id}`);
+    return NextResponse.json({ ok: true, duplicated: true, partner_id: existing.id });
+  }
+
+  const validUntil = new Date();
+  validUntil.setMonth(validUntil.getMonth() + validityMonths);
+  const onboardingToken = randomBytes(24).toString('hex');
+
+  const { data: partner, error: insertErr } = await admin
+    .from('partner_accounts')
+    .insert({
+      business_name:      businessName,
+      contact_email:      contactEmail,
+      plan_id:            plan.id,
+      credits_total:      creditsIncluded,
+      credits_used:       0,
+      valid_until:        validUntil.toISOString(),
+      stripe_session_id:  session.id,
+      status:             'active',
+      onboarding_token:   onboardingToken,
+    })
+    .select('id')
+    .single();
+
+  if (insertErr) {
+    console.error('[stripe-webhook] partner_accounts.insert falló:', insertErr);
+    return NextResponse.json({ error: 'partner_insert_failed' }, { status: 500 });
+  }
+
+  // Log inicial de créditos (carga)
+  try {
+    await admin.from('partner_credits_log').insert({
+      partner_id: partner.id,
+      delta:      creditsIncluded,
+      reason:     'pack_purchase',
+    });
+  } catch (err) {
+    console.warn('[stripe-webhook] log de créditos falló:', err);
+  }
+
+  console.info(`[stripe-webhook] partner creado ${partner.id} (${businessName})`);
+
+  // Correo de bienvenida — no bloqueante
+  try {
+    const baseUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ??
+      process.env.NEXT_PUBLIC_APP_URL ??
+      'https://historias-infinitas.com';
+    const onboardingUrl = `${baseUrl}/partners/activar?token=${onboardingToken}`;
+    const hasShipping = plan.id === 'partner_pack_30' || plan.id === 'partner_annual_pro';
+
+    await sendTransactional({
+      event: 'partner_welcome',
+      to: contactEmail,
+      data: {
+        businessName,
+        contactEmail,
+        planName: plan.name,
+        creditsTotal: creditsIncluded,
+        validUntil: validUntil.toLocaleDateString('es-MX', {
+          day: 'numeric', month: 'long', year: 'numeric',
+        }),
+        onboardingUrl,
+        hasShipping,
+      },
+    });
+    console.info(`[stripe-webhook] partner_welcome enviado a ${contactEmail}`);
+  } catch (err) {
+    console.error('[stripe-webhook] fallo al enviar partner_welcome:', err);
+  }
+
+  return NextResponse.json({ ok: true, partner_id: partner.id });
 }

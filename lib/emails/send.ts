@@ -3,6 +3,7 @@ import { welcomeEmail, type WelcomeProps } from './templates/welcome';
 import { aiReadyEmail, type AiReadyProps } from './templates/ai-ready';
 import { paymentConfirmedEmail, type PaymentConfirmedProps } from './templates/payment-confirmed';
 import { plateShippedEmail, type PlateShippedProps } from './templates/plate-shipped';
+import { partnerWelcomeEmail, type PartnerWelcomeProps } from './templates/partner-welcome';
 
 /* ============================================================================
  *  Tipos del payload de eventos (discriminados por `event`)
@@ -12,7 +13,8 @@ export type NotifyEvent =
   | { event: 'welcome'; to: string; data: WelcomeProps }
   | { event: 'ai_ready'; to: string; data: AiReadyProps }
   | { event: 'payment_confirmed'; to: string; data: PaymentConfirmedProps }
-  | { event: 'plate_shipped'; to: string; data: PlateShippedProps };
+  | { event: 'plate_shipped'; to: string; data: PlateShippedProps }
+  | { event: 'partner_welcome'; to: string; data: PartnerWelcomeProps };
 
 /* ============================================================================
  *  Dispatcher
@@ -26,6 +28,7 @@ export async function sendTransactional(payload: NotifyEvent) {
     event === 'ai_ready'          ? aiReadyEmail(data) :
     event === 'payment_confirmed' ? paymentConfirmedEmail(data) :
     event === 'plate_shipped'     ? plateShippedEmail(data) :
+    event === 'partner_welcome'   ? partnerWelcomeEmail(data) :
     null;
 
   if (!built) throw new Error(`Evento desconocido: ${(payload as any).event}`);
