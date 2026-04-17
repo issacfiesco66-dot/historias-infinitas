@@ -359,19 +359,43 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
         />
       )}
 
-      {/* ========== DOS COLUMNAS: FORM + PREVIEW ========== */}
-      <div className="grid lg:grid-cols-[minmax(0,1fr),minmax(0,1.1fr)] gap-8 items-start">
+      {/* ========== FORM + PREVIEW ========== */}
+      {/* En el tab "preview" usamos una sola columna a ancho completo; en el
+          resto mostramos el form a la izquierda y la preview sticky a la
+          derecha. */}
+      <div
+        className={
+          activeTab === 'preview'
+            ? 'grid grid-cols-1 gap-8 items-start'
+            : 'grid lg:grid-cols-[minmax(0,1fr),minmax(0,1.1fr)] gap-8 items-start'
+        }
+      >
         {/* ======================================== */}
         {/* COLUMNA IZQUIERDA — Formulario           */}
         {/* ======================================== */}
         <div className={locked ? 'pointer-events-none opacity-75' : ''}>
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)}>
-            <TabsList>
-              <TabsTrigger value="info">1 · Información</TabsTrigger>
-              <TabsTrigger value="recuerdos">2 · Recuerdos</TabsTrigger>
-              <TabsTrigger value="retrato">3 · Retrato IA</TabsTrigger>
-              <TabsTrigger value="ar">4 · Portal AR</TabsTrigger>
-              <TabsTrigger value="preview">5 · Vista previa</TabsTrigger>
+            <TabsList className="w-full md:w-auto">
+              <TabsTrigger value="info" className="text-xs md:text-sm px-2.5 md:px-4">
+                <span className="md:hidden">1. Info</span>
+                <span className="hidden md:inline">1 · Información</span>
+              </TabsTrigger>
+              <TabsTrigger value="recuerdos" className="text-xs md:text-sm px-2.5 md:px-4">
+                <span className="md:hidden">2. Fotos</span>
+                <span className="hidden md:inline">2 · Recuerdos</span>
+              </TabsTrigger>
+              <TabsTrigger value="retrato" className="text-xs md:text-sm px-2.5 md:px-4">
+                <span className="md:hidden">3. Retrato</span>
+                <span className="hidden md:inline">3 · Retrato IA</span>
+              </TabsTrigger>
+              <TabsTrigger value="ar" className="text-xs md:text-sm px-2.5 md:px-4">
+                <span className="md:hidden">4. AR</span>
+                <span className="hidden md:inline">4 · Portal AR</span>
+              </TabsTrigger>
+              <TabsTrigger value="preview" className="text-xs md:text-sm px-2.5 md:px-4">
+                <span className="md:hidden">5. Previa</span>
+                <span className="hidden md:inline">5 · Vista previa</span>
+              </TabsTrigger>
             </TabsList>
 
             {/* ---------------- TAB: INFORMACIÓN ---------------- */}
@@ -731,8 +755,9 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
 
         {/* ======================================== */}
         {/* COLUMNA DERECHA — Preview en vivo        */}
+        {/* (oculta cuando el tab activo YA es "preview")*/}
         {/* ======================================== */}
-        <div className="hidden lg:block lg:sticky lg:top-24 space-y-3">
+        <div className={`${activeTab === 'preview' ? 'hidden' : 'hidden lg:block lg:sticky lg:top-24'} space-y-3`}>
           <div className="flex items-center justify-between px-1">
             <p className="uppercase tracking-widest text-[11px] text-dorado-600 flex items-center gap-1.5">
               <Eye className="h-3.5 w-3.5" /> Vista previa {locked ? 'en vivo' : 'privada'}

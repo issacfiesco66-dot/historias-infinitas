@@ -41,7 +41,8 @@ export function TabsList({ className, children }: { className?: string; children
     <div
       role="tablist"
       className={cn(
-        'inline-flex items-center gap-1 rounded-full border border-pizarra-200 bg-marfil p-1 shadow-solemn',
+        'flex flex-wrap items-center gap-1 rounded-2xl border border-pizarra-200 bg-marfil p-1 shadow-solemn',
+        'md:rounded-full md:flex-nowrap md:overflow-x-auto md:scrollbar-none',
         className,
       )}
     >
