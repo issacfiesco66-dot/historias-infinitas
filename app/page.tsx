@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { Heart, Sparkles, ScanLine, PawPrint, Users, ArrowRight, Handshake } from 'lucide-react';
+import { Heart, Sparkles, ScanLine, PawPrint, Users, ArrowRight, Handshake, Check } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { SiteHeader } from '@/components/site-header';
@@ -214,39 +214,90 @@ export default function HomePage() {
       {/* ============ GROWTH PARTNER / B2B ============ */}
       <section className="container-wide pb-24">
         <Reveal>
-          <div className="relative overflow-hidden rounded-xl border border-pizarra-200/60 bg-pizarra-800 p-10 md:p-14">
+          <div className="relative overflow-hidden rounded-2xl border border-pizarra-200/60 bg-pizarra-800 shadow-solemn">
             <div
               aria-hidden
-              className="absolute inset-0 opacity-25 pointer-events-none"
+              className="absolute inset-0 opacity-40 pointer-events-none"
               style={{
                 background:
-                  'linear-gradient(135deg, rgba(183,148,90,0.25) 0%, transparent 40%, rgba(183,148,90,0.15) 100%)',
+                  'radial-gradient(ellipse at 10% 20%, rgba(183,148,90,0.35), transparent 55%), radial-gradient(ellipse at 90% 80%, rgba(183,148,90,0.15), transparent 55%)',
               }}
             />
 
-            <div className="relative grid md:grid-cols-[auto,1fr,auto] items-center gap-8">
-              <div className="hidden md:flex h-14 w-14 shrink-0 items-center justify-center rounded-full border border-dorado-300/40 bg-pizarra-900/40 text-dorado-300">
-                <Handshake className="h-6 w-6" />
-              </div>
-
+            <div className="relative px-8 py-12 md:px-14 md:py-16 grid lg:grid-cols-[1.3fr,1fr] gap-10 items-center">
+              {/* Texto + badges */}
               <div>
-                <FadeP className="uppercase tracking-[0.3em] text-[11px] text-dorado-300 mb-3">
-                  Programa de socios · Funerarias · Clínicas veterinarias
-                </FadeP>
-                <FadeH2 className="font-serif text-2xl md:text-3xl text-marfil leading-snug mb-3">
-                  Sanar también es acompañar con nuevas formas de recordar.
+                <div className="flex items-center gap-3 text-dorado-300 mb-4">
+                  <Handshake className="h-5 w-5" />
+                  <FadeP className="uppercase tracking-[0.3em] text-[11px]">
+                    Programa de socios · Funerarias · Clínicas veterinarias · Hospicios
+                  </FadeP>
+                </div>
+
+                <FadeH2 className="font-serif text-3xl md:text-4xl lg:text-5xl text-marfil leading-tight mb-4">
+                  El detalle que hará que tus familias{' '}
+                  <span className="text-gradient-dorado italic">nunca te olviden</span>.
                 </FadeH2>
-                <FadeP delay={0.1} className="text-marfil/75 max-w-2xl">
-                  ¿Eres una funeraria o clínica veterinaria? Únete a nuestra red de socios
-                  y ofrece a tus clientes una nueva forma de sanar a través de la tecnología —
-                  con la delicadeza que ya los caracteriza a ustedes.
+                <FadeP delay={0.1} className="text-marfil/80 text-base md:text-lg max-w-xl mb-6">
+                  Regala a cada familia un memorial digital con retrato IA y QR —
+                  con <strong className="text-marfil">el logo y subdominio de tu empresa</strong>.
+                  Desde <span className="text-dorado-300 font-medium">$999 MXN</span>.
                 </FadeP>
+
+                {/* Mini-badges de valor */}
+                <ul className="grid grid-cols-2 gap-2 mb-8 max-w-md">
+                  <BadgeRow>Tu marca, tu subdominio</BadgeRow>
+                  <BadgeRow>15 % comisión por upgrade</BadgeRow>
+                  <BadgeRow>Setup en menos de 48 h</BadgeRow>
+                  <BadgeRow>30 días de garantía</BadgeRow>
+                </ul>
+
+                <div className="flex flex-col sm:flex-row gap-3">
+                  <Button asChild variant="dorado" size="lg">
+                    <Link href="/partners#planes">Ver planes y precios</Link>
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="!bg-transparent !text-marfil border-marfil/40 hover:!bg-marfil/10"
+                  >
+                    <Link href="/contacto?plan=institucional">Hablar con ventas</Link>
+                  </Button>
+                </div>
               </div>
 
-              <div className="md:justify-self-end">
-                <Button asChild variant="dorado" size="lg">
-                  <Link href="/partners">Conversemos</Link>
+              {/* Tarjeta de oferta destacada */}
+              <div className="bg-marfil rounded-2xl p-6 md:p-8 shadow-dorado">
+                <p className="uppercase tracking-widest text-[10px] text-dorado-600 mb-2">
+                  Oferta de entrada
+                </p>
+                <h3 className="font-serif text-2xl md:text-3xl text-pizarra-800 mb-1">
+                  Pack 30 memoriales
+                </h3>
+                <p className="text-sm text-pizarra-500 italic mb-5">
+                  Ahorra 40 % vs. retail · 5 placas físicas incluidas
+                </p>
+                <div className="flex items-baseline gap-1 mb-5">
+                  <span className="font-serif text-5xl text-pizarra-800">$4,999</span>
+                  <span className="text-xs text-pizarra-400 uppercase tracking-widest ml-1">MXN</span>
+                </div>
+
+                <ul className="space-y-2 mb-6 text-sm text-pizarra-700">
+                  <LiCheck>30 memoriales con tu logo (vigencia 12 meses)</LiCheck>
+                  <LiCheck>Dashboard de socio + material de venta</LiCheck>
+                  <LiCheck>5 placas de acero con tu logo, sin costo</LiCheck>
+                  <LiCheck>Soporte dedicado por correo</LiCheck>
+                </ul>
+
+                <Button asChild variant="dorado" className="w-full" size="lg">
+                  <Link href="/partners#planes">
+                    Contratar ahora <ArrowRight className="h-4 w-4 ml-2" />
+                  </Link>
                 </Button>
+                <p className="mt-3 text-[11px] text-pizarra-400 text-center">
+                  Pago seguro con Stripe · factura CFDI
+                </p>
               </div>
             </div>
           </div>
@@ -271,5 +322,23 @@ function FeatureStep({
       <h3 className="font-serif text-2xl text-pizarra-800 mb-3">{title}</h3>
       <p className="text-pizarra-500 text-sm leading-relaxed">{description}</p>
     </Card>
+  );
+}
+
+function BadgeRow({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-2 text-marfil/80 text-sm">
+      <Check className="h-4 w-4 text-dorado-300 mt-0.5 shrink-0" />
+      <span>{children}</span>
+    </li>
+  );
+}
+
+function LiCheck({ children }: { children: React.ReactNode }) {
+  return (
+    <li className="flex items-start gap-2">
+      <Check className="h-4 w-4 text-dorado-500 mt-0.5 shrink-0" />
+      <span>{children}</span>
+    </li>
   );
 }

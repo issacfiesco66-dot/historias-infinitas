@@ -1,7 +1,8 @@
 'use client';
 
-import { useState, useTransition } from 'react';
+import { useState, useTransition, useMemo } from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { Loader2, Send, CheckCircle2, AlertCircle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,7 +10,36 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { sendContactForm } from './actions';
 
+// Mapeo de plan IDs a asunto y mensaje inicial (programa de socios).
+const PLAN_TEMPLATES: Record<string, { subject: string; message: string }> = {
+  partner_trial: {
+    subject: 'Interés en plan Prueba (5 memoriales)',
+    message: 'Hola, nos interesa el plan Prueba del programa de socios. Contamos con [número] de familias atendidas al mes.',
+  },
+  partner_pack_30: {
+    subject: 'Interés en Pack 30 del programa de socios',
+    message: 'Hola, queremos adquirir el Pack 30 del programa de socios. Somos [funeraria/clínica/hospicio] y atendemos [número] familias al mes.',
+  },
+  partner_annual_pro: {
+    subject: 'Interés en plan Profesional anual',
+    message: 'Hola, nos interesa el plan Profesional anual del programa de socios. Quisiéramos agendar una llamada para conocer el onboarding.',
+  },
+  partner_institucional: {
+    subject: 'Interés en plan Institucional',
+    message: 'Hola, representamos a [nombre del grupo / cadena] y estamos evaluando una solución institucional. Tenemos [número de] sucursales en [regiones]. Agradeceríamos una propuesta a medida.',
+  },
+  onboarding: {
+    subject: 'Agendar onboarding como socio',
+    message: 'Acabo de contratar el programa de socios y quisiera agendar el onboarding con el equipo.',
+  },
+};
+
 export function ContactForm() {
+  const params = useSearchParams();
+  const planKey = params?.get('plan') ?? null;
+  const isCompany = params?.get('empresa') === '1' || planKey?.startsWith('partner_');
+  const preset = useMemo(() => (planKey ? PLAN_TEMPLATES[planKey] : null), [planKey]);
+
   const [pending, startTransition] = useTransition();
   const [state, setState] = useState<{ ok: boolean; error?: string } | null>(null);
 
@@ -87,6 +117,13 @@ export function ContactForm() {
         </div>
       </div>
 
+      {isCompany && (
+        <div className="bg-dorado-50 border border-dorado-200 rounded-md px-4 py-3 text-sm text-pizarra-700">
+          Estás contactándonos como <strong>empresa</strong>. Nuestro equipo de
+          socios te responderá con una propuesta a medida.
+        </div>
+      )}
+
       <div className="space-y-2">
         <Label htmlFor="subject">Asunto</Label>
         <Input
@@ -94,6 +131,7 @@ export function ContactForm() {
           name="subject"
           maxLength={160}
           placeholder="¿Sobre qué quieres escribirnos?"
+          defaultValue={preset?.subject ?? ''}
           disabled={pending}
         />
       </div>
@@ -107,6 +145,7 @@ export function ContactForm() {
           required
           maxLength={3000}
           placeholder="Cuéntanos con calma. Leemos cada mensaje."
+          defaultValue={preset?.message ?? ''}
           disabled={pending}
         />
       </div>
