@@ -2,22 +2,27 @@
 -- HISTORIAS-INFINITAS :: Programa de Socios (partners)
 -- Ejecutar DESPUÉS de schema.sql / functions.sql / orders.sql / stripe.sql.
 -- Idempotente: se puede ejecutar varias veces sin romper nada.
+--
+-- NOTA: usamos dollar-quotes "taggeados" ($tag$ ... $tag$) porque el SQL
+-- Editor de Supabase a veces se confunde cuando hay muchos $$ repetidos
+-- en el mismo archivo y reporta "syntax error at end of input LINE 0".
 -- =========================================================================
 
 create extension if not exists "pgcrypto";
 create extension if not exists "citext";
 
 /* ------------------------------------------------------------------------
- * ENUMS — idempotentes vía DO block
+ * ENUMS — idempotentes vía DO blocks con tags únicos
  * ---------------------------------------------------------------------- */
-do $$
+do $enum_partner_status$
 begin
   if not exists (select 1 from pg_type where typname = 'partner_status') then
     create type partner_status as enum ('active', 'suspended', 'expired');
   end if;
-end$$;
+end
+$enum_partner_status$;
 
-do $$
+do $enum_partner_plan$
 begin
   if not exists (select 1 from pg_type where typname = 'partner_plan') then
     create type partner_plan as enum (
@@ -27,14 +32,16 @@ begin
       'partner_institucional'
     );
   end if;
-end$$;
+end
+$enum_partner_plan$;
 
-do $$
+do $enum_commission_status$
 begin
   if not exists (select 1 from pg_type where typname = 'commission_status') then
     create type commission_status as enum ('pending', 'ready', 'paid', 'cancelled');
   end if;
-end$$;
+end
+$enum_commission_status$;
 
 /* ------------------------------------------------------------------------
  * partner_accounts
@@ -71,12 +78,12 @@ create index if not exists partner_accounts_status_idx on public.partner_account
 create or replace function public.touch_updated_at()
 returns trigger
 language plpgsql
-as $$
+as $fn_touch_updated_at$
 begin
   new.updated_at = now();
   return new;
 end;
-$$;
+$fn_touch_updated_at$;
 
 drop trigger if exists partner_accounts_updated_at on public.partner_accounts;
 create trigger partner_accounts_updated_at
@@ -187,7 +194,7 @@ returns trigger
 language plpgsql
 security definer
 set search_path = public
-as $$
+as $fn_link_partner_on_signup$
 begin
   update public.partner_accounts
      set user_id = new.id,
@@ -196,7 +203,7 @@ begin
      and user_id is null;
   return new;
 end;
-$$;
+$fn_link_partner_on_signup$;
 
 drop trigger if exists link_partner_on_signup on auth.users;
 create trigger link_partner_on_signup
@@ -209,7 +216,7 @@ returns void
 language plpgsql
 security definer
 set search_path = public
-as $$
+as $fn_consume_partner_credit$
 declare
   v_partner_id uuid;
 begin
@@ -225,4 +232,4 @@ begin
   insert into public.partner_credits_log (partner_id, memorial_id, delta, reason)
     values (v_partner_id, p_memorial_id, -1, 'memorial_created');
 end;
-$$;
+$fn_consume_partner_credit$;
