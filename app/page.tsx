@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import Link from 'next/link';
 import { Heart, Sparkles, ScanLine, PawPrint, Users, ArrowRight, Handshake } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -5,23 +6,19 @@ import { Card } from '@/components/ui/card';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
 import {
-  AnimatedHeroImage,
   ParallaxNichoCard,
   Reveal,
   DustParticles,
-  FadeH1,
   FadeH2,
   FadeP,
 } from '@/components/viva-images';
 
-// Imágenes de Unsplash (CDN gratuito, licencia libre) alineadas con el tono
-// solemne del proyecto.
-//  - Hero: manos entrelazadas intergeneracionales → legado, conexión y
-//    memoria. Universal: aplica a seres queridos y, simbólicamente, a
-//    mascotas (manos que sostienen / sostuvieron).
-//  - Pet: retrato íntimo de mascota con mirada expresiva.
-//  - Human: figura serena al atardecer.
-const HERO_IMG  = 'https://images.unsplash.com/photo-1516307365426-bea591f05011?auto=format&fit=crop&w=2400&q=85';
+// Hero: ilustración personalizada del "árbol de memoria" — ya incluye título
+// "Historias Infinitas" y el tagline, así que NO superponemos texto encima.
+// Coloca el archivo en /public/images/hero-arbol-memoria.jpg
+const HERO_IMG  = '/images/hero-arbol-memoria.jpg';
+
+// Imágenes de Unsplash para las dos tarjetas de nichos.
 const PET_IMG   = 'https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=1400&q=80';
 const HUMAN_IMG = 'https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1400&q=80';
 
@@ -30,45 +27,38 @@ export default function HomePage() {
     <>
       <SiteHeader />
 
-      {/* ============ HERO — full-bleed, cinematográfico ============ */}
-      <section className="relative overflow-hidden">
-        {/* Imagen a TODO EL ANCHO de la ventana, sin padding lateral */}
+      {/* ============ HERO — ilustración personalizada, sin overlays ============ */}
+      {/* La imagen ya trae título y tagline pintados, así que no superponemos
+          ningún texto encima. Fondo pizarra para que encaje el ciclo nocturno
+          de la ilustración al borde de la pantalla. */}
+      <section className="relative overflow-hidden bg-pizarra-900">
         <Reveal>
-          <div className="relative w-full">
-            <AnimatedHeroImage
-              src={HERO_IMG}
-              alt="Dos manos entrelazadas — legado, conexión y memoria eterna"
-              priority
-              aspect="cinematic"
-              className="!rounded-none"
-            />
+          <div className="relative w-full mx-auto">
+            {/* Aspect nativo de la imagen: ~1456x816 ≈ 16/9 */}
+            <div className="relative w-full aspect-[16/9] min-h-[320px] sm:min-h-[420px] md:min-h-[560px] lg:min-h-[700px] max-h-[900px]">
+              <Image
+                src={HERO_IMG}
+                alt="Historias Infinitas — un árbol de memoria con recuerdos de seres queridos y mascotas bajo un cielo estrellado"
+                fill
+                priority
+                sizes="100vw"
+                quality={90}
+                className="object-cover object-center"
+              />
 
-            {/* Texto superpuesto — marfil sobre pizarra */}
-            <div className="absolute inset-0 flex items-center justify-center text-center px-6">
-              <div className="max-w-4xl">
-                <FadeP
-                  delay={0.2}
-                  className="uppercase tracking-[0.3em] text-xs md:text-sm text-dorado-200 mb-6"
-                >
-                  · Un legado · Una presencia · Un hogar eterno ·
-                </FadeP>
-
-                <FadeH1
-                  delay={0.35}
-                  duration={1.4}
-                  className="font-serif text-5xl md:text-7xl lg:text-8xl leading-[1.02] text-marfil drop-shadow-[0_2px_20px_rgba(0,0,0,0.5)]"
-                >
-                  Donde los recuerdos <br />
-                  <span className="text-gradient-dorado italic">respiran para siempre.</span>
-                </FadeH1>
-              </div>
+              {/* Degradado inferior muy sutil para ligar la imagen con el
+                  resto de la página sin tapar la ilustración. */}
+              <div
+                aria-hidden
+                className="pointer-events-none absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-marfil"
+              />
             </div>
           </div>
         </Reveal>
 
-        {/* Texto + CTAs debajo del hero, centrados en el container */}
-        <div className="container-solemn pt-14 pb-24">
-          <Reveal delay={0.2} className="text-center">
+        {/* Copy + CTAs DEBAJO de la imagen */}
+        <div className="container-solemn pt-10 pb-24 bg-marfil">
+          <Reveal delay={0.1} className="text-center">
             <FadeP className="max-w-2xl mx-auto text-lg text-pizarra-600 leading-relaxed">
               Transforma una simple fotografía en un tributo vivo. Con Realidad Aumentada
               e Inteligencia Artificial, mantenemos su esencia presente en tu hogar —
