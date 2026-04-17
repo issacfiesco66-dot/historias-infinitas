@@ -13,17 +13,49 @@ const SITE_URL =
  * (no los borradores). Se regenera con ISR — no hace falta build.
  */
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Añadimos alternates por idioma en cada ruta "con par" — Google usa esto
+  // como señal fuerte de hreflang para seleccionar la versión correcta.
+  const now = new Date();
+  const pair = (esPath: string, enPath: string, opts: { priority: number; changeFrequency: MetadataRoute.Sitemap[number]['changeFrequency'] }) => [
+    {
+      url: `${SITE_URL}${esPath}`,
+      lastModified: now,
+      changeFrequency: opts.changeFrequency,
+      priority: opts.priority,
+      alternates: {
+        languages: {
+          es: `${SITE_URL}${esPath}`,
+          en: `${SITE_URL}${enPath}`,
+          'x-default': `${SITE_URL}${esPath}`,
+        },
+      },
+    },
+    {
+      url: `${SITE_URL}${enPath}`,
+      lastModified: now,
+      changeFrequency: opts.changeFrequency,
+      priority: opts.priority,
+      alternates: {
+        languages: {
+          es: `${SITE_URL}${esPath}`,
+          en: `${SITE_URL}${enPath}`,
+          'x-default': `${SITE_URL}${esPath}`,
+        },
+      },
+    },
+  ];
+
   const staticRoutes: MetadataRoute.Sitemap = [
-    { url: `${SITE_URL}/`,                       changeFrequency: 'weekly',  priority: 1.0, lastModified: new Date() },
-    { url: `${SITE_URL}/partners`,               changeFrequency: 'weekly',  priority: 0.9, lastModified: new Date() },
-    { url: `${SITE_URL}/para-funerarias`,        changeFrequency: 'weekly',  priority: 0.9, lastModified: new Date() },
-    { url: `${SITE_URL}/para-clinicas-veterinarias`, changeFrequency: 'weekly', priority: 0.9, lastModified: new Date() },
-    { url: `${SITE_URL}/para-hospicios`,         changeFrequency: 'weekly',  priority: 0.8, lastModified: new Date() },
-    { url: `${SITE_URL}/contacto`,               changeFrequency: 'monthly', priority: 0.5, lastModified: new Date() },
-    { url: `${SITE_URL}/privacidad`,             changeFrequency: 'yearly',  priority: 0.3, lastModified: new Date() },
-    { url: `${SITE_URL}/terminos`,               changeFrequency: 'yearly',  priority: 0.3, lastModified: new Date() },
-    { url: `${SITE_URL}/login`,                  changeFrequency: 'yearly',  priority: 0.2, lastModified: new Date() },
-    { url: `${SITE_URL}/register`,               changeFrequency: 'yearly',  priority: 0.4, lastModified: new Date() },
+    ...pair('/',                         '/en',                        { priority: 1.0, changeFrequency: 'weekly' }),
+    ...pair('/partners',                 '/en/partners',               { priority: 0.9, changeFrequency: 'weekly' }),
+    ...pair('/para-funerarias',          '/en/for-funeral-homes',      { priority: 0.9, changeFrequency: 'weekly' }),
+    ...pair('/para-clinicas-veterinarias','/en/for-veterinary-clinics',{ priority: 0.9, changeFrequency: 'weekly' }),
+    ...pair('/para-hospicios',           '/en/for-hospices',           { priority: 0.8, changeFrequency: 'weekly' }),
+    ...pair('/contacto',                 '/en/contact',                { priority: 0.5, changeFrequency: 'monthly' }),
+    ...pair('/privacidad',               '/en/privacy',                { priority: 0.3, changeFrequency: 'yearly' }),
+    ...pair('/terminos',                 '/en/terms',                  { priority: 0.3, changeFrequency: 'yearly' }),
+    { url: `${SITE_URL}/login`,    lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
+    { url: `${SITE_URL}/register`, lastModified: now, changeFrequency: 'yearly', priority: 0.4 },
   ];
 
   // Memoriales públicos

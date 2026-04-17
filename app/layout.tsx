@@ -40,7 +40,11 @@ export const metadata: Metadata = {
   category: 'Memoriales digitales',
   alternates: {
     canonical: '/',
-    languages: { 'es-ES': '/' },
+    languages: {
+      'es-MX': '/',
+      'en-US': '/en',
+      'x-default': '/',
+    },
   },
   openGraph: {
     type: 'website',

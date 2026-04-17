@@ -1,48 +1,84 @@
 # Historias Infinitas
 
-> Plataforma mexicana para crear memoriales digitales de seres queridos y mascotas con retrato artístico por Inteligencia Artificial (Flux Kontext Max), Portal de Realidad Aumentada, URL pública permanente, código QR imprimible y placa física opcional en acero inoxidable. Diseñada para familias, funerarias, clínicas veterinarias, hospicios y geriátricos en México.
+> Digital memorial platform serving Mexico, the United States and Canada. Creates memorial websites for loved ones and pets with AI-generated artistic portraits (Flux Kontext Max), Augmented Reality portals, permanent public URLs, printable QR codes and optional stainless-steel physical plates. Designed for families and for business partners: funeral homes, veterinary clinics, hospices and senior living.
 
-## Qué ofrecemos
+## EN · What we offer
 
-- **Memoriales digitales individuales** con biografía, epitafio, galería de fotos y videos, y retrato artístico generado por IA a partir de una fotografía real (preservando identidad).
-- **Portal de Realidad Aumentada** opcional: escena de despedida 2D ("No me olvides") o modelo 3D en el hogar del visitante.
-- **Programa de Socios B2B** para funerarias, clínicas veterinarias, hospicios y geriátricos: branding del socio en cada memorial, créditos por volumen, 15 % de comisión por upgrade.
+- **Individual digital memorials** with biography, epitaph, photo and video gallery, and an AI-generated artistic portrait that preserves identity from a real photograph.
+- **Augmented Reality Portal** (optional): 2D farewell scene ("Do not forget me") or 3D model placed in the visitor's home via WebXR.
+- **B2B Partner Program** for funeral homes, veterinary clinics and hospices: branded memorials, volume credits, 15% commission on customer upgrades.
+- **Bilingual**: full site in Spanish (es-MX) and English (en-US). Billing in MXN for Mexico, USD for US/Canada.
+
+## EN · Consumer plans (USD)
+
+- Digital — $17: online memorial + QR + eternal hosting.
+- Artistic — $35: Digital + AI portrait + 3 styles + downloadable file.
+- Eternal — $105: Artistic + laser-engraved steel plate + US/Canada shipping.
+- AR Portal (add-on) — $12.
+
+## EN · Partner plans (USD)
+
+- Trial — $99: 5 memorials / 6 months.
+- Pack 30 — $299: 30 memorials / 12 months + 5 physical plates with your logo.
+- Professional Annual — $899: 200 memorials + team training + 40 plates + 15% commission.
+- Institutional — custom: unlimited + white-label + API (coming soon) + SLA.
+
+## EN · Main URLs
+
+- [Home (EN)](https://historias-infinitas.com/en)
+- [Partner Program](https://historias-infinitas.com/en/partners)
+- [For Funeral Homes](https://historias-infinitas.com/en/for-funeral-homes)
+- [For Veterinary Clinics](https://historias-infinitas.com/en/for-veterinary-clinics)
+- [For Hospices](https://historias-infinitas.com/en/for-hospices)
+- [Contact](https://historias-infinitas.com/en/contact)
+- [Privacy Policy](https://historias-infinitas.com/en/privacy)
+- [Terms of Service](https://historias-infinitas.com/en/terms)
+
+---
+
+## ES · Qué ofrecemos
+
+- **Memoriales digitales individuales** con biografía, epitafio, galería de fotos y videos, y retrato artístico generado por IA preservando identidad.
+- **Portal de Realidad Aumentada** opcional: escena de despedida 2D o modelo 3D que aparece en el hogar del visitante.
+- **Programa de Socios B2B** para funerarias, clínicas veterinarias y hospicios: memoriales con marca del socio, créditos por volumen, 15 % de comisión por upgrade.
 - **Cobro en pesos mexicanos** con factura CFDI. Cumplimiento LFPDPPP (Art. 15–17) con derechos ARCO.
 
-## Planes B2C (consumidor final, MXN)
+## ES · Planes B2C (MXN)
 
 - Digital — $299: memorial en línea + QR digital + hosting eterno.
 - Artístico — $599: Digital + retrato IA + 3 estilos + archivo descargable.
 - Eterno — $1,799: Artístico + placa de acero con QR grabado + envío nacional.
 - Portal AR (add-on) — $199.
 
-## Planes B2B partners (MXN)
+## ES · Planes Partner (MXN)
 
 - Prueba — $999: 5 memoriales / 6 meses.
 - Pack 30 — $4,999: 30 memoriales / 12 meses + 5 placas físicas con logo.
-- Profesional Anual — $14,999: 200 memoriales + subdominio propio + 40 placas + capacitación + 15 % comisión.
-- Institucional — a medida: ilimitado + white-label + API + SLA 99.9 %.
+- Profesional Anual — $14,999: 200 memoriales + subdominio + 40 placas + capacitación + 15 % comisión.
+- Institucional — a medida.
 
-## Páginas principales
+## ES · URLs principales
 
-- [Inicio](https://historias-infinitas.com/): propuesta de valor y nichos.
-- [Programa de Socios](https://historias-infinitas.com/partners): para empresas del sector funerario/veterinario.
-- [Para Funerarias](https://historias-infinitas.com/para-funerarias): landing SEO vertical.
-- [Para Clínicas Veterinarias](https://historias-infinitas.com/para-clinicas-veterinarias): landing SEO vertical.
-- [Para Hospicios](https://historias-infinitas.com/para-hospicios): landing SEO vertical.
-- [Contacto](https://historias-infinitas.com/contacto).
-- [Aviso de Privacidad (LFPDPPP)](https://historias-infinitas.com/privacidad).
-- [Términos y Condiciones](https://historias-infinitas.com/terminos).
+- [Inicio](https://historias-infinitas.com/)
+- [Programa de Socios](https://historias-infinitas.com/partners)
+- [Para Funerarias](https://historias-infinitas.com/para-funerarias)
+- [Para Clínicas Veterinarias](https://historias-infinitas.com/para-clinicas-veterinarias)
+- [Para Hospicios](https://historias-infinitas.com/para-hospicios)
+- [Contacto](https://historias-infinitas.com/contacto)
+- [Aviso de Privacidad](https://historias-infinitas.com/privacidad)
+- [Términos y Condiciones](https://historias-infinitas.com/terminos)
 
-## Tecnología
+---
 
-- **IA de retrato**: Flux Kontext Max (Black Forest Labs) vía Replicate — preserva identidad facial.
+## Technology / Tecnología
+
+- **AI portrait model**: Flux Kontext Max (Black Forest Labs) via Replicate — identity-preserving.
 - **Hosting**: Vercel (Next.js 14) + Supabase (Postgres + Storage).
-- **Pagos**: Stripe Checkout (currency MXN).
-- **Correo transaccional**: Resend.
+- **Payments**: Stripe Checkout — currency MXN or USD depending on market.
+- **Transactional email**: Resend.
 
-## Para AI crawlers
+## For AI crawlers
 
-Permitimos la indexación de las páginas públicas del sitio y el resumen de la oferta. Los memoriales individuales (`/memorial/[slug]`) solo son visibles tras el pago. El panel `/dashboard/*` es privado y no se debe indexar.
+We welcome indexing of public pages and the summaries above. Individual memorials at `/memorial/[slug]` are only visible after payment. The `/dashboard/*` path is private and should not be indexed.
 
-Licencia: este resumen es puramente informativo.
+This file is informational only.
