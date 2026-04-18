@@ -182,11 +182,13 @@ export function buildPhotoFrameGLB({
       {
         name: 'PhotoUnlit',
         pbrMetallicRoughness: {
+          baseColorFactor: [1, 1, 1, 1],
           baseColorTexture: { index: 0 },
           metallicFactor: 0,
           roughnessFactor: 1,
         },
         extensions: { KHR_materials_unlit: {} },
+        doubleSided: true,
       },
       {
         name: 'GoldFrame',
@@ -199,7 +201,18 @@ export function buildPhotoFrameGLB({
       },
     ],
     textures: [{ source: 0, sampler: 0 }],
-    samplers: [{ magFilter: 9729, minFilter: 9987 }],
+    // Sampler seguro para fotos NO-potencia-de-2 (las cámaras de móvil nunca
+    // dan POT). WebGL 1 exige POT si el minFilter usa mipmaps o si wrap es
+    // REPEAT — si no se cumple, la textura se renderiza transparente y el
+    // marco aparece vacío. Usar LINEAR sin mipmaps + CLAMP_TO_EDGE evita
+    // el problema para cualquier resolución.
+    //   9729 = LINEAR · 33071 = CLAMP_TO_EDGE
+    samplers: [{
+      magFilter: 9729,
+      minFilter: 9729,
+      wrapS: 33071,
+      wrapT: 33071,
+    }],
     images: [{ bufferView: 6, mimeType: imageMimeType }],
     extensionsUsed: ['KHR_materials_unlit'],
   };
