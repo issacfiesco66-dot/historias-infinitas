@@ -10,26 +10,23 @@ export const metadata: Metadata = {
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen grid md:grid-cols-2">
-      <div className="relative hidden md:block">
+      <div className="relative hidden md:block bg-pizarra-900">
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage: 'url(https://picsum.photos/seed/hi-auth/1600/1200)',
+            backgroundImage: 'url(/images/login-registro.png)',
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
         />
-        <div className="absolute inset-0 bg-pizarra-800/60" />
         <div className="relative z-10 h-full flex flex-col justify-between p-12 text-marfil">
-          <Link href="/" className="font-serif text-2xl">
-            Historias <span className="text-gradient-dorado">Infinitas</span>
+          <Link
+            href="/"
+            className="inline-flex items-center gap-2 text-sm text-marfil/80 hover:text-marfil transition"
+          >
+            ← Volver al inicio
           </Link>
-          <blockquote className="max-w-md">
-            <p className="font-serif text-3xl leading-snug italic">
-              "Los que amamos no se van, viven con nosotros en cada atardecer."
-            </p>
-            <p className="mt-4 text-sm text-marfil/60 uppercase tracking-widest">— Anónimo</p>
-          </blockquote>
+          <span aria-hidden />
         </div>
       </div>
 
