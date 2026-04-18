@@ -50,7 +50,36 @@ function isSafeImageUrl(raw: string): boolean {
 /** Caps image download to 8 MB to avoid abuse. */
 const MAX_IMAGE_BYTES = 8 * 1024 * 1024;
 
-async function fetchImage(url: string): Promise<{ bytes: Uint8Array; mime: 'image/jpeg' | 'image/png' | 'image/webp' } | { error: string }> {
+type AllowedMime = 'image/jpeg' | 'image/png' | 'image/webp';
+
+/**
+ * Detecta MIME por magic bytes en lugar de confiar en el Content-Type.
+ * Por qué: three.js (el motor de model-viewer) construye un Blob con el
+ * `mimeType` declarado en el GLB y lo pasa a <img src=objectURL>. Si el
+ * MIME no coincide con los bytes reales, el <img> falla a decodificar
+ * silenciosamente y la textura queda vacía (plano blanco visible en AR).
+ */
+function sniffMime(b: Uint8Array): AllowedMime | null {
+  if (b.length < 12) return null;
+  // PNG: 89 50 4E 47 0D 0A 1A 0A
+  if (b[0] === 0x89 && b[1] === 0x50 && b[2] === 0x4e && b[3] === 0x47) {
+    return 'image/png';
+  }
+  // JPEG: FF D8 FF
+  if (b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff) {
+    return 'image/jpeg';
+  }
+  // WebP: "RIFF" ... "WEBP"
+  if (
+    b[0] === 0x52 && b[1] === 0x49 && b[2] === 0x46 && b[3] === 0x46 &&
+    b[8] === 0x57 && b[9] === 0x45 && b[10] === 0x42 && b[11] === 0x50
+  ) {
+    return 'image/webp';
+  }
+  return null;
+}
+
+async function fetchImage(url: string): Promise<{ bytes: Uint8Array; mime: AllowedMime } | { error: string }> {
   const ac = new AbortController();
   const timer = setTimeout(() => ac.abort(), 15_000);
   let res: Response;
@@ -68,15 +97,16 @@ async function fetchImage(url: string): Promise<{ bytes: Uint8Array; mime: 'imag
     return { error: 'image_too_large' };
   }
 
-  const ct = (res.headers.get('content-type') ?? '').toLowerCase();
-  let mime: 'image/jpeg' | 'image/png' | 'image/webp';
-  if (ct.includes('jpeg') || ct.includes('jpg'))      mime = 'image/jpeg';
-  else if (ct.includes('png'))                        mime = 'image/png';
-  else if (ct.includes('webp'))                       mime = 'image/webp';
-  else return { error: 'image_mime_no_permitido' };
-
   const buf = new Uint8Array(await res.arrayBuffer());
   if (buf.byteLength > MAX_IMAGE_BYTES) return { error: 'image_too_large' };
+
+  const mime = sniffMime(buf);
+  if (!mime) {
+    console.warn('[ar/generate-frame] mime no reconocido — primeros bytes:',
+      Array.from(buf.slice(0, 12)).map((x) => x.toString(16).padStart(2, '0')).join(' '),
+    );
+    return { error: 'image_mime_no_permitido' };
+  }
   return { bytes: buf, mime };
 }
 
