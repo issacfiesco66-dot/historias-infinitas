@@ -86,13 +86,11 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
   const [coverUrl, setCoverUrl] = useState(memorial.cover_photo_url);
   const [portraitUrl, setPortraitUrl] = useState(memorial.portrait_ai_url);
   const [arVideoUrl, setArVideoUrl] = useState(memorial.ar_video_url);
-  const [arModelUrl, setArModelUrl] = useState(memorial.ar_model_url);
   const [status, setStatus] = useState<MemorialStatus>(memorial.status);
   const [style, setStyle] = useState<AiStyleId>('oleo');
 
   const [uploading, setUploading] = useState(false);
   const [arUploading, setArUploading] = useState(false);
-  const [arFrameGenerating, setArFrameGenerating] = useState(false);
   const [animatingPortrait, setAnimatingPortrait] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [generationSource, setGenerationSource] = useState<string | null>(null);
@@ -243,32 +241,6 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
     e.target.value = '';
   }
 
-  // ---------------- GENERAR cuadro 3D AR (.glb) ----------------
-  async function onGenerateArFrame() {
-    const source = portraitUrl ?? coverUrl;
-    if (!source) {
-      setToast('Sube una foto o genera el retrato IA antes.');
-      return;
-    }
-    setArFrameGenerating(true);
-    setToast(null);
-    try {
-      const res = await fetch('/api/ar/generate-frame', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ memorialId: memorial.id, imageUrl: source }),
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Error al generar cuadro AR');
-      setArModelUrl(data.ar_model_url);
-      setToast('Cuadro AR listo · ábrelo en tu celular');
-    } catch (err: any) {
-      setToast(err.message ?? 'Error al generar cuadro AR');
-    } finally {
-      setArFrameGenerating(false);
-    }
-  }
-
   // ---------------- ANIMAR retrato (foto → video) ----------------
   async function onAnimatePortrait() {
     const source = portraitUrl ?? coverUrl;
@@ -299,7 +271,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
         throw new Error(msg);
       }
       setArVideoUrl(data.ar_video_url);
-      setToast('Retrato animado · ya se reproduce en el Portal AR');
+      setToast('Retrato animado · ya se reproduce en el Portal de Recuerdos');
     } catch (err: any) {
       console.error('[animate-portrait]', err);
       setToast(err.message ?? 'Error al animar el retrato');
@@ -468,8 +440,8 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                 <span className="hidden md:inline">3 · Retrato IA</span>
               </TabsTrigger>
               <TabsTrigger value="ar" className="text-xs md:text-sm px-2.5 md:px-4">
-                <span className="md:hidden">4. AR</span>
-                <span className="hidden md:inline">4 · Portal AR</span>
+                <span className="md:hidden">4. Portal</span>
+                <span className="hidden md:inline">4 · Portal de Recuerdos</span>
               </TabsTrigger>
               <TabsTrigger value="preview" className="text-xs md:text-sm px-2.5 md:px-4">
                 <span className="md:hidden">5. Previa</span>
@@ -657,7 +629,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                     onPrev={() => setActiveTab('recuerdos')}
                     onNext={() => setActiveTab('ar')}
                     prevLabel="Recuerdos"
-                    nextLabel="Siguiente: Portal AR"
+                    nextLabel="Siguiente: Portal de Recuerdos"
                   />
                 </CardContent>
               </Card>
@@ -725,21 +697,22 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
               </Card>
             </TabsContent>
 
-            {/* ---------------- TAB: PORTAL AR ---------------- */}
+            {/* ---------------- TAB: PORTAL DE RECUERDOS ---------------- */}
             <TabsContent value="ar">
               <Card>
                 <CardContent className="p-6 space-y-8">
-                  {/* ====== CUADRO 3D AR (nuevo, principal) ====== */}
+                  {/* ====== RETRATO ANIMADO — principal ====== */}
                   <section className="space-y-4">
                     <div>
                       <div className="flex items-center gap-2 mb-1 text-dorado-600">
                         <Sparkles className="h-4 w-4" />
-                        <span className="uppercase tracking-widest text-xs">Cuadro 3D en tu hogar</span>
+                        <span className="uppercase tracking-widest text-xs">Retrato animado — lo que verán al escanear el QR</span>
                       </div>
                       <p className="text-sm text-pizarra-500">
-                        Genera un retrato flotante que aparecerá en la habitación de quien escanee el QR,
-                        como si estuviera colgado en la pared. Funciona en celulares Android (Scene Viewer)
-                        y iPhone (Quick Look).
+                        Un video corto (2-4 s) del retrato cobrando vida —respiración,
+                        parpadeo, una sonrisa sutil— preservando cada rasgo del rostro.
+                        Es la experiencia principal del Portal de Recuerdos: se
+                        reproduce en cualquier teléfono al escanear el QR.
                       </p>
                     </div>
 
@@ -768,68 +741,12 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                         </p>
                         <p>
                           {portraitUrl
-                            ? 'Para la mejor vista en AR, el retrato con fondo neutro funciona perfecto.'
+                            ? 'Un retrato con rostro bien iluminado y de frente da los mejores resultados.'
                             : coverUrl
                             ? 'Para un mejor resultado, genera primero el retrato IA en la pestaña anterior.'
                             : 'Sube una foto en la pestaña "Recuerdos" o genera el retrato IA primero.'}
                         </p>
                       </div>
-                    </div>
-
-                    <Button
-                      type="button"
-                      variant="dorado"
-                      onClick={onGenerateArFrame}
-                      disabled={arFrameGenerating || (!portraitUrl && !coverUrl)}
-                      className="w-full sm:w-auto"
-                    >
-                      {arFrameGenerating ? (
-                        <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Creando cuadro 3D…</>
-                      ) : arModelUrl ? (
-                        <><Wand2 className="h-4 w-4 mr-2" /> Regenerar cuadro AR</>
-                      ) : (
-                        <><Wand2 className="h-4 w-4 mr-2" /> Generar cuadro AR</>
-                      )}
-                    </Button>
-
-                    {arModelUrl && (
-                      <div className="rounded-xl border border-dorado-200 bg-dorado-50/60 p-4 space-y-2">
-                        <div className="flex items-center gap-2 text-dorado-700">
-                          <CheckCircle2 className="h-4 w-4" />
-                          <span className="text-xs uppercase tracking-widest font-medium">
-                            Cuadro AR listo
-                          </span>
-                        </div>
-                        <p className="text-sm text-pizarra-600">
-                          Abre el memorial en tu celular para probar la experiencia AR.
-                          Toca <strong>“Ver en tu hogar”</strong> y luego <strong>“Activar AR”</strong>.
-                        </p>
-                        <a
-                          href={arModelUrl}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="inline-block text-xs text-dorado-700 hover:text-dorado-600 underline"
-                        >
-                          Ver archivo .glb
-                        </a>
-                      </div>
-                    )}
-                  </section>
-
-                  <hr className="border-pizarra-100" />
-
-                  {/* ====== RETRATO ANIMADO (foto → video IA) ====== */}
-                  <section className="space-y-4">
-                    <div>
-                      <div className="flex items-center gap-2 mb-1 text-pizarra-500">
-                        <Sparkles className="h-4 w-4" />
-                        <span className="uppercase tracking-widest text-xs">Retrato animado</span>
-                      </div>
-                      <p className="text-sm text-pizarra-500">
-                        Un video corto (2-4 s) del retrato "cobrando vida": respiración,
-                        parpadeo y una sonrisa sutil. Se reproduce dentro del Portal de Recuerdos
-                        cuando alguien escanea el QR del memorial.
-                      </p>
                     </div>
 
                     <Button
@@ -847,6 +764,21 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                         <><Wand2 className="h-4 w-4 mr-2" /> Animar retrato con IA</>
                       )}
                     </Button>
+
+                    {arVideoUrl && (
+                      <div className="rounded-xl border border-dorado-200 bg-dorado-50/60 p-4 space-y-3">
+                        <div className="flex items-center gap-2 text-dorado-700">
+                          <CheckCircle2 className="h-4 w-4" />
+                          <span className="text-xs uppercase tracking-widest font-medium">
+                            Retrato animado listo
+                          </span>
+                        </div>
+                        <p className="text-sm text-pizarra-600">
+                          Este video se reproducirá automáticamente cuando alguien
+                          escanee el QR del memorial, tras la escena de despedida.
+                        </p>
+                      </div>
+                    )}
                   </section>
 
                   <hr className="border-pizarra-100" />
@@ -941,7 +873,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
 
                   <StepNav
                     onPrev={() => setActiveTab('ar')}
-                    prevLabel="Portal AR"
+                    prevLabel="Portal de Recuerdos"
                     customNext={
                       <Button onClick={onContinueToCheckout} variant="dorado" disabled={publishing}>
                         {publishing

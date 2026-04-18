@@ -148,12 +148,12 @@ export function ARPortal({ personName, videoUrl, modelUrl, posterUrl }: ARPortal
                     portraitUrl={posterUrl}
                     name={personName}
                     onFinish={() => {
-                      // Tras la despedida, elegimos el siguiente paso:
-                      //   - Si hay modelo 3D → AR real
-                      //   - Si solo hay video → reproductor
-                      //   - Si no hay ninguno → quedarse en la leyenda
-                      if (hasCustomModel) setStage('ar');
-                      else if (hasVideo) setStage('video');
+                      // Priorizamos video (retrato animado) sobre AR:
+                      // el video se reproduce en el 100 % de los móviles
+                      // y transmite más emoción que un plano estático
+                      // flotando. AR queda como fallback legacy.
+                      if (hasVideo) setStage('video');
+                      else if (hasCustomModel) setStage('ar');
                     }}
                   />
 
@@ -173,10 +173,10 @@ export function ARPortal({ personName, videoUrl, modelUrl, posterUrl }: ARPortal
                     {(hasCustomModel || hasVideo) && (
                       <button
                         type="button"
-                        onClick={() => setStage(hasCustomModel ? 'ar' : 'video')}
+                        onClick={() => setStage(hasVideo ? 'video' : 'ar')}
                         className="inline-flex items-center gap-2 rounded-full bg-dorado-500 hover:bg-dorado-400 text-pizarra-900 text-xs px-4 py-2"
                       >
-                        {hasCustomModel ? <><ScanLine className="h-3.5 w-3.5" /> Abrir en tu hogar</> : <><Play className="h-3.5 w-3.5" /> Ver recuerdo</>}
+                        {hasVideo ? <><Play className="h-3.5 w-3.5" /> Ver recuerdo</> : <><ScanLine className="h-3.5 w-3.5" /> Abrir en tu hogar</>}
                       </button>
                     )}
                   </div>
