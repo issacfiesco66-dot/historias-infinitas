@@ -44,7 +44,7 @@ const csp = [
   `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ajax.googleapis.com https://js.stripe.com ${vercelLive}`,
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${vercelLive}`,
   `img-src 'self' data: blob: ${supabaseCsp} https://replicate.delivery https://pbxt.replicate.delivery ${vercelLive}`,
-  `font-src 'self' https://fonts.gstatic.com data:`,
+  `font-src 'self' https://fonts.gstatic.com data: ${vercelLive}`,
   // connect-src: agrega ajax.googleapis.com para que model-viewer pueda
   // cargar su sourcemap (solo DevTools lo pide; no rompe nada si falla,
   // pero ensucia la consola).

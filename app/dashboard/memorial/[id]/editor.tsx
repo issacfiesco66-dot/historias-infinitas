@@ -286,9 +286,13 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
       });
       const data = await res.json();
       if (!res.ok) {
-        // El backend devuelve `detail` con la causa raíz (p.ej. respuesta
-        // de Replicate). Lo mostramos al usuario para que pueda reportarlo
-        // sin tener que abrir DevTools.
+        // Log completo en consola para debug (no se borra como el toast).
+        console.error('[animate-portrait] fallo', {
+          status: res.status,
+          error: data.error,
+          detail: data.detail,
+          body: data,
+        });
         const msg = data.detail
           ? `${data.error}: ${data.detail}`
           : (data.error || 'Error al animar el retrato');
@@ -297,6 +301,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
       setArVideoUrl(data.ar_video_url);
       setToast('Retrato animado · ya se reproduce en el Portal AR');
     } catch (err: any) {
+      console.error('[animate-portrait]', err);
       setToast(err.message ?? 'Error al animar el retrato');
     } finally {
       setAnimatingPortrait(false);
