@@ -116,6 +116,28 @@ export async function POST(req: Request) {
         .from('ai_generations')
         .update({ status: 'fallido', error: String(err?.message ?? err) })
         .eq('id', gen!.id);
+
+      // Traducir errores de Replicate a mensajes accionables para el usuario.
+      // 429 = throttling por billing (<$5 de crédito en Replicate) o burst.
+      const msg = String(err?.message ?? err);
+      if (msg.includes('429') || msg.toLowerCase().includes('rate limit') || msg.toLowerCase().includes('throttled')) {
+        return NextResponse.json(
+          {
+            error: 'Servicio de IA saturado',
+            hint: 'Estamos procesando muchas animaciones. Intenta de nuevo en 1 minuto.',
+          },
+          { status: 429 },
+        );
+      }
+      if (msg.includes('402') || msg.toLowerCase().includes('insufficient')) {
+        return NextResponse.json(
+          {
+            error: 'Animación temporalmente no disponible',
+            hint: 'Vuelve a intentar en unos minutos.',
+          },
+          { status: 503 },
+        );
+      }
       throw err;
     }
 
