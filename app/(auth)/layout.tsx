@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import Link from 'next/link';
 
 export const metadata: Metadata = {
@@ -10,24 +11,21 @@ export const metadata: Metadata = {
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen grid md:grid-cols-2">
-      <div className="relative hidden md:block bg-pizarra-900">
-        <div
-          className="absolute inset-0"
-          style={{
-            backgroundImage: 'url(/images/login-registro.png)',
-            backgroundSize: 'cover',
-            backgroundPosition: 'center',
-          }}
+      <div className="relative hidden md:flex items-center justify-center bg-marfil p-8">
+        <Image
+          src="/images/login-registro.png"
+          alt="Historias Infinitas — creando un lugar eterno para tus recuerdos"
+          width={1408}
+          height={768}
+          priority
+          className="w-full h-auto max-h-[85vh] object-contain rounded-xl shadow-solemn"
         />
-        <div className="relative z-10 h-full flex flex-col justify-between p-12 text-marfil">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-sm text-marfil/80 hover:text-marfil transition"
-          >
-            ← Volver al inicio
-          </Link>
-          <span aria-hidden />
-        </div>
+        <Link
+          href="/"
+          className="absolute top-6 left-6 z-10 inline-flex items-center gap-2 rounded-full bg-marfil/90 hover:bg-marfil text-pizarra-800 text-sm px-4 py-2 shadow-sm transition"
+        >
+          ← Volver al inicio
+        </Link>
       </div>
 
       <div className="flex items-center justify-center p-8 md:p-16 bg-marfil">
