@@ -102,6 +102,10 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
   const [publishError, setPublishError] = useState<string | null>(null);
   const [activeTab, setActiveTab] = useState<'info' | 'recuerdos' | 'retrato' | 'ar' | 'preview'>('info');
 
+  // "locked" ahora indica SOLO status público (badge + share buttons).
+  // La edición post-pago ESTÁ permitida: la familia puede seguir añadiendo
+  // fotos, corregir fechas, mejorar la biografía. Solo el type y el slug
+  // quedan inmutables (no los expone el editor).
   const locked = status === 'publicado';
 
   // ---------------- toast auto-hide ----------------
@@ -133,7 +137,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
     }
   }, [memorial.id, supabase]);
 
-  useDebouncedAutoSave(form, 5000, persistForm, !locked);
+  useDebouncedAutoSave(form, 5000, persistForm);
 
   // Auto-save de la URL de AR también con 5s
   useDebouncedAutoSave(
@@ -148,7 +152,6 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
       setSaveState(error ? 'error' : 'saved');
       if (!error) setLastSavedAt(new Date());
     }, [memorial.id, supabase]),
-    !locked,
   );
 
   // ---------------- UPLOAD genérico ----------------
@@ -161,7 +164,6 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
 
   // ---------------- UPLOAD foto / video al álbum ----------------
   async function onMediaUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    if (locked) return;
     const file = e.target.files?.[0];
     if (!file) return;
     setUploading(true);
@@ -190,7 +192,6 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
 
   // ---------------- ELIMINAR foto / video ----------------
   async function onDeleteMedia(item: MemorialMedia) {
-    if (locked) return;
     if (!confirm('¿Eliminar este recuerdo? Esta acción no se puede deshacer.')) return;
 
     const { error } = await supabase
@@ -224,7 +225,6 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
 
   // ---------------- UPLOAD video AR (máx 15 MB) ----------------
   async function onArVideoUpload(e: React.ChangeEvent<HTMLInputElement>) {
-    if (locked) return;
     const file = e.target.files?.[0];
     if (!file) return;
     if (!file.type.startsWith('video')) { setToast('Debe ser un archivo de video'); return; }
@@ -244,7 +244,6 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
 
   // ---------------- GENERAR cuadro 3D AR (.glb) ----------------
   async function onGenerateArFrame() {
-    if (locked) return;
     const source = portraitUrl ?? coverUrl;
     if (!source) {
       setToast('Sube una foto o genera el retrato IA antes.');
@@ -271,7 +270,6 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
 
   // ---------------- GENERAR retrato con IA ----------------
   async function onGeneratePortrait(sourceUrl: string) {
-    if (locked) return;
     setGenerating(true);
     setGenerationSource(sourceUrl);
     setToast(null);
@@ -342,7 +340,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
           <span className="hidden md:inline h-5 w-px bg-pizarra-100" />
           <span className="text-xs uppercase tracking-widest text-pizarra-500 flex items-center gap-1">
             {locked ? <Globe className="h-3.5 w-3.5 text-green-600" /> : <Lock className="h-3.5 w-3.5" />}
-            {locked ? 'Activo y público' : 'Borrador privado · se activa al pagar'}
+            {locked ? 'Activo y público · sigue editando cuando quieras' : 'Borrador privado · se activa al pagar'}
           </span>
         </div>
 
@@ -414,7 +412,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
         {/* ======================================== */}
         {/* COLUMNA IZQUIERDA — Formulario           */}
         {/* ======================================== */}
-        <div className={locked ? 'pointer-events-none opacity-75' : ''}>
+        <div>
           <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as typeof activeTab)}>
             <TabsList className="w-full md:w-auto">
               <TabsTrigger value="info" className="text-xs md:text-sm px-2.5 md:px-4">
@@ -639,7 +637,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                       className="hidden"
                       accept="image/*,video/*"
                       onChange={onMediaUpload}
-                      disabled={uploading || locked}
+                      disabled={uploading}
                     />
                   </label>
 
@@ -664,16 +662,14 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                             </span>
                           )}
 
-                          {!locked && (
-                            <button
-                              type="button"
-                              onClick={() => onDeleteMedia(m)}
-                              aria-label="Eliminar recuerdo"
-                              className="absolute top-1.5 right-1.5 h-7 w-7 rounded-full bg-pizarra-900/80 text-marfil opacity-0 group-hover:opacity-100 hover:bg-red-600 flex items-center justify-center transition"
-                            >
-                              <Trash2 className="h-3.5 w-3.5" />
-                            </button>
-                          )}
+                          <button
+                            type="button"
+                            onClick={() => onDeleteMedia(m)}
+                            aria-label="Eliminar recuerdo"
+                            className="absolute top-1.5 right-1.5 h-7 w-7 rounded-full bg-pizarra-900/80 text-marfil opacity-0 group-hover:opacity-100 hover:bg-red-600 flex items-center justify-center transition"
+                          >
+                            <Trash2 className="h-3.5 w-3.5" />
+                          </button>
                         </div>
                       ))}
                     </div>
@@ -744,7 +740,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                       type="button"
                       variant="dorado"
                       onClick={onGenerateArFrame}
-                      disabled={arFrameGenerating || locked || (!portraitUrl && !coverUrl)}
+                      disabled={arFrameGenerating || (!portraitUrl && !coverUrl)}
                       className="w-full sm:w-auto"
                     >
                       {arFrameGenerating ? (
@@ -805,7 +801,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                         className="hidden"
                         accept="video/*"
                         onChange={onArVideoUpload}
-                        disabled={arUploading || locked}
+                        disabled={arUploading}
                       />
                     </label>
 

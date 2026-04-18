@@ -8,6 +8,7 @@ import { BannerHero } from './banner-hero';
 import { MemorialOpening } from './memorial-opening';
 import { Reveal, FadeH2, FadeP } from '@/components/viva-images';
 import { HexGallery } from '@/components/hex-gallery';
+import { PhotoWall } from '@/components/photo-wall';
 import type { Memorial, MemorialMedia } from '@/types/database';
 
 interface Props { params: { slug: string } }
@@ -303,6 +304,26 @@ export default async function PublicMemorialPage({ params }: Props) {
 
           <Reveal delay={0.15}>
             <HexGallery
+              photos={photos.map((p) => ({ id: p.id, url: p.url, caption: p.caption }))}
+            />
+          </Reveal>
+        </section>
+      )}
+
+      {/* ============ PARED DE RECUERDOS — collage scrapbook con todas las fotos ============ */}
+      {photos.length >= 3 && (
+        <section className="container-solemn py-16">
+          <Reveal className="text-center mb-12">
+            <FadeP className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-3">
+              Pared de recuerdos
+            </FadeP>
+            <FadeH2 className="font-serif text-3xl md:text-4xl text-pizarra-800">
+              Cada fotografía, un instante eterno
+            </FadeH2>
+          </Reveal>
+
+          <Reveal delay={0.1}>
+            <PhotoWall
               photos={photos.map((p) => ({ id: p.id, url: p.url, caption: p.caption }))}
             />
           </Reveal>
