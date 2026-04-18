@@ -69,10 +69,10 @@ export function ARPortal({ personName, videoUrl, modelUrl, posterUrl }: ARPortal
   const hasCustomModel = Boolean(modelUrl);
   const hasVideo = Boolean(videoUrl);
   const src = modelUrl ?? '';
-  const iosSrc =
-    modelUrl && modelUrl.endsWith('.glb')
-      ? modelUrl.replace('.glb', '.usdz')
-      : undefined;
+  // iOS Quick Look requiere USDZ — aún no generamos ese formato, así que
+  // dejamos ios-src vacío. En iOS, model-viewer muestra el 3D en WebGL pero
+  // no abre Quick Look (esto es mejor que apuntar a un USDZ 404).
+  const iosSrc: string | undefined = undefined;
 
   // El botón flotante aparece si hay retrato para la despedida 2D, o asset AR, o video.
   if (!posterUrl && !hasCustomModel && !hasVideo) return null;

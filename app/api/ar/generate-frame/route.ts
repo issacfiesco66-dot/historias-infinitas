@@ -162,14 +162,19 @@ export async function POST(req: Request) {
       aspectRatio: aspect,
     });
 
-    // Upload a Storage con service_role para ignorar RLS del bucket.
+    // Upload a Storage con path VERSIONADO — cada regeneración va a un archivo
+    // nuevo. Esto elimina problemas de caché del CDN de Supabase, porque un
+    // `upsert` al mismo path puede seguir sirviendo los bytes antiguos durante
+    // el cacheControl (3600 s). Archivo versionado = URL completamente nueva
+    // para el CDN y para cualquier navegador que tuviera el archivo guardado.
     const admin = createAdminClient();
-    const path = `${memorial.id}/ar-frame.glb`;
+    const stamp = Date.now();
+    const newPath = `${memorial.id}/ar-frame-${stamp}.glb`;
     const { error: upErr } = await admin.storage
       .from('memorials')
-      .upload(path, glb, {
+      .upload(newPath, glb, {
         contentType: 'model/gltf-binary',
-        upsert: true,
+        upsert: false,
         cacheControl: '3600',
       });
 
@@ -178,9 +183,20 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: 'storage_upload_fallido' }, { status: 500 });
     }
 
-    const publicUrl = admin.storage.from('memorials').getPublicUrl(path).data.publicUrl;
-    // Cache-busting simple (la ruta no cambia entre regeneraciones).
-    const arModelUrl = `${publicUrl}?v=${Date.now()}`;
+    // Borra versiones anteriores del mismo memorial (best-effort, no bloquea).
+    try {
+      const { data: older } = await admin.storage
+        .from('memorials')
+        .list(memorial.id, { limit: 100 });
+      const stale = (older ?? [])
+        .filter((f) => f.name.startsWith('ar-frame-') && f.name.endsWith('.glb') && f.name !== `ar-frame-${stamp}.glb`)
+        .map((f) => `${memorial.id}/${f.name}`);
+      if (stale.length) await admin.storage.from('memorials').remove(stale);
+    } catch (e) {
+      console.warn('[ar/generate-frame] cleanup previo falló (no bloquea):', e);
+    }
+
+    const arModelUrl = admin.storage.from('memorials').getPublicUrl(newPath).data.publicUrl;
 
     const { error: updErr } = await admin
       .from('memorials')
