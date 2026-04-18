@@ -106,7 +106,10 @@ export function buildPhotoFrameGLB({
   const frameUVs = new Float32Array([0, 1,  1, 1,  1, 0,  0, 0]);
   const frameIndices = new Uint16Array([0, 1, 2, 0, 2, 3]);
 
-  // BIN layout -----------------------------------------------------------
+  // BIN layout (solo geometría — la imagen va como data-URI embebida en
+  // el JSON para eliminar cualquier bug sutil de offset/alignment en el
+  // bufferView). El overhead de base64 es ~33 %, asumible a cambio de
+  // fiabilidad.
   let off = 0;
   const off_ppos = off; off += photoPositions.byteLength;    // 48
   const off_puv  = off; off += photoUVs.byteLength;          // 32
@@ -115,8 +118,6 @@ export function buildPhotoFrameGLB({
   const off_fpos = off; off += framePositions.byteLength;    // 48
   const off_fuv  = off; off += frameUVs.byteLength;          // 32
   const off_fidx = off; off += frameIndices.byteLength;      // 12
-  off = align4(off);
-  const off_img = off;  off += imageBytes.byteLength;
   const binTotal = align4(off);
 
   const bin = new Uint8Array(binTotal);
@@ -128,7 +129,11 @@ export function buildPhotoFrameGLB({
   bin.set(u8(framePositions), off_fpos);
   bin.set(u8(frameUVs),       off_fuv);
   bin.set(u8(frameIndices),   off_fidx);
-  bin.set(imageBytes,         off_img);
+
+  // Imagen como data-URI (base64). Usamos Buffer de Node (siempre disponible
+  // en runtime=nodejs) — más rápido y seguro que construirlo en JS puro.
+  const base64 = Buffer.from(imageBytes).toString('base64');
+  const imageDataUri = `data:${imageMimeType};base64,${base64}`;
 
   // glTF JSON ------------------------------------------------------------
   const gltf = {
@@ -175,7 +180,6 @@ export function buildPhotoFrameGLB({
       { buffer: 0, byteOffset: off_fpos, byteLength: framePositions.byteLength },
       { buffer: 0, byteOffset: off_fuv,  byteLength: frameUVs.byteLength },
       { buffer: 0, byteOffset: off_fidx, byteLength: frameIndices.byteLength },
-      { buffer: 0, byteOffset: off_img,  byteLength: imageBytes.byteLength },
     ],
     buffers: [{ byteLength: binTotal }],
     materials: [
@@ -213,7 +217,7 @@ export function buildPhotoFrameGLB({
       wrapS: 33071,
       wrapT: 33071,
     }],
-    images: [{ bufferView: 6, mimeType: imageMimeType }],
+    images: [{ uri: imageDataUri }],
     extensionsUsed: ['KHR_materials_unlit'],
   };
 
