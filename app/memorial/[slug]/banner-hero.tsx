@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { DustParticles } from '@/components/viva-images';
+import { useMounted } from '@/hooks/use-mounted';
 
 interface Props {
   src: string;
@@ -20,7 +21,13 @@ interface Props {
 export function BannerHero({
   src, alt, name, typeLabel, birthDate, passingDate,
 }: Props) {
-  const reduced = useReducedMotion();
+  // `useReducedMotion()` devuelve `null` en SSR y `boolean` en cliente, causando
+  // hydration mismatch (React #418/#425/#423) cuando ese valor afecta props
+  // de motion. Gate con `useMounted()`: antes del mount, `reduced = false`
+  // tanto en servidor como en cliente → HTML idéntico, sin mismatch.
+  const rawReduced = useReducedMotion();
+  const mounted = useMounted();
+  const reduced = mounted ? rawReduced : false;
 
   return (
     <section className="relative w-full h-[90vh] min-h-[560px] overflow-hidden bg-pizarra-900">

@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { motion, useReducedMotion } from 'framer-motion';
 import { cn } from '@/lib/utils';
+import { useMounted } from '@/hooks/use-mounted';
 
 interface Photo {
   id: string;
@@ -27,7 +28,12 @@ interface Props {
  * tarjeta hace fade + ligero lift con stagger en cascada.
  */
 export function PhotoWall({ photos, className }: Props) {
-  const reduced = useReducedMotion();
+  // Gate con useMounted para evitar hydration mismatch (#418/#425/#423):
+  // `useReducedMotion` devuelve null en SSR y boolean en cliente → los
+  // atributos de motion difieren entre render inicial y hydration.
+  const rawReduced = useReducedMotion();
+  const mounted = useMounted();
+  const reduced = mounted ? rawReduced : false;
 
   if (photos.length === 0) return null;
 
