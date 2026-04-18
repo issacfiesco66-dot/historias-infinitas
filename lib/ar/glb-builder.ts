@@ -106,18 +106,22 @@ export function buildPhotoFrameGLB({
   const frameUVs = new Float32Array([0, 1,  1, 1,  1, 0,  0, 0]);
   const frameIndices = new Uint16Array([0, 1, 2, 0, 2, 3]);
 
-  // BIN layout (solo geometría — la imagen va como data-URI embebida en
-  // el JSON para eliminar cualquier bug sutil de offset/alignment en el
-  // bufferView). El overhead de base64 es ~33 %, asumible a cambio de
-  // fiabilidad.
+  // BIN layout — geometría + imagen embebida como bufferView.
+  // Importante: Scene Viewer de Android (ARCore / Filament) NO decodifica
+  // fiable los data URIs dentro de un GLB; lo advierte incluso el validador
+  // oficial de Khronos (`DATA_URI_GLB`). Usamos bufferView para la imagen.
+  // Cada bufferView es alineada a 4 bytes (requerido por glTF para buffers
+  // con componentes de 4 bytes, y seguro para todos los parsers).
   let off = 0;
   const off_ppos = off; off += photoPositions.byteLength;    // 48
   const off_puv  = off; off += photoUVs.byteLength;          // 32
   const off_pidx = off; off += photoIndices.byteLength;      // 12
-  off = align4(off);
+  off = align4(off);                                          // align before VEC3
   const off_fpos = off; off += framePositions.byteLength;    // 48
   const off_fuv  = off; off += frameUVs.byteLength;          // 32
   const off_fidx = off; off += frameIndices.byteLength;      // 12
+  off = align4(off);                                          // align before image
+  const off_img  = off; off += imageBytes.byteLength;
   const binTotal = align4(off);
 
   const bin = new Uint8Array(binTotal);
@@ -129,11 +133,7 @@ export function buildPhotoFrameGLB({
   bin.set(u8(framePositions), off_fpos);
   bin.set(u8(frameUVs),       off_fuv);
   bin.set(u8(frameIndices),   off_fidx);
-
-  // Imagen como data-URI (base64). Usamos Buffer de Node (siempre disponible
-  // en runtime=nodejs) — más rápido y seguro que construirlo en JS puro.
-  const base64 = Buffer.from(imageBytes).toString('base64');
-  const imageDataUri = `data:${imageMimeType};base64,${base64}`;
+  bin.set(imageBytes,         off_img);
 
   // glTF JSON ------------------------------------------------------------
   const gltf = {
@@ -174,12 +174,16 @@ export function buildPhotoFrameGLB({
       { bufferView: 5, componentType: COMP_UINT16, count: 6, type: 'SCALAR' },
     ],
     bufferViews: [
-      { buffer: 0, byteOffset: off_ppos, byteLength: photoPositions.byteLength },
-      { buffer: 0, byteOffset: off_puv,  byteLength: photoUVs.byteLength },
-      { buffer: 0, byteOffset: off_pidx, byteLength: photoIndices.byteLength },
-      { buffer: 0, byteOffset: off_fpos, byteLength: framePositions.byteLength },
-      { buffer: 0, byteOffset: off_fuv,  byteLength: frameUVs.byteLength },
-      { buffer: 0, byteOffset: off_fidx, byteLength: frameIndices.byteLength },
+      // target: 34962 = ARRAY_BUFFER, 34963 = ELEMENT_ARRAY_BUFFER.
+      // Scene Viewer los exige para validez estricta en algunos casos.
+      { buffer: 0, byteOffset: off_ppos, byteLength: photoPositions.byteLength, target: 34962 },
+      { buffer: 0, byteOffset: off_puv,  byteLength: photoUVs.byteLength,       target: 34962 },
+      { buffer: 0, byteOffset: off_pidx, byteLength: photoIndices.byteLength,   target: 34963 },
+      { buffer: 0, byteOffset: off_fpos, byteLength: framePositions.byteLength, target: 34962 },
+      { buffer: 0, byteOffset: off_fuv,  byteLength: frameUVs.byteLength,       target: 34962 },
+      { buffer: 0, byteOffset: off_fidx, byteLength: frameIndices.byteLength,   target: 34963 },
+      // bufferView 6: imagen (sin target — es un recurso genérico).
+      { buffer: 0, byteOffset: off_img,  byteLength: imageBytes.byteLength },
     ],
     buffers: [{ byteLength: binTotal }],
     materials: [
@@ -217,7 +221,7 @@ export function buildPhotoFrameGLB({
       wrapS: 33071,
       wrapT: 33071,
     }],
-    images: [{ uri: imageDataUri }],
+    images: [{ bufferView: 6, mimeType: imageMimeType }],
     extensionsUsed: ['KHR_materials_unlit'],
   };
 
