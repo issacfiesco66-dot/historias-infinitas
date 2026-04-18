@@ -24,21 +24,11 @@ export function BannerHero({
 
   return (
     <section className="relative w-full h-[90vh] min-h-[560px] overflow-hidden bg-pizarra-900">
-      {/* FONDO: misma foto borrosa para rellenar laterales sin barras negras */}
-      <div className="absolute inset-0 scale-110">
-        <Image
-          src={src}
-          alt=""
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover blur-3xl opacity-30"
-          quality={40}
-        />
-      </div>
-
-      {/* IMAGEN PRINCIPAL: object-contain para mostrar los rostros completos,
-          con zoom-out suave de 1.25 → 1.0 que revela la escena. */}
+      {/* IMAGEN PRINCIPAL: object-cover recorta a la altura del hero y evita el
+          rectángulo visible contra el fondo. object-[center_30%] favorece la
+          parte alta de la composición (donde suelen estar los rostros) al
+          recortar verticalmente. Ken Burns 1.25 → 1.0 conserva la sensación
+          de revelación. */}
       <motion.div
         className="absolute inset-0"
         initial={{ scale: 1.25 }}
@@ -61,7 +51,7 @@ export function BannerHero({
           fill
           priority
           sizes="100vw"
-          className="object-contain"
+          className="object-cover object-[center_30%]"
           quality={92}
         />
       </motion.div>
