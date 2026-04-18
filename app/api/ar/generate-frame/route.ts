@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { buildPhotoFrameGLB, readImageDimensions } from '@/lib/ar/glb-builder';
@@ -95,7 +96,7 @@ export async function POST(req: Request) {
     // Ownership check + obtener fotos disponibles
     const { data: memorial, error: mErr } = await supabase
       .from('memorials')
-      .select('id, owner_id, portrait_ai_url, cover_photo_url')
+      .select('id, owner_id, portrait_ai_url, cover_photo_url, slug, status')
       .eq('id', body.memorialId)
       .single();
 
@@ -159,6 +160,16 @@ export async function POST(req: Request) {
     if (updErr) {
       console.error('[ar/generate-frame] update falló:', updErr.message);
       return NextResponse.json({ error: 'db_update_fallido' }, { status: 500 });
+    }
+
+    // Invalida el cache ISR de la página pública para que el móvil vea el AR
+    // de inmediato en lugar de esperar los 60 s de revalidate por defecto.
+    if (memorial.status === 'publicado' && memorial.slug) {
+      try {
+        revalidatePath(`/memorial/${memorial.slug}`);
+      } catch (e) {
+        console.warn('[ar/generate-frame] revalidate falló (no bloquea):', e);
+      }
     }
 
     return NextResponse.json({
