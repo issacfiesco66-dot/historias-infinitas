@@ -86,11 +86,13 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
   const [coverUrl, setCoverUrl] = useState(memorial.cover_photo_url);
   const [portraitUrl, setPortraitUrl] = useState(memorial.portrait_ai_url);
   const [arVideoUrl, setArVideoUrl] = useState(memorial.ar_video_url);
+  const [arModelUrl, setArModelUrl] = useState(memorial.ar_model_url);
   const [status, setStatus] = useState<MemorialStatus>(memorial.status);
   const [style, setStyle] = useState<AiStyleId>('oleo');
 
   const [uploading, setUploading] = useState(false);
   const [arUploading, setArUploading] = useState(false);
+  const [arFrameGenerating, setArFrameGenerating] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [generationSource, setGenerationSource] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>('idle');
@@ -238,6 +240,33 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
     }
     setArUploading(false);
     e.target.value = '';
+  }
+
+  // ---------------- GENERAR cuadro 3D AR (.glb) ----------------
+  async function onGenerateArFrame() {
+    if (locked) return;
+    const source = portraitUrl ?? coverUrl;
+    if (!source) {
+      setToast('Sube una foto o genera el retrato IA antes.');
+      return;
+    }
+    setArFrameGenerating(true);
+    setToast(null);
+    try {
+      const res = await fetch('/api/ar/generate-frame', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ memorialId: memorial.id, imageUrl: source }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error al generar cuadro AR');
+      setArModelUrl(data.ar_model_url);
+      setToast('Cuadro AR listo · ábrelo en tu celular');
+    } catch (err: any) {
+      setToast(err.message ?? 'Error al generar cuadro AR');
+    } finally {
+      setArFrameGenerating(false);
+    }
   }
 
   // ---------------- GENERAR retrato con IA ----------------
@@ -663,47 +692,139 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
             {/* ---------------- TAB: PORTAL AR ---------------- */}
             <TabsContent value="ar">
               <Card>
-                <CardContent className="p-6 space-y-5">
-                  <div>
-                    <div className="flex items-center gap-2 mb-1 text-dorado-600">
-                      <Film className="h-4 w-4" />
-                      <span className="uppercase tracking-widest text-xs">Video del Portal AR</span>
+                <CardContent className="p-6 space-y-8">
+                  {/* ====== CUADRO 3D AR (nuevo, principal) ====== */}
+                  <section className="space-y-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1 text-dorado-600">
+                        <Sparkles className="h-4 w-4" />
+                        <span className="uppercase tracking-widest text-xs">Cuadro 3D en tu hogar</span>
+                      </div>
+                      <p className="text-sm text-pizarra-500">
+                        Genera un retrato flotante que aparecerá en la habitación de quien escanee el QR,
+                        como si estuviera colgado en la pared. Funciona en celulares Android (Scene Viewer)
+                        y iPhone (Quick Look).
+                      </p>
                     </div>
-                    <p className="text-sm text-pizarra-500">
-                      Sube un video corto (máximo <strong>15 MB</strong>) que aparecerá flotando al escanear el QR.
-                    </p>
-                  </div>
 
-                  <label className="flex items-center justify-center gap-3 border-2 border-dashed border-pizarra-200 rounded-xl p-8 cursor-pointer hover:bg-pizarra-50 transition">
-                    <Upload className="h-5 w-5 text-pizarra-600" />
-                    <span className="text-sm text-pizarra-600">
-                      {arUploading ? 'Subiendo...' : 'Arrastra el video o haz clic'}
-                    </span>
-                    <input
-                      type="file"
-                      className="hidden"
-                      accept="video/*"
-                      onChange={onArVideoUpload}
-                      disabled={arUploading || locked}
-                    />
-                  </label>
-
-                  {/* Alternativa URL manual */}
-                  <div className="space-y-2">
-                    <Label htmlFor="ar_video">O pega una URL</Label>
-                    <Input
-                      id="ar_video"
-                      value={arVideoUrl ?? ''}
-                      onChange={(e) => setArVideoUrl(e.target.value)}
-                      placeholder="https://.../recuerdo.mp4"
-                    />
-                  </div>
-
-                  {arVideoUrl && (
-                    <div className="rounded-xl overflow-hidden bg-pizarra-900">
-                      <video src={arVideoUrl} controls className="w-full aspect-video object-cover" />
+                    {/* Fuente de la imagen */}
+                    <div className="flex items-start gap-4 rounded-xl border border-pizarra-100 bg-pizarra-50/50 p-4">
+                      <div className="relative h-24 w-20 shrink-0 rounded-md overflow-hidden bg-pizarra-100">
+                        {(portraitUrl || coverUrl) ? (
+                          <img
+                            src={portraitUrl ?? coverUrl ?? ''}
+                            alt="Foto base"
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center">
+                            <ImageIcon className="h-6 w-6 text-pizarra-300" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="flex-1 text-xs text-pizarra-600 leading-relaxed">
+                        <p className="font-medium text-pizarra-800 mb-0.5">
+                          {portraitUrl
+                            ? 'Se usará el retrato IA'
+                            : coverUrl
+                            ? 'Se usará la foto de portada'
+                            : 'Falta una imagen'}
+                        </p>
+                        <p>
+                          {portraitUrl
+                            ? 'Para la mejor vista en AR, el retrato con fondo neutro funciona perfecto.'
+                            : coverUrl
+                            ? 'Para un mejor resultado, genera primero el retrato IA en la pestaña anterior.'
+                            : 'Sube una foto en la pestaña "Recuerdos" o genera el retrato IA primero.'}
+                        </p>
+                      </div>
                     </div>
-                  )}
+
+                    <Button
+                      type="button"
+                      variant="dorado"
+                      onClick={onGenerateArFrame}
+                      disabled={arFrameGenerating || locked || (!portraitUrl && !coverUrl)}
+                      className="w-full sm:w-auto"
+                    >
+                      {arFrameGenerating ? (
+                        <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Creando cuadro 3D…</>
+                      ) : arModelUrl ? (
+                        <><Wand2 className="h-4 w-4 mr-2" /> Regenerar cuadro AR</>
+                      ) : (
+                        <><Wand2 className="h-4 w-4 mr-2" /> Generar cuadro AR</>
+                      )}
+                    </Button>
+
+                    {arModelUrl && (
+                      <div className="rounded-xl border border-dorado-200 bg-dorado-50/60 p-4 space-y-2">
+                        <div className="flex items-center gap-2 text-dorado-700">
+                          <CheckCircle2 className="h-4 w-4" />
+                          <span className="text-xs uppercase tracking-widest font-medium">
+                            Cuadro AR listo
+                          </span>
+                        </div>
+                        <p className="text-sm text-pizarra-600">
+                          Abre el memorial en tu celular para probar la experiencia AR.
+                          Toca <strong>“Ver en tu hogar”</strong> y luego <strong>“Activar AR”</strong>.
+                        </p>
+                        <a
+                          href={arModelUrl}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="inline-block text-xs text-dorado-700 hover:text-dorado-600 underline"
+                        >
+                          Ver archivo .glb
+                        </a>
+                      </div>
+                    )}
+                  </section>
+
+                  <hr className="border-pizarra-100" />
+
+                  {/* ====== VIDEO AR (secundario, opcional) ====== */}
+                  <section className="space-y-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1 text-pizarra-500">
+                        <Film className="h-4 w-4" />
+                        <span className="uppercase tracking-widest text-xs">Video recuerdo (opcional)</span>
+                      </div>
+                      <p className="text-sm text-pizarra-500">
+                        Sube un video corto (máximo <strong>15 MB</strong>) que se mostrará como recuerdo
+                        dentro del Portal AR.
+                      </p>
+                    </div>
+
+                    <label className="flex items-center justify-center gap-3 border-2 border-dashed border-pizarra-200 rounded-xl p-8 cursor-pointer hover:bg-pizarra-50 transition">
+                      <Upload className="h-5 w-5 text-pizarra-600" />
+                      <span className="text-sm text-pizarra-600">
+                        {arUploading ? 'Subiendo...' : 'Arrastra el video o haz clic'}
+                      </span>
+                      <input
+                        type="file"
+                        className="hidden"
+                        accept="video/*"
+                        onChange={onArVideoUpload}
+                        disabled={arUploading || locked}
+                      />
+                    </label>
+
+                    <div className="space-y-2">
+                      <Label htmlFor="ar_video">O pega una URL</Label>
+                      <Input
+                        id="ar_video"
+                        value={arVideoUrl ?? ''}
+                        onChange={(e) => setArVideoUrl(e.target.value)}
+                        placeholder="https://.../recuerdo.mp4"
+                      />
+                    </div>
+
+                    {arVideoUrl && (
+                      <div className="rounded-xl overflow-hidden bg-pizarra-900">
+                        <video src={arVideoUrl} controls className="w-full aspect-video object-cover" />
+                      </div>
+                    )}
+                  </section>
 
                   <StepNav
                     onPrev={() => setActiveTab('retrato')}
