@@ -285,7 +285,15 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
         body: JSON.stringify({ memorialId: memorial.id, imageUrl: source }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error || 'Error al animar el retrato');
+      if (!res.ok) {
+        // El backend devuelve `detail` con la causa raíz (p.ej. respuesta
+        // de Replicate). Lo mostramos al usuario para que pueda reportarlo
+        // sin tener que abrir DevTools.
+        const msg = data.detail
+          ? `${data.error}: ${data.detail}`
+          : (data.error || 'Error al animar el retrato');
+        throw new Error(msg);
+      }
       setArVideoUrl(data.ar_video_url);
       setToast('Retrato animado · ya se reproduce en el Portal AR');
     } catch (err: any) {

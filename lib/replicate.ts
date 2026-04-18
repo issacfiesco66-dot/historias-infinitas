@@ -129,7 +129,15 @@ export async function generateArtisticPortrait(input: GenerateArtisticPortraitIn
  *  Coste: ~$0.30-0.70 USD por generación (ver análisis de costos en CLAUDE.md).
  * ========================================================================== */
 
-const DEFAULT_VIDEO_MODEL = 'stability-ai/stable-video-diffusion';
+/**
+ * Modelo por defecto — SVD XT 1.1, oficial de Stability AI en Replicate.
+ * Se puede cambiar vía `REPLICATE_VIDEO_MODEL` (ej: minimax/video-01-live).
+ *
+ * IMPORTANTE: los modelos de Replicate rechazan inputs que no conocen con
+ * un 422. Por eso detectamos la familia del modelo y mandamos SOLO los
+ * campos que ese modelo acepta.
+ */
+const DEFAULT_VIDEO_MODEL = 'stability-ai/stable-video-diffusion-img2vid-xt-1-1';
 const VIDEO_MODEL = (process.env.REPLICATE_VIDEO_MODEL || DEFAULT_VIDEO_MODEL) as `${string}/${string}`;
 
 export interface AnimatePortraitInput {
@@ -138,27 +146,54 @@ export interface AnimatePortraitInput {
 }
 
 export async function animatePortrait({ imageUrl, subject }: AnimatePortraitInput) {
-  // Input por modelo. El API de Replicate acepta ambos formatos —
-  // los modelos ignoran campos que no reconocen, así que pasamos los dos.
   const motionPrompt = subject
     ? `A reverent memorial portrait of ${subject} softly coming to life. Subtle natural breathing, gentle eye blink, warm expression. Preserve every facial feature exactly. Cinematic stillness, no camera motion.`
     : 'A reverent memorial portrait softly coming to life with subtle breathing and a gentle blink. Preserve every facial feature. No camera motion.';
 
-  const output = await replicate.run(VIDEO_MODEL, {
-    input: {
-      // SVD (stability-ai/stable-video-diffusion)
+  // Construcción de input por familia de modelo (evita 422 por campos extra).
+  const modelLower = VIDEO_MODEL.toLowerCase();
+  let input: Record<string, unknown>;
+
+  if (modelLower.includes('minimax') || modelLower.includes('kling') || modelLower.includes('hailuo')) {
+    // MiniMax / Kling / Hailuo — "bring still to life" con prompt textual
+    input = {
+      prompt: motionPrompt,
+      first_frame_image: imageUrl,
+      prompt_optimizer: true,
+    };
+  } else if (modelLower.includes('luma') || modelLower.includes('ray')) {
+    // Luma Ray/Dream Machine
+    input = {
+      prompt: motionPrompt,
+      start_image_url: imageUrl,
+      loop: false,
+    };
+  } else {
+    // Stable Video Diffusion (y variantes XT)
+    input = {
       input_image: imageUrl,
       video_length: '25_frames_with_svd_xt',
       sizing_strategy: 'maintain_aspect_ratio',
       frames_per_second: 6,
       motion_bucket_id: 80,
       cond_aug: 0.02,
-      // Minimax video-01-live / Kling — ignorados por SVD
-      first_frame_image: imageUrl,
-      prompt: motionPrompt,
-      prompt_optimizer: true,
-    },
-  });
+    };
+  }
+
+  let output: unknown;
+  try {
+    output = await replicate.run(VIDEO_MODEL, { input });
+  } catch (err: any) {
+    // Enriquecemos el error con el contexto del modelo + input para que en
+    // Vercel logs se vea exactamente qué falló (p. ej. "Invalid input:
+    // field 'motion_bucket_id' not recognized by model X").
+    const detail = err?.response?.data ?? err?.detail ?? err?.message ?? String(err);
+    const enriched = new Error(
+      `Replicate animatePortrait falló (model=${VIDEO_MODEL}): ${typeof detail === 'string' ? detail : JSON.stringify(detail)}`,
+    );
+    (enriched as any).cause = err;
+    throw enriched;
+  }
 
   let url: string;
   if (typeof output === 'string') {
@@ -169,6 +204,12 @@ export async function animatePortrait({ imageUrl, subject }: AnimatePortraitInpu
     url = (output as any).url();
   } else {
     url = String(output);
+  }
+
+  if (!url || !/^https?:\/\//.test(url)) {
+    throw new Error(
+      `Replicate devolvió output inesperado para ${VIDEO_MODEL}: ${JSON.stringify(output)}`,
+    );
   }
 
   return { url, prompt: motionPrompt, model: VIDEO_MODEL };

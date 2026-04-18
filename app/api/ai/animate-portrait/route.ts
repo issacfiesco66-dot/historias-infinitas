@@ -229,9 +229,20 @@ export async function POST(req: Request) {
       bytes: videoBytes.byteLength,
     });
   } catch (err: any) {
-    console.error('[api/ai/animate-portrait]', err);
+    // Log estructurado para Vercel — `cause` guarda el error original de
+    // Replicate (con response.data si vino).
+    console.error('[api/ai/animate-portrait] ERROR:', {
+      message: err?.message,
+      cause: err?.cause?.message ?? err?.cause,
+      stack: err?.stack?.split('\n').slice(0, 4),
+    });
     return NextResponse.json(
-      { error: err?.message ?? 'Error interno' },
+      {
+        error: err?.message ?? 'Error interno',
+        // `detail` permite al front mostrar la causa exacta (sin exponer
+        // stack completo).
+        detail: err?.cause?.message ?? undefined,
+      },
       { status: 500 },
     );
   }

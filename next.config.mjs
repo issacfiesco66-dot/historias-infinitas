@@ -35,14 +35,21 @@ const serverActionOrigins = [
  *    runtime chunks. Next 14 no soporta CSP con nonces sin custom work.
  */
 const supabaseCsp = supabaseHost ? `https://${supabaseHost}` : 'https://*.supabase.co';
+// vercel.live/.pusher — Vercel inyecta un widget de feedback/toolbar en
+// Preview y Production; sin permitirlo en CSP, la consola se llena de
+// errores aunque la app funcione. Es de Vercel, seguro permitirlo.
+const vercelLive = 'https://vercel.live https://*.pusher.com wss://*.pusher.com';
 const csp = [
   `default-src 'self'`,
-  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ajax.googleapis.com https://js.stripe.com`,
-  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com`,
-  `img-src 'self' data: blob: ${supabaseCsp} https://replicate.delivery https://pbxt.replicate.delivery`,
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ajax.googleapis.com https://js.stripe.com ${vercelLive}`,
+  `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${vercelLive}`,
+  `img-src 'self' data: blob: ${supabaseCsp} https://replicate.delivery https://pbxt.replicate.delivery ${vercelLive}`,
   `font-src 'self' https://fonts.gstatic.com data:`,
-  `connect-src 'self' ${supabaseCsp} wss://${supabaseHost || '*.supabase.co'} https://api.stripe.com https://api.replicate.com`,
-  `frame-src 'self' https://js.stripe.com https://hooks.stripe.com`,
+  // connect-src: agrega ajax.googleapis.com para que model-viewer pueda
+  // cargar su sourcemap (solo DevTools lo pide; no rompe nada si falla,
+  // pero ensucia la consola).
+  `connect-src 'self' ${supabaseCsp} wss://${supabaseHost || '*.supabase.co'} https://api.stripe.com https://api.replicate.com https://ajax.googleapis.com ${vercelLive}`,
+  `frame-src 'self' https://js.stripe.com https://hooks.stripe.com ${vercelLive}`,
   `media-src 'self' blob: data: ${supabaseCsp}`,
   `worker-src 'self' blob:`,
   `object-src 'none'`,
