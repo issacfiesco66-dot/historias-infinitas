@@ -78,6 +78,7 @@ create index if not exists partner_accounts_status_idx on public.partner_account
 create or replace function public.touch_updated_at()
 returns trigger
 language plpgsql
+set search_path = public, pg_catalog
 as $fn_touch_updated_at$
 begin
   new.updated_at = now();
