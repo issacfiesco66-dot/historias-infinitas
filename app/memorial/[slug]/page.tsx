@@ -5,6 +5,7 @@ import { createClient } from '@/lib/supabase/server';
 import { formatDate } from '@/lib/utils';
 import { ARPortal } from './ar-portal';
 import { BannerHero } from './banner-hero';
+import { MemorialExpired } from './memorial-expired';
 import { MemorialOpening } from './memorial-opening';
 import { Reveal, FadeH2, FadeP } from '@/components/viva-images';
 import { HexGallery } from '@/components/hex-gallery';
@@ -27,10 +28,18 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const supabase = createClient();
   const { data } = await supabase
     .from('memorials')
-    .select('name, type, epitaph, biography, portrait_ai_url, cover_photo_url')
+    .select('name, type, epitaph, biography, portrait_ai_url, cover_photo_url, expires_at')
     .eq('slug', params.slug)
     .eq('status', 'publicado')
     .single();
+
+  // Si el memorial expiró, tampoco dejamos que los motores lo indexen.
+  if (data?.expires_at && new Date(data.expires_at).getTime() < Date.now()) {
+    return {
+      title: 'Memorial — Historias Infinitas',
+      robots: { index: false, follow: false },
+    };
+  }
 
   if (!data) {
     return {
@@ -86,6 +95,22 @@ export default async function PublicMemorialPage({ params }: Props) {
     .single();
 
   if (!memorial) notFound();
+
+  // Si es memorial del plan de prueba y ya venció → pantalla "expirado" digna
+  // (no un 404 brusco). La comprobación es en tiempo real: sin cron, al
+  // instante de vencer la página cambia de estado en la próxima visita.
+  if (memorial.expires_at) {
+    const expiresMs = new Date(memorial.expires_at).getTime();
+    if (Number.isFinite(expiresMs) && expiresMs < Date.now()) {
+      return (
+        <MemorialExpired
+          name={memorial.name}
+          ownerId={memorial.owner_id}
+          memorialId={memorial.id}
+        />
+      );
+    }
+  }
 
   const { data: media } = await supabase
     .from('memorial_media')

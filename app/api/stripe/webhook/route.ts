@@ -228,10 +228,23 @@ export async function POST(req: Request) {
   }
 
   /* ---------- 6c. UPDATE memorials ---------- */
+  //
+  // Para el plan `trial_mensual`: seteamos `expires_at = now() + 30 días`.
+  // Para planes permanentes: `expires_at = null` (borra cualquier expiración
+  // previa — importante si un usuario pagó el trial y luego upgradea, el
+  // memorial queda permanente).
+  const expiresAt = plan.durationDays
+    ? new Date(Date.now() + plan.durationDays * 24 * 60 * 60 * 1000).toISOString()
+    : null;
+
   const updateMemorial = await withRetry(
     () => admin
       .from('memorials')
-      .update({ status: 'publicado', plan_id: plan.id })
+      .update({
+        status: 'publicado',
+        plan_id: plan.id,
+        expires_at: expiresAt,
+      })
       .eq('id', memorialId)
       .eq('owner_id', userId),
     'memorials.update',

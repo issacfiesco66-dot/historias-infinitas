@@ -10,7 +10,7 @@
  * Moneda: MXN (peso mexicano). Stripe recibe centavos (× 100).
  */
 
-export type PlanId = 'digital' | 'artistico' | 'eterno';
+export type PlanId = 'trial_mensual' | 'digital' | 'artistico' | 'eterno';
 
 export interface Plan {
   id: PlanId;
@@ -18,15 +18,35 @@ export interface Plan {
   tagline: string;
   priceMXN: number;      // en MXN enteros; Stripe recibe centavos (× 100)
   popular?: boolean;
+  /**
+   * Duración del memorial tras el pago. `null` = permanente.
+   * Cuando es un número, el webhook de Stripe setea `expires_at = now() + durationDays`
+   * y la página pública oculta el memorial al vencer.
+   */
+  durationDays: number | null;
   includes: string[];
 }
 
 export const PLANS: readonly Plan[] = [
   {
+    id: 'trial_mensual',
+    name: 'Mes de Prueba',
+    tagline: 'Un mes para despedirse, sin compromiso.',
+    priceMXN: 100,
+    durationDays: 30,
+    includes: [
+      'QR único con URL activa 30 días',
+      'Galería de fotografías',
+      'Biografía y epitafio',
+      'Opción de extender a plan permanente antes de vencer',
+    ],
+  },
+  {
     id: 'digital',
     name: 'Digital',
     tagline: 'Un hogar sereno en internet.',
     priceMXN: 299,
+    durationDays: null,
     includes: [
       'QR único con URL permanente',
       'Hosting eterno del memorial',
@@ -40,6 +60,7 @@ export const PLANS: readonly Plan[] = [
     tagline: 'Un retrato que vuelve a respirar.',
     priceMXN: 599,
     popular: true,
+    durationDays: null,
     includes: [
       'Todo lo del plan Digital',
       'Retrato IA en alta resolución',
@@ -52,6 +73,7 @@ export const PLANS: readonly Plan[] = [
     name: 'Eterno',
     tagline: 'Un legado que se sostiene en tus manos.',
     priceMXN: 1799,
+    durationDays: null,
     includes: [
       'Todo lo del plan Artístico',
       'Placa física en acero inoxidable',

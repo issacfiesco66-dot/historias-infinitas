@@ -4,7 +4,7 @@ import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Check, ShieldCheck, Sparkles, Lock, Loader2, ArrowRight, Star,
-  ScanLine, Infinity as InfinityIcon, Award,
+  ScanLine, Infinity as InfinityIcon, Award, Clock,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -17,9 +17,10 @@ import type { Memorial } from '@/types/database';
  * ========================================================================== */
 
 const PLAN_ICONS: Record<PlanId, React.ReactNode> = {
-  digital:  <InfinityIcon className="h-5 w-5" />,
-  artistico: <Sparkles className="h-5 w-5" />,
-  eterno:   <Award className="h-5 w-5" />,
+  trial_mensual: <Clock className="h-5 w-5" />,
+  digital:       <InfinityIcon className="h-5 w-5" />,
+  artistico:     <Sparkles className="h-5 w-5" />,
+  eterno:        <Award className="h-5 w-5" />,
 };
 
 export function CheckoutForm({ memorial }: { memorial: Memorial }) {
@@ -64,7 +65,7 @@ export function CheckoutForm({ memorial }: { memorial: Memorial }) {
         {/* ---------------- PLANES ---------------- */}
         <section>
           <h2 className="font-serif text-2xl text-pizarra-800 mb-4">Planes</h2>
-          <div className="grid md:grid-cols-3 gap-4">
+          <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {PLANS.map((p) => {
               const active = selected === p.id;
               return (
@@ -98,10 +99,23 @@ export function CheckoutForm({ memorial }: { memorial: Memorial }) {
                   <h3 className="font-serif text-2xl text-pizarra-800 mb-1">{p.name}</h3>
                   <p className="text-xs text-pizarra-500 italic mb-5">{p.tagline}</p>
 
-                  <div className="flex items-baseline gap-1 mb-5">
+                  <div className="flex items-baseline gap-1 mb-2">
                     <span className="font-serif text-4xl text-pizarra-800">{formatMXN(p.priceMXN)}</span>
                     <span className="text-xs text-pizarra-400 uppercase tracking-widest">MXN</span>
                   </div>
+
+                  {/* Duración del memorial — crítico para que el usuario
+                      entienda que el plan trial NO es permanente. */}
+                  <p
+                    className={cn(
+                      'text-[10px] uppercase tracking-widest mb-4',
+                      p.durationDays
+                        ? 'text-dorado-700 font-medium'
+                        : 'text-pizarra-400',
+                    )}
+                  >
+                    {p.durationDays ? `Duración: ${p.durationDays} días` : 'Permanente'}
+                  </p>
 
                   <ul className="space-y-2 mb-2">
                     {p.includes.map((feat) => (

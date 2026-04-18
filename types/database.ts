@@ -28,6 +28,10 @@ export interface Memorial {
   ar_video_url: string | null;
   ar_model_url: string | null;
   view_count: number;
+  /** Fecha en que el memorial deja de ser visible públicamente.
+   *  null = permanente (digital/artístico/eterno). Se llena con now()+30d
+   *  cuando se paga el plan trial_mensual. */
+  expires_at: string | null;
   created_at: string;
   updated_at: string;
 }
