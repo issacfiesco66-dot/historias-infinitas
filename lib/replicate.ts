@@ -130,14 +130,25 @@ export async function generateArtisticPortrait(input: GenerateArtisticPortraitIn
  * ========================================================================== */
 
 /**
- * Modelo por defecto — SVD XT 1.1, oficial de Stability AI en Replicate.
- * Se puede cambiar vía `REPLICATE_VIDEO_MODEL` (ej: minimax/video-01-live).
+ * Modelo por defecto — MiniMax video-01-live.
  *
- * IMPORTANTE: los modelos de Replicate rechazan inputs que no conocen con
- * un 422. Por eso detectamos la familia del modelo y mandamos SOLO los
- * campos que ese modelo acepta.
+ * Por qué: está entrenado específicamente para "still portrait → subtle
+ * motion" (respiración, parpadeo, micro-expresiones) preservando la
+ * identidad facial. Es EXACTAMENTE lo que queremos para un retrato de
+ * memorial. SVD da más artefactos en rostros humanos/mascotas.
+ *
+ * Coste: ~$0.50 USD por generación (2-4 s de video). Con $9 de crédito
+ * alcanza para ~18 animaciones.
+ *
+ * Reemplazable vía `REPLICATE_VIDEO_MODEL`. Alternativas probadas:
+ *   · minimax/video-01            (más genérico, img o texto)
+ *   · kwaivgi/kling-v2.0          (Kling 2, excelente para humanos)
+ *   · bytedance/seedance-1-pro    (Bytedance Seedance)
+ *
+ * IMPORTANTE: cada modelo tiene su propio schema de input. Detectamos
+ * la familia abajo y mandamos solo los campos válidos.
  */
-const DEFAULT_VIDEO_MODEL = 'stability-ai/stable-video-diffusion-img2vid-xt-1-1';
+const DEFAULT_VIDEO_MODEL = 'minimax/video-01-live';
 const VIDEO_MODEL = (process.env.REPLICATE_VIDEO_MODEL || DEFAULT_VIDEO_MODEL) as `${string}/${string}`;
 
 export interface AnimatePortraitInput {
