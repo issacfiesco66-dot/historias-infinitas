@@ -93,6 +93,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
   const [uploading, setUploading] = useState(false);
   const [arUploading, setArUploading] = useState(false);
   const [arFrameGenerating, setArFrameGenerating] = useState(false);
+  const [animatingPortrait, setAnimatingPortrait] = useState(false);
   const [generating, setGenerating] = useState(false);
   const [generationSource, setGenerationSource] = useState<string | null>(null);
   const [saveState, setSaveState] = useState<SaveState>('idle');
@@ -265,6 +266,32 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
       setToast(err.message ?? 'Error al generar cuadro AR');
     } finally {
       setArFrameGenerating(false);
+    }
+  }
+
+  // ---------------- ANIMAR retrato (foto → video) ----------------
+  async function onAnimatePortrait() {
+    const source = portraitUrl ?? coverUrl;
+    if (!source) {
+      setToast('Sube una foto o genera el retrato IA antes.');
+      return;
+    }
+    setAnimatingPortrait(true);
+    setToast(null);
+    try {
+      const res = await fetch('/api/ai/animate-portrait', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ memorialId: memorial.id, imageUrl: source }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Error al animar el retrato');
+      setArVideoUrl(data.ar_video_url);
+      setToast('Retrato animado · ya se reproduce en el Portal AR');
+    } catch (err: any) {
+      setToast(err.message ?? 'Error al animar el retrato');
+    } finally {
+      setAnimatingPortrait(false);
     }
   }
 
@@ -778,16 +805,50 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
 
                   <hr className="border-pizarra-100" />
 
-                  {/* ====== VIDEO AR (secundario, opcional) ====== */}
+                  {/* ====== RETRATO ANIMADO (foto → video IA) ====== */}
+                  <section className="space-y-4">
+                    <div>
+                      <div className="flex items-center gap-2 mb-1 text-pizarra-500">
+                        <Sparkles className="h-4 w-4" />
+                        <span className="uppercase tracking-widest text-xs">Retrato animado</span>
+                      </div>
+                      <p className="text-sm text-pizarra-500">
+                        Un video corto (2-4 s) del retrato "cobrando vida": respiración,
+                        parpadeo y una sonrisa sutil. Se reproduce dentro del Portal de Recuerdos
+                        cuando alguien escanea el QR del memorial.
+                      </p>
+                    </div>
+
+                    <Button
+                      type="button"
+                      variant="dorado"
+                      onClick={onAnimatePortrait}
+                      disabled={animatingPortrait || (!portraitUrl && !coverUrl)}
+                      className="w-full sm:w-auto"
+                    >
+                      {animatingPortrait ? (
+                        <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Animando retrato (~1-2 min)…</>
+                      ) : arVideoUrl ? (
+                        <><Wand2 className="h-4 w-4 mr-2" /> Regenerar animación</>
+                      ) : (
+                        <><Wand2 className="h-4 w-4 mr-2" /> Animar retrato con IA</>
+                      )}
+                    </Button>
+                  </section>
+
+                  <hr className="border-pizarra-100" />
+
+                  {/* ====== VIDEO AR (subida manual, alternativa) ====== */}
                   <section className="space-y-4">
                     <div>
                       <div className="flex items-center gap-2 mb-1 text-pizarra-500">
                         <Film className="h-4 w-4" />
-                        <span className="uppercase tracking-widest text-xs">Video recuerdo (opcional)</span>
+                        <span className="uppercase tracking-widest text-xs">O sube tu propio video</span>
                       </div>
                       <p className="text-sm text-pizarra-500">
-                        Sube un video corto (máximo <strong>15 MB</strong>) que se mostrará como recuerdo
-                        dentro del Portal AR.
+                        Si tienes un video personal que prefieres usar como recuerdo
+                        (máximo <strong>15 MB</strong>), súbelo aquí y reemplazará al
+                        retrato animado.
                       </p>
                     </div>
 

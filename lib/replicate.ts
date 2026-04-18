@@ -113,3 +113,63 @@ export async function generateArtisticPortrait(input: GenerateArtisticPortraitIn
 
   return { url, prompt, style };
 }
+
+/* ============================================================================
+ *  Animación de retrato — image-to-video para "retrato que respira"
+ *
+ *  Caso de uso: los memoriales en móvil fallaban en Scene Viewer (AR nativo)
+ *  con el cuadro plano. Un video corto (2-4 s) del retrato cobrando vida
+ *  —parpadeo, respiración, sonrisa sutil— tiene más impacto emocional y
+ *  reproduce en el 100 % de los dispositivos via HTML5 <video>.
+ *
+ *  Modelo por defecto: stable-video-diffusion. Reemplazable vía
+ *  REPLICATE_VIDEO_MODEL para probar alternativas (minimax, kling, runway)
+ *  sin tocar código.
+ *
+ *  Coste: ~$0.30-0.70 USD por generación (ver análisis de costos en CLAUDE.md).
+ * ========================================================================== */
+
+const DEFAULT_VIDEO_MODEL = 'stability-ai/stable-video-diffusion';
+const VIDEO_MODEL = (process.env.REPLICATE_VIDEO_MODEL || DEFAULT_VIDEO_MODEL) as `${string}/${string}`;
+
+export interface AnimatePortraitInput {
+  imageUrl: string;
+  subject?: string | null;
+}
+
+export async function animatePortrait({ imageUrl, subject }: AnimatePortraitInput) {
+  // Input por modelo. El API de Replicate acepta ambos formatos —
+  // los modelos ignoran campos que no reconocen, así que pasamos los dos.
+  const motionPrompt = subject
+    ? `A reverent memorial portrait of ${subject} softly coming to life. Subtle natural breathing, gentle eye blink, warm expression. Preserve every facial feature exactly. Cinematic stillness, no camera motion.`
+    : 'A reverent memorial portrait softly coming to life with subtle breathing and a gentle blink. Preserve every facial feature. No camera motion.';
+
+  const output = await replicate.run(VIDEO_MODEL, {
+    input: {
+      // SVD (stability-ai/stable-video-diffusion)
+      input_image: imageUrl,
+      video_length: '25_frames_with_svd_xt',
+      sizing_strategy: 'maintain_aspect_ratio',
+      frames_per_second: 6,
+      motion_bucket_id: 80,
+      cond_aug: 0.02,
+      // Minimax video-01-live / Kling — ignorados por SVD
+      first_frame_image: imageUrl,
+      prompt: motionPrompt,
+      prompt_optimizer: true,
+    },
+  });
+
+  let url: string;
+  if (typeof output === 'string') {
+    url = output;
+  } else if (Array.isArray(output)) {
+    url = output[0] as unknown as string;
+  } else if (output && typeof (output as any).url === 'function') {
+    url = (output as any).url();
+  } else {
+    url = String(output);
+  }
+
+  return { url, prompt: motionPrompt, model: VIDEO_MODEL };
+}
