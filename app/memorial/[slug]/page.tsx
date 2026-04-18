@@ -13,8 +13,11 @@ import type { Memorial, MemorialMedia } from '@/types/database';
 
 interface Props { params: { slug: string } }
 
-// ISR — revalidación cada 60 s. Primera visita SSR; siguientes, cache estático.
-export const revalidate = 60;
+// ISR — 5 s. Breve para que el asset AR aparezca rápido en el móvil después
+// de generarlo desde el dashboard (complementa el revalidatePath explícito
+// que lanza /api/ar/generate-frame). A 5 s el tráfico a la DB sigue siendo
+// mínimo (una consulta cada 5 s por slug).
+export const revalidate = 5;
 
 /* ============================================================================
  *  OG / SEO — WhatsApp, Facebook, iMessage, Twitter.
