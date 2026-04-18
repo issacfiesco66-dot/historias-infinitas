@@ -19,9 +19,31 @@
 -- =========================================================================
 
 /* ------------------------------------------------------------------------
- * 1. Fijar search_path en touch_updated_at (defensa en profundidad)
+ * 1. Fijar search_path en touch_updated_at (y en cualquier SECURITY DEFINER
+ *    sin search_path estable). Idempotente: si la función no existe, no falla.
+ *
+ *    Hacemos lookup dinámico porque la firma exacta puede variar entre
+ *    despliegues (y porque algunas DBs tienen overloads).
  * ---------------------------------------------------------------------- */
-alter function public.touch_updated_at() set search_path = public, pg_catalog;
+do $fix_function_search_path$
+declare
+  r record;
+begin
+  for r in
+    select p.oid::regprocedure::text as sig
+    from pg_proc p
+    join pg_namespace n on n.oid = p.pronamespace
+    where n.nspname = 'public'
+      and p.proname in (
+        'touch_updated_at',
+        'link_partner_on_signup',
+        'consume_partner_credit'
+      )
+  loop
+    execute format('alter function %s set search_path = public, pg_catalog', r.sig);
+  end loop;
+end
+$fix_function_search_path$;
 
 /* ------------------------------------------------------------------------
  * 2. Dropear las SELECT policies legacy del bucket `memorials`.
