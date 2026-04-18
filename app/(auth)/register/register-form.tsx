@@ -24,10 +24,31 @@ export default function RegisterForm() {
     setLoading(true);
     setError(null);
     const form = new FormData(e.currentTarget);
+    const email = String(form.get('email'));
+    const password = String(form.get('password'));
+
+    // 1. Check fuerza + HIBP (k-anonymity, server-side)
+    try {
+      const checkRes = await fetch('/api/auth/check-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password }),
+      });
+      const check = await checkRes.json();
+      if (!check.ok) {
+        setLoading(false);
+        return setError(check.hint ?? 'Elige un password más seguro.');
+      }
+    } catch {
+      // Failure-open: si nuestro endpoint falla, continuamos. Supabase
+      // aplicará sus propias reglas de fuerza.
+    }
+
+    // 2. Registro
     const supabase = createClient();
     const { error } = await supabase.auth.signUp({
-      email: String(form.get('email')),
-      password: String(form.get('password')),
+      email,
+      password,
       options: {
         data: { full_name: String(form.get('full_name')) },
         emailRedirectTo: `${location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`,
@@ -76,7 +97,14 @@ export default function RegisterForm() {
         </div>
         <div className="space-y-2">
           <Label htmlFor="password">Contraseña</Label>
-          <Input id="password" name="password" type="password" placeholder="mínimo 8 caracteres" minLength={8} required />
+          <Input
+            id="password"
+            name="password"
+            type="password"
+            placeholder="12+ caracteres con mayúscula, minúscula y número"
+            minLength={12}
+            required
+          />
         </div>
 
         {error && (

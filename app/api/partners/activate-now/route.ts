@@ -3,6 +3,7 @@ import { randomBytes } from 'crypto';
 import Stripe from 'stripe';
 import { createAdminClient } from '@/lib/supabase/admin';
 import { getPartnerPlan, type PartnerPlanId } from '@/lib/partner-plans';
+import { isPasswordPwned } from '@/lib/password/pwned';
 
 export const runtime = 'nodejs';
 export const dynamic = 'force-dynamic';
@@ -100,6 +101,18 @@ export async function POST(req: Request) {
         {
           error: 'password_debil',
           hint: 'Usa 12+ caracteres con mayúscula, minúscula y número.',
+        },
+        { status: 400 },
+      );
+    }
+
+    // HIBP check (k-anonymity). Si HIBP está caído, continuamos (failure-open).
+    const pwn = await isPasswordPwned(password);
+    if (pwn.pwned) {
+      return NextResponse.json(
+        {
+          error: 'password_filtrado',
+          hint: `Ese password ha aparecido en ${pwn.count.toLocaleString('es-MX')} brechas públicas. Elige otro.`,
         },
         { status: 400 },
       );

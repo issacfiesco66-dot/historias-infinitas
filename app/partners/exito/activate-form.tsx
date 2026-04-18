@@ -35,9 +35,13 @@ export default function ActivateForm({ sessionId, email, businessName }: Props) 
     const password = String(form.get('password') ?? '');
     const confirm  = String(form.get('confirm')  ?? '');
 
-    if (password.length < 8) {
+    if (password.length < 12) {
       setLoading(false);
-      return setError('La contraseña debe tener al menos 8 caracteres.');
+      return setError('La contraseña debe tener al menos 12 caracteres.');
+    }
+    if (!/[a-z]/.test(password) || !/[A-Z]/.test(password) || !/\d/.test(password)) {
+      setLoading(false);
+      return setError('Incluye mayúscula, minúscula y al menos un número.');
     }
     if (password !== confirm) {
       setLoading(false);
@@ -56,7 +60,7 @@ export default function ActivateForm({ sessionId, email, businessName }: Props) 
         return setError(
           data?.error === 'cuenta_no_activa'
             ? 'Tu cuenta no está activa. Escríbenos a hola@historias-infinitas.com.'
-            : data?.detail ?? data?.error ?? 'No pudimos crear tu acceso.',
+            : data?.hint ?? data?.error ?? 'No pudimos crear tu acceso.',
         );
       }
 
@@ -97,8 +101,8 @@ export default function ActivateForm({ sessionId, email, businessName }: Props) 
           id="password"
           name="password"
           type="password"
-          placeholder="Mínimo 8 caracteres"
-          minLength={8}
+          placeholder="12+ con mayúscula, minúscula y número"
+          minLength={12}
           required
         />
       </div>
@@ -109,7 +113,7 @@ export default function ActivateForm({ sessionId, email, businessName }: Props) 
           name="confirm"
           type="password"
           placeholder="Repítela"
-          minLength={8}
+          minLength={12}
           required
         />
       </div>
