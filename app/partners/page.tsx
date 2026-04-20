@@ -220,7 +220,7 @@ export default async function PartnersPage({
                     {/* CTA: ver demo del nicho virtual en vivo */}
                     <div className="mt-6 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
                       <Link
-                        href={process.env.NEXT_PUBLIC_HI_DEMO_MEMORIAL_URL ?? 'https://historias-infinitas.com/m/ejemplo'}
+                        href={process.env.NEXT_PUBLIC_HI_DEMO_MEMORIAL_URL ?? 'https://historias-infinitas.com/memorial/rosa-y-fernando-ket9rc'}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-2 rounded-xl bg-pizarra-900 text-marfil px-5 py-2.5 text-sm font-semibold hover:bg-pizarra-800 transition-colors shadow-solemn"
