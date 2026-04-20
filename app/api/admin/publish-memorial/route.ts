@@ -98,9 +98,15 @@ export async function POST(req: Request) {
   }
 
   // 3. Registrar orden "gratis por admin"
+  //    El prefijo `admin_free_` en stripe_session_id es el marcador auditable
+  //    — queda único (columna UNIQUE) y filtrable. No se usa columna `note`
+  //    porque el schema canónico de orders no la tiene.
   const fakeSessionId = `admin_free_${randomBytes(12).toString('hex')}`;
   const now = new Date();
-  const orderInsert: Record<string, unknown> = {
+
+  void adminNote; // No lo persistimos; el prefijo del session_id basta para auditar.
+
+  const { error: orderErr } = await admin.from('orders').insert({
     user_id: memorial.owner_id,
     memorial_id: memorial.id,
     stripe_session_id: fakeSessionId,
@@ -110,27 +116,13 @@ export async function POST(req: Request) {
     status: 'paid',
     has_ar_addon: addAr,
     slug_memorial: memorial.slug,
-    note: `[admin_publish by=${user.email} at=${now.toISOString()}]${adminNote ? ' ' + adminNote : ''}`,
-  };
-
-  // Si el addon AR existe como línea separada en tu esquema, documentamos el costo cero
-  if (addAr) orderInsert.ar_addon_amount = 0;
-
-  const { error: orderErr } = await admin.from('orders').insert(orderInsert);
+  });
   if (orderErr) {
-    // Si la columna `note` no existe en tu esquema, reintentar sin ella
-    if (String(orderErr.message ?? '').toLowerCase().includes('note')) {
-      const { note: _unused, ...without } = orderInsert as Record<string, unknown> & { note?: string };
-      void _unused;
-      const retry = await admin.from('orders').insert(without);
-      if (retry.error) {
-        console.error('[admin/publish-memorial] insert retry falló:', retry.error.message);
-        return NextResponse.json({ error: 'insert_orden_fallido' }, { status: 500 });
-      }
-    } else {
-      console.error('[admin/publish-memorial] insert falló:', orderErr.message);
-      return NextResponse.json({ error: 'insert_orden_fallido', detail: orderErr.message }, { status: 500 });
-    }
+    console.error('[admin/publish-memorial] insert orders falló:', orderErr.message);
+    return NextResponse.json(
+      { error: 'insert_orden_fallido', detail: orderErr.message },
+      { status: 500 },
+    );
   }
 
   // 4. Marcar memorial como publicado con plan
