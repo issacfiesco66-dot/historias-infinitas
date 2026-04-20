@@ -44,7 +44,17 @@ export default function NewMemorialPage() {
     <div className="max-w-3xl mx-auto">
       <p className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-2">Paso 1 de 3</p>
       <h1 className="font-serif text-4xl text-pizarra-800 mb-2">Crea el nicho virtual</h1>
-      <p className="text-pizarra-500 mb-10">Los datos esenciales. Podrás añadir fotos e IA después.</p>
+      <p className="text-pizarra-500 mb-6">Los datos esenciales. Podrás añadir fotos e IA después.</p>
+
+      {/* Transparencia de precio — evita el "bait-and-switch" emocional en checkout */}
+      <div className="mb-10 rounded-xl bg-dorado-50 border border-dorado-200 px-5 py-4 text-sm text-pizarra-700 leading-relaxed">
+        <p>
+          <strong className="text-pizarra-900">Crear es gratis.</strong>{' '}
+          Para publicar con URL permanente y QR, eliges plan{' '}
+          <strong className="text-dorado-700">desde $299 MXN</strong>{' '}
+          — un único pago, sin suscripciones.
+        </p>
+      </div>
 
       <form onSubmit={onSubmit} className="space-y-8">
         {/* TIPO */}

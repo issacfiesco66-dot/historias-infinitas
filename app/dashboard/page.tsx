@@ -67,7 +67,7 @@ export default async function DashboardHome() {
                     <div className="absolute inset-0 bg-pizarra-900/50 flex items-center justify-center">
                       <div className="flex items-center gap-2 bg-marfil/95 rounded-full px-4 py-1.5 text-xs text-pizarra-700 shadow">
                         <Lock className="h-3.5 w-3.5 text-dorado-600" />
-                        Borrador — no público
+                        Borrador · publica desde $299
                       </div>
                     </div>
                   )}

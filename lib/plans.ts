@@ -27,33 +27,14 @@ export interface Plan {
   includes: string[];
 }
 
+/**
+ * Orden intencional: el plan "popular" (Artístico) PRIMERO para que sea lo
+ * que el ojo del usuario en duelo vea antes. Eterno después como upsell de
+ * premium. Digital como opción de entrada accesible. Trial al FINAL —
+ * visualmente de-enfatizado porque es emocionalmente riesgoso (el memorial
+ * caduca a los 30 días) y queremos que sea la última opción, no la primera.
+ */
 export const PLANS: readonly Plan[] = [
-  {
-    id: 'trial_mensual',
-    name: 'Mes de Prueba',
-    tagline: 'Un mes para despedirse, sin compromiso.',
-    priceMXN: 100,
-    durationDays: 30,
-    includes: [
-      'QR único con URL activa 30 días',
-      'Galería de fotografías',
-      'Biografía y epitafio',
-      'Opción de extender a plan permanente antes de vencer',
-    ],
-  },
-  {
-    id: 'digital',
-    name: 'Digital',
-    tagline: 'Un hogar sereno en internet.',
-    priceMXN: 299,
-    durationDays: null,
-    includes: [
-      'QR único con URL permanente',
-      'Hosting eterno del memorial',
-      'Galería de fotografías',
-      'Biografía y epitafio',
-    ],
-  },
   {
     id: 'artistico',
     name: 'Artístico',
@@ -79,6 +60,32 @@ export const PLANS: readonly Plan[] = [
       'Placa física en acero inoxidable',
       'Grabado del QR con acabado dorado',
       'Envío a todo México sin costo',
+    ],
+  },
+  {
+    id: 'digital',
+    name: 'Digital',
+    tagline: 'Un hogar sereno en internet.',
+    priceMXN: 299,
+    durationDays: null,
+    includes: [
+      'QR único con URL permanente',
+      'Hosting eterno del memorial',
+      'Galería de fotografías',
+      'Biografía y epitafio',
+    ],
+  },
+  {
+    id: 'trial_mensual',
+    name: 'Mes de Prueba',
+    tagline: 'Un mes para despedirse, sin compromiso.',
+    priceMXN: 100,
+    durationDays: 30,
+    includes: [
+      'QR único con URL activa 30 días',
+      'Galería de fotografías',
+      'Biografía y epitafio',
+      'Opción de extender a plan permanente antes de vencer',
     ],
   },
 ] as const;

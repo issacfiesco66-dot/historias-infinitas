@@ -353,7 +353,9 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
           <span className="hidden md:inline h-5 w-px bg-pizarra-100" />
           <span className="text-xs uppercase tracking-widest text-pizarra-500 flex items-center gap-1">
             {locked ? <Globe className="h-3.5 w-3.5 text-green-600" /> : <Lock className="h-3.5 w-3.5" />}
-            {locked ? 'Activo y público · sigue editando cuando quieras' : 'Borrador privado · se activa al pagar'}
+            {locked
+              ? 'Activo y público · sigue editando cuando quieras'
+              : <>Borrador privado · publica <span className="text-dorado-700 font-medium normal-case">desde $299 MXN</span></>}
           </span>
         </div>
 
