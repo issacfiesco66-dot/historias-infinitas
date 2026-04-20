@@ -216,6 +216,21 @@ export default async function PartnersPage({
                       que cobrarías por una placa física, pero con un servicio que dura para
                       siempre y te trae recomendaciones por años.
                     </p>
+
+                    {/* CTA: ver demo del nicho virtual en vivo */}
+                    <div className="mt-6 flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+                      <Link
+                        href={process.env.NEXT_PUBLIC_HI_DEMO_MEMORIAL_URL ?? 'https://historias-infinitas.com/m/ejemplo'}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 rounded-xl bg-pizarra-900 text-marfil px-5 py-2.5 text-sm font-semibold hover:bg-pizarra-800 transition-colors shadow-solemn"
+                      >
+                        👁 Ver un nicho virtual real
+                      </Link>
+                      <span className="text-xs text-pizarra-900/70">
+                        (así se ve lo que entregas a cada familia — con tu logo)
+                      </span>
+                    </div>
                   </div>
                 </div>
               </CardContent>

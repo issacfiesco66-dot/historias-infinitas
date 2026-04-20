@@ -2,9 +2,10 @@
 
 import { useMemo, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useRouter } from 'next/navigation';
 import {
   Check, ShieldCheck, Sparkles, Lock, Loader2, ArrowRight, Star,
-  ScanLine, Infinity as InfinityIcon, Award, Clock,
+  ScanLine, Infinity as InfinityIcon, Award, Clock, Zap,
 } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -23,10 +24,12 @@ const PLAN_ICONS: Record<PlanId, React.ReactNode> = {
   eterno:        <Award className="h-5 w-5" />,
 };
 
-export function CheckoutForm({ memorial }: { memorial: Memorial }) {
+export function CheckoutForm({ memorial, isAdmin = false }: { memorial: Memorial; isAdmin?: boolean }) {
+  const router = useRouter();
   const [selected, setSelected] = useState<PlanId>('artistico');
   const [addAr, setAddAr] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [adminSubmitting, setAdminSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const plan = useMemo(() => PLANS.find((p) => p.id === selected)!, [selected]);
@@ -51,6 +54,33 @@ export function CheckoutForm({ memorial }: { memorial: Memorial }) {
     } catch (err: any) {
       setError(err.message);
       setSubmitting(false);
+    }
+  }
+
+  async function onAdminPublish() {
+    const confirmMsg = `¿Publicar "${memorial.name}" GRATIS como admin con plan ${plan.name}${addAr ? ' + Portal AR' : ''}? Queda registrado en orders con nota admin_publish.`;
+    if (!window.confirm(confirmMsg)) return;
+    setAdminSubmitting(true);
+    setError(null);
+    try {
+      const res = await fetch('/api/admin/publish-memorial', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          memorialId: memorial.id,
+          planId: selected,
+          addArPortal: addAr,
+          note: `demo/testing · plan ${plan.name}${addAr ? ' + AR' : ''}`,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok || !data.ok) {
+        throw new Error(data.error ?? data.detail ?? 'No se pudo publicar');
+      }
+      router.push(`/dashboard/memorial/${memorial.id}/checkout/exito?admin_publish=1`);
+    } catch (err: any) {
+      setError(err.message);
+      setAdminSubmitting(false);
     }
   }
 
@@ -319,6 +349,35 @@ export function CheckoutForm({ memorial }: { memorial: Memorial }) {
               <p className="mt-3 text-xs text-red-600 bg-red-50 border border-red-200 rounded-md p-2 text-center">
                 {error}
               </p>
+            )}
+
+            {/* ── Admin bypass — solo para emails en ADMIN_EMAILS ──── */}
+            {isAdmin && (
+              <div className="mt-6 rounded-xl border border-dashed border-pizarra-400 bg-pizarra-900 text-marfil p-4">
+                <div className="flex items-start gap-2 mb-3">
+                  <Zap className="h-4 w-4 text-dorado-400 mt-0.5 shrink-0" />
+                  <div className="text-[11px] leading-relaxed">
+                    <p className="font-bold text-dorado-300 mb-0.5">Publicación admin (gratis)</p>
+                    <p className="text-marfil/70">
+                      Publica este nicho con el plan seleccionado <strong>sin cobro</strong>. Se
+                      registra en <code className="px-1 rounded bg-pizarra-700">orders</code> con
+                      nota <em>admin_publish</em>. Útil para demos y casos de éxito.
+                    </p>
+                  </div>
+                </div>
+                <Button
+                  onClick={onAdminPublish}
+                  disabled={adminSubmitting || submitting}
+                  size="sm"
+                  className="w-full bg-dorado-500 hover:bg-dorado-600 text-pizarra-900"
+                >
+                  {adminSubmitting ? (
+                    <><Loader2 className="h-3 w-3 mr-2 animate-spin" /> Publicando…</>
+                  ) : (
+                    <><Zap className="h-3 w-3 mr-2" /> Publicar gratis ({plan.name}{addAr ? ' + AR' : ''})</>
+                  )}
+                </Button>
+              </div>
             )}
           </CardContent>
         </Card>

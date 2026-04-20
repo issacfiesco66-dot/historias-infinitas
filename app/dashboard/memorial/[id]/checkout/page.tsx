@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { notFound, redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { CheckoutForm } from './checkout-form';
+import { isAdminEmail } from '@/lib/admin';
 import type { Memorial } from '@/types/database';
 
 interface Props { params: { id: string } }
@@ -44,7 +45,7 @@ export default async function CheckoutPage({ params }: Props) {
         </p>
       </div>
 
-      <CheckoutForm memorial={memorial as Memorial} />
+      <CheckoutForm memorial={memorial as Memorial} isAdmin={isAdminEmail(user.email)} />
     </div>
   );
 }
