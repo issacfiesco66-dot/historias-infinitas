@@ -40,12 +40,16 @@ const supabaseCsp = supabaseHost ? `https://${supabaseHost}` : 'https://*.supaba
 // errores aunque la app funcione. Es de Vercel, seguro permitirlo.
 const vercelLive = 'https://vercel.live https://*.pusher.com wss://*.pusher.com';
 // Google Tag Manager + Google Ads (gtag.js) para tracking de conversiones.
-// Dominios documentados por Google para CSP en
-// https://developers.google.com/tag-platform/security/guides/csp
-const googleTagScripts = 'https://www.googletagmanager.com';
-const googleTagConnect = 'https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://stats.g.doubleclick.net';
+// Dominios documentados por Google en:
+//   https://developers.google.com/tag-platform/security/guides/csp
+//   https://support.google.com/google-ads/answer/7521497 (enhanced conversions)
+// Google Ads inyecta scripts dinámicamente desde googleads.g.doubleclick.net
+// y googleadservices.com (deben estar en script-src, no solo frame-src), y
+// envía beacons a www.google.com/ccm/* para conversiones avanzadas.
+const googleTagScripts = 'https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net';
+const googleTagConnect = 'https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://stats.g.doubleclick.net https://www.google.com https://www.google.com.mx';
 const googleTagImages  = 'https://www.google-analytics.com https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://*.g.doubleclick.net https://www.google.com https://www.google.com.mx';
-const googleTagFrames  = 'https://td.doubleclick.net https://bid.g.doubleclick.net';
+const googleTagFrames  = 'https://td.doubleclick.net https://bid.g.doubleclick.net https://www.googletagmanager.com';
 const csp = [
   `default-src 'self'`,
   `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ajax.googleapis.com https://js.stripe.com ${googleTagScripts} ${vercelLive}`,
