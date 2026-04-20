@@ -3,12 +3,19 @@ import { VerticalLanding } from '../vertical-landing';
 import { Heart, TrendingUp, HeartHandshake, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Memoriales digitales para Hospicios y Cuidados Paliativos — Historias Infinitas',
+  title: 'Nichos Virtuales para Hospicios y Cuidados Paliativos — Historias Infinitas',
   description:
-    'Un regalo para las familias que acompañan a un ser querido en sus últimos días. Memorial digital con biografía, retrato IA y QR — con el logo de tu hospicio. Desde $999 MXN.',
-  alternates: { canonical: '/para-hospicios' },
+    'Un regalo para las familias que acompañan a un ser querido en sus últimos días. Nicho Virtual con biografía, retrato IA y QR — con el logo de tu hospicio. Desde $999 MXN.',
+  alternates: {
+    canonical: '/para-hospicios',
+    languages: {
+      'es-MX': '/para-hospicios',
+      'en-US': '/en/for-hospices',
+      'x-default': '/para-hospicios',
+    },
+  },
   keywords: [
-    'hospicio memorial digital',
+    'hospicio nicho virtual',
     'cuidados paliativos México',
     'legado digital hospicio',
     'preservar historia adulto mayor',
@@ -17,7 +24,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Un legado digital — para Hospicios y Cuidados Paliativos',
     description:
-      'Acompaña a cada familia con un memorial digital que preserva la historia, la voz y el retrato de su ser querido.',
+      'Acompaña a cada familia con un nicho virtual que preserva la historia, la voz y el retrato de su ser querido.',
     url: '/para-hospicios',
     type: 'article',
   },
@@ -38,20 +45,20 @@ export default function ParaHospiciosPage() {
           </>
         ),
         intro:
-          'En los cuidados paliativos, cada día cuenta. Ofrece a las familias un memorial digital que puedan construir con su ser querido aún presente — biografía, fotos, voz y retrato artístico por IA. Un legado que queda para siempre, con el logo de tu hospicio.',
+          'En los cuidados paliativos, cada día cuenta. Ofrece a las familias un nicho virtual que puedan construir con su ser querido aún presente — biografía, fotos, voz y retrato artístico por IA. Un legado que queda para siempre, con el logo de tu hospicio.',
         pitch: 'Una forma humana de acompañar hasta el final',
         benefits: [
           {
             icon: Heart,
             title: 'Construir juntos en vida',
             text:
-              'Invita a la familia a co-crear el memorial mientras el ser querido aún puede participar — compartir su voz, aprobar su retrato, elegir su epitafio. Terapéutico y sanador.',
+              'Invita a la familia a co-crear el nicho virtual mientras el ser querido aún puede participar — compartir su voz, aprobar su retrato, elegir su epitafio. Terapéutico y sanador.',
           },
           {
             icon: HeartHandshake,
             title: 'Tu hospicio, parte del legado',
             text:
-              'Tu logo aparece en cada memorial. Las familias asocian tu cuidado con el momento más trascendente. Diferenciación real frente a geriátricos genéricos.',
+              'Tu logo aparece en cada nicho virtual. Las familias asocian tu cuidado con el momento más trascendente. Diferenciación real frente a geriátricos genéricos.',
           },
           {
             icon: TrendingUp,
@@ -63,7 +70,7 @@ export default function ParaHospiciosPage() {
             icon: ShieldCheck,
             title: 'Ética y discreta',
             text:
-              'El memorial es privado hasta que la familia decide publicarlo. Cumplimos LFPDPPP y firmamos DPA si lo requieres. La dignidad del paciente es prioridad.',
+              'El nicho virtual es privado hasta que la familia decide publicarlo. Cumplimos LFPDPPP y firmamos DPA si lo requieres. La dignidad del paciente es prioridad.',
           },
         ],
         testimonial: {
@@ -73,16 +80,16 @@ export default function ParaHospiciosPage() {
         },
         faqs: [
           {
-            q: '¿Qué pasa si el ser querido fallece antes de terminar el memorial?',
-            a: 'El memorial se puede completar en cualquier momento — la familia conserva el acceso. También se pueden añadir fotos y videos post-facto. No hay plazo para publicar.',
+            q: '¿Qué pasa si el ser querido fallece antes de terminar el nicho virtual?',
+            a: 'El nicho virtual se puede completar en cualquier momento — la familia conserva el acceso. También se pueden añadir fotos y videos post-facto. No hay plazo para publicar.',
           },
           {
             q: '¿Hay apoyo psicológico o sólo herramienta técnica?',
-            a: 'Nosotros somos la herramienta técnica. Recomendamos que el memorial se integre a tu programa de acompañamiento emocional. Te compartimos el guion de conversación que hemos probado con familias.',
+            a: 'Nosotros somos la herramienta técnica. Recomendamos que el nicho virtual se integre a tu programa de acompañamiento emocional. Te compartimos el guion de conversación que hemos probado con familias.',
           },
           {
             q: '¿Podemos pre-pagar por varios pacientes a la vez?',
-            a: 'Sí, ese es exactamente el modelo de los planes partner. Con el Pack 30 ($4,999 MXN) obtienes 30 memoriales + 5 placas físicas con tu logo, válidos 12 meses.',
+            a: 'Sí, ese es exactamente el modelo de los planes partner. Con el Pack 30 ($4,999 MXN) obtienes 30 nichos virtuales + 5 placas físicas con tu logo, válidos 12 meses.',
           },
           {
             q: '¿Funciona para enfermedades degenerativas (Alzheimer, etc.)?',

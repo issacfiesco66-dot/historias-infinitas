@@ -24,14 +24,14 @@ export default async function DashboardHome() {
       <div className="flex items-start justify-between flex-wrap gap-4">
         <div>
           <p className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-2">Panel privado</p>
-          <h1 className="font-serif text-4xl text-pizarra-800">Mis Memoriales</h1>
+          <h1 className="font-serif text-4xl text-pizarra-800">Mis Nichos Virtuales</h1>
           <p className="text-pizarra-500 mt-2">
             Gestiona los santuarios digitales que has creado.
           </p>
         </div>
         <Button asChild variant="dorado" size="lg">
           <Link href="/dashboard/new">
-            <PlusCircle className="h-4 w-4 mr-2" /> Nuevo memorial
+            <PlusCircle className="h-4 w-4 mr-2" /> Nuevo nicho virtual
           </Link>
         </Button>
       </div>
@@ -42,10 +42,10 @@ export default async function DashboardHome() {
             <Sparkles className="h-7 w-7 text-dorado-600" />
           </div>
           <h2 className="font-serif text-2xl text-pizarra-800 mb-2">
-            Aún no tienes memoriales
+            Aún no tienes nichos virtuales
           </h2>
           <p className="text-pizarra-500 mb-6 max-w-md mx-auto">
-            Da vida a un recuerdo eterno. Crea tu primer memorial con fotografías, IA y AR.
+            Da vida a un recuerdo eterno. Crea tu primer nicho virtual con fotografías, IA y AR.
           </p>
           <Button asChild variant="dorado">
             <Link href="/dashboard/new">Crear el primero</Link>

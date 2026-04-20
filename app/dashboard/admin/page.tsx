@@ -103,6 +103,7 @@ export default async function AdminPage() {
     buyerEmail: profByUid.get(r.user_id)?.email ?? '—',
     buyerName: profByUid.get(r.user_id)?.full_name ?? null,
     existingCarrier: r.shipping_address?.carrier ?? null,
+    shippingAddress: r.shipping_address ?? null,
   }));
 
   return (
@@ -117,7 +118,7 @@ export default async function AdminPage() {
           </p>
         </div>
         <Link href="/dashboard" className="text-sm text-pizarra-500 hover:text-pizarra-800">
-          ← Volver a mis memoriales
+          ← Volver a mis nichos virtuales
         </Link>
       </div>
 
@@ -130,7 +131,7 @@ export default async function AdminPage() {
           accent="dorado"
         />
         <KpiCard
-          label="Memoriales activos"
+          label="Nichos virtuales activos"
           value={(memorialsActive.count ?? 0).toLocaleString('es-MX')}
           hint="status = 'publicado'"
         />

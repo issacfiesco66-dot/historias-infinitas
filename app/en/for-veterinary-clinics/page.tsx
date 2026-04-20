@@ -24,6 +24,15 @@ export const metadata: Metadata = {
     'veterinary clinic add-on',
     'dog cat tribute',
     'veterinary aftercare revenue',
+    'pet memorial Texas',
+    'pet memorial California',
+    'pet memorial Florida',
+    'pet memorial New York',
+    'pet loss Austin',
+    'pet loss Los Angeles',
+    'pet loss Chicago',
+    'veterinary aftercare USA',
+    'animal hospital grief service',
   ],
   openGraph: {
     title: 'A dignified farewell for every pet — for Veterinary Clinics',
@@ -103,6 +112,15 @@ export default function ForVeterinaryClinicsPage() {
               a: 'Yes — stainless steel with laser engraving, weather-resistant. Standard 6×6 cm, perfect for urns, pet collars or garden stones. US/Canada shipping included.',
             },
           ],
+          deepContent: {
+            heading: 'Why every veterinary clinic in the US should offer a real pet loss aftercare service',
+            paragraphs: [
+              'The US pet industry processes over 2 million veterinary euthanasia procedures each year across Texas, California, Florida, New York, Illinois and every other state. Most families leave the animal hospital with an urn or a cardboard box — and with an emotional gap that no one helps them close. Historias Infinitas turns that moment into one of the most memorable parts of the service: a digital memorial with AI-generated artistic portrait, pet biography, photo gallery and a printable QR code the family keeps forever.',
+              'The operational flow is simple for your clinic: at the moment of cremation pickup or as part of the euthanasia follow-up, your team hands the family a card with the QR (or a laser-engraved stainless steel plate with our Eternal plan). They scan, fill in their pet\'s details — dogs, cats, birds, rabbits, reptiles or any species — and in minutes they own a living memorial branded with your clinic\'s logo at the footer. Our AI model (Flux Kontext Max) preserves the pet\'s identity with high fidelity, even on rare breeds, specific markings and uncommon coat patterns.',
+              'For your clinic this is real differentiation against competing animal hospitals in Austin, Los Angeles, Chicago, Miami, Houston, Dallas, Phoenix, San Diego or wherever you practice. Very few veterinary businesses in the US offer digital grief companionship; you become the reference in your market. On top of retention, you earn 15% commission every time a family upgrades to the Artistic plan, the Eternal plan with physical plate, or adds the AR Portal — passive recurring revenue with zero operational overhead on your side.',
+              'Infrastructure is enterprise-grade: TLS everywhere, row-level security on the database, GDPR-equivalent compliance (we comply with Mexico\'s LFPDPPP which mirrors EU GDPR principles), Data Processing Agreements (DPA) available on request for your clinic\'s internal audit. Payments are processed via Stripe with US-native methods (Visa, Mastercard, Amex, Apple Pay, Google Pay). US and Canada shipping on physical plates is included in the partner packs. No monthly fees, no long-term contracts, 30-day satisfaction guarantee.',
+            ],
+          },
         }}
       />
       <SiteFooterEN />

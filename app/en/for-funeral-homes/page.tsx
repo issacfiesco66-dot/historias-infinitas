@@ -24,6 +24,14 @@ export const metadata: Metadata = {
     'memorial website service',
     'funeral home upsell',
     'grief aftercare',
+    'funeral home Texas',
+    'funeral home California',
+    'funeral home Florida',
+    'funeral home New York',
+    'funeral home Illinois',
+    'cremation services USA',
+    'memorial service digital USA',
+    'funeral aftercare software',
   ],
   openGraph: {
     title: 'Digital Memorials with your brand — for Funeral Homes',
@@ -103,6 +111,15 @@ export default function ForFuneralHomesPage() {
               a: 'Stainless steel with laser engraving of the QR and your logo. Pack 30 includes 5 plates; additional plates at $25 USD each. US/Canada shipping included.',
             },
           ],
+          deepContent: {
+            heading: 'The digital memorial service modern US funeral homes are adding to their packages',
+            paragraphs: [
+              'The American funeral industry is evolving rapidly. Families losing a loved one in Texas, California, Florida, New York, Illinois or any other state are no longer satisfied with the death certificate, the printed obituary and the traditional memorial service. They look for tangible emotional closure — something they can keep, share with family members across the country and revisit on anniversaries. Historias Infinitas is that closure: a digital memorial with QR code, AI-generated artistic portrait, written biography and a stainless steel plate engraved with laser precision, all branded with your funeral home\'s logo.',
+              'Your team delivers the memorial as part of the service with zero operational friction. We supply the ready-to-print QR PDF for memorial cards, a delivery script for presenting it respectfully during the service, and we produce and ship the physical plates across the US and Canada. Families create the memorial in minutes, upload photos, write the biography and receive a permanent URL. Your brand appears on every public memorial page forever — real attribution without any ad spend.',
+              'On the revenue side, average funeral home partners generate $500 to $2,500 USD in additional monthly commissions from family upgrades (15% of every Eternal plan or AR Portal purchase). Our Pack 30 includes 30 memorial credits, 5 engraved plates and complete onboarding for $299 USD. The Annual Pro plan offers volume pricing for funeral groups managing multiple locations in the same metro area or across states.',
+              'Our infrastructure meets the standards the funeral industry expects: TLS throughout, row-level security on the database, Data Processing Agreements (DPA) available on request, and alignment with state-level rules on death record handling. Payments go through Stripe with US-native methods (Visa, Mastercard, Amex, Discover, Apple Pay, Google Pay, ACH on request). No monthly subscriptions, no long-term contracts, and a 30-day satisfaction guarantee so you can test adoption with real families before committing further.',
+            ],
+          },
         }}
       />
       <SiteFooterEN />

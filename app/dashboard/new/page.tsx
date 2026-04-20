@@ -43,13 +43,13 @@ export default function NewMemorialPage() {
   return (
     <div className="max-w-3xl mx-auto">
       <p className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-2">Paso 1 de 3</p>
-      <h1 className="font-serif text-4xl text-pizarra-800 mb-2">Crea el memorial</h1>
+      <h1 className="font-serif text-4xl text-pizarra-800 mb-2">Crea el nicho virtual</h1>
       <p className="text-pizarra-500 mb-10">Los datos esenciales. Podrás añadir fotos e IA después.</p>
 
       <form onSubmit={onSubmit} className="space-y-8">
         {/* TIPO */}
         <div>
-          <Label>Tipo de memorial</Label>
+          <Label>Tipo de nicho virtual</Label>
           <div className="grid grid-cols-2 gap-4 mt-2">
             <TypeCard
               active={type === 'mascota'}

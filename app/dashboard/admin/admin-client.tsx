@@ -14,6 +14,17 @@ import { Label } from '@/components/ui/label';
 import { formatDate, cn } from '@/lib/utils';
 import { markAsShipped } from './actions';
 
+export interface ShippingAddress {
+  name?: string | null;
+  phone?: string | null;
+  line1?: string | null;
+  line2?: string | null;
+  city?: string | null;
+  state?: string | null;
+  postal_code?: string | null;
+  country?: string | null;
+}
+
 export interface AdminOrderRow {
   id: string;
   createdAt: string;
@@ -28,6 +39,7 @@ export interface AdminOrderRow {
   buyerEmail: string;
   buyerName: string | null;
   existingCarrier: string | null;
+  shippingAddress: ShippingAddress | null;
 }
 
 export function AdminClient({ orders }: { orders: AdminOrderRow[] }) {
@@ -51,7 +63,7 @@ export function AdminClient({ orders }: { orders: AdminOrderRow[] }) {
             <thead>
               <tr className="text-[10px] uppercase tracking-widest text-pizarra-500 bg-pizarra-50">
                 <th className="text-left px-6 py-3">Fecha</th>
-                <th className="text-left px-4 py-3">Memorial</th>
+                <th className="text-left px-4 py-3">Nicho Virtual</th>
                 <th className="text-left px-4 py-3">Comprador</th>
                 <th className="text-left px-4 py-3">Plan</th>
                 <th className="text-right px-4 py-3">Monto</th>
@@ -163,6 +175,63 @@ export function AdminClient({ orders }: { orders: AdminOrderRow[] }) {
 }
 
 /* ============================================================================
+ *  Shipping address card (dentro del modal)
+ * ========================================================================== */
+function ShippingAddressCard({ address }: { address: ShippingAddress | null }) {
+  const hasAnyField =
+    address && (address.line1 || address.city || address.postal_code || address.country);
+
+  if (!hasAnyField) {
+    return (
+      <div className="mt-5 rounded-lg border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+        <p className="font-medium flex items-center gap-2">
+          <AlertCircle className="h-4 w-4" /> Sin dirección de envío registrada
+        </p>
+        <p className="mt-1 text-amber-800">
+          Esta orden no tiene dirección (compra anterior al fix de checkout).
+          Contacta al cliente por email antes de enviar.
+        </p>
+      </div>
+    );
+  }
+
+  const { name, phone, line1, line2, city, state, postal_code, country } = address!;
+  const cityLine = [city, state, postal_code].filter(Boolean).join(', ');
+
+  function handleCopy() {
+    const full = [name, line1, line2, cityLine, country, phone && `Tel: ${phone}`]
+      .filter(Boolean)
+      .join('\n');
+    navigator.clipboard?.writeText(full).catch(() => {});
+  }
+
+  return (
+    <div className="mt-5 rounded-lg border border-pizarra-200 bg-pizarra-50 p-4 text-sm text-pizarra-700">
+      <div className="flex items-start justify-between gap-2">
+        <p className="uppercase tracking-widest text-[10px] text-pizarra-500 mb-2">
+          Enviar a
+        </p>
+        <button
+          type="button"
+          onClick={handleCopy}
+          className="text-[10px] uppercase tracking-widest text-dorado-600 hover:text-dorado-700"
+        >
+          Copiar
+        </button>
+      </div>
+      <div className="space-y-0.5 leading-snug">
+        {name && <p className="font-medium text-pizarra-800">{name}</p>}
+        {line1 && <p>{line1}</p>}
+        {line2 && <p>{line2}</p>}
+        {cityLine && <p>{cityLine}</p>}
+        {country && <p className="uppercase text-[11px] text-pizarra-500">{country}</p>}
+        {phone && <p className="mt-2 font-mono text-[12px]">☎ {phone}</p>}
+      </div>
+    </div>
+  );
+}
+
+/* ============================================================================
  *  BADGES
  * ========================================================================== */
 
@@ -267,6 +336,8 @@ function ShipModal({
                 Esto cambia la orden a <strong>shipped</strong> y notifica al cliente
                 en <span className="font-mono">{order.buyerEmail}</span>.
               </p>
+
+              <ShippingAddressCard address={order.shippingAddress} />
 
               <form onSubmit={onSubmit} className="space-y-4 mt-6">
                 <div className="space-y-2">

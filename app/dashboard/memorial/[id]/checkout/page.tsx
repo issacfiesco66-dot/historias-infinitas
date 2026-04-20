@@ -31,7 +31,7 @@ export default async function CheckoutPage({ params }: Props) {
         href={`/dashboard/memorial/${memorial.id}`}
         className="text-sm text-pizarra-500 hover:text-pizarra-800"
       >
-        ← Volver al memorial
+        ← Volver al nicho virtual
       </Link>
 
       <div>
@@ -40,7 +40,7 @@ export default async function CheckoutPage({ params }: Props) {
           Elige cómo deseas <span className="text-gradient-dorado italic">preservar esta historia</span>
         </h1>
         <p className="text-pizarra-500 mt-3 max-w-2xl">
-          Un único pago, sin suscripciones. El memorial y su QR quedan contigo para siempre.
+          Un único pago, sin suscripciones. El nicho virtual y su QR quedan contigo para siempre.
         </p>
       </div>
 

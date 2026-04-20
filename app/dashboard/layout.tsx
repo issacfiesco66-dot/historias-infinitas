@@ -4,7 +4,7 @@ import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
 import { isAdminEmail } from '@/lib/admin';
 import { Button } from '@/components/ui/button';
-import { LogOut, Home, PlusCircle, ShieldCheck, Handshake } from 'lucide-react';
+import { LogOut, Home, PlusCircle, ShieldCheck, Handshake, UserCog } from 'lucide-react';
 
 // Área privada — nunca indexar
 export const metadata: Metadata = {
@@ -43,10 +43,13 @@ export default async function DashboardLayout({ children }: { children: React.Re
           </Link>
           <nav className="hidden md:flex items-center gap-6 text-sm text-pizarra-600">
             <Link href="/dashboard" className="hover:text-pizarra-900 flex items-center gap-1">
-              <Home className="h-4 w-4" /> Mis memoriales
+              <Home className="h-4 w-4" /> Mis nichos virtuales
             </Link>
             <Link href="/dashboard/new" className="hover:text-pizarra-900 flex items-center gap-1">
               <PlusCircle className="h-4 w-4" /> Nuevo
+            </Link>
+            <Link href="/dashboard/cuenta" className="hover:text-pizarra-900 flex items-center gap-1">
+              <UserCog className="h-4 w-4" /> Mi cuenta
             </Link>
             {isPartner && (
               <Link href="/dashboard/partner" className="hover:text-pizarra-900 flex items-center gap-1 text-dorado-600">

@@ -1,10 +1,11 @@
 import type { MetadataRoute } from 'next';
 import { createClient } from '@/lib/supabase/server';
 
-const SITE_URL =
+const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ??
   process.env.NEXT_PUBLIC_APP_URL ??
-  'https://historias-infinitas.com';
+  'https://historias-infinitas.com'
+).trim().replace(/\/+$/, '');
 
 /**
  * Sitemap dinámico.

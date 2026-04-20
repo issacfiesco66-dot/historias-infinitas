@@ -7,10 +7,10 @@ export default function NotFound() {
       <div className="text-center max-w-md">
         <p className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-3">404</p>
         <h1 className="font-serif text-4xl text-pizarra-800 mb-3">
-          Memorial no encontrado
+          Nicho Virtual no encontrado
         </h1>
         <p className="text-pizarra-500 mb-8">
-          Este memorial no existe o aún no ha sido publicado.
+          Este nicho virtual no existe o aún no ha sido publicado.
         </p>
         <Button asChild variant="dorado">
           <Link href="/">Volver al inicio</Link>

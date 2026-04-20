@@ -1,15 +1,17 @@
 import type { Metadata, Viewport } from 'next';
+import { Analytics } from '@vercel/analytics/react';
 import './globals.css';
 
-const SITE_URL =
+const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ??
   process.env.NEXT_PUBLIC_APP_URL ??
-  'https://historias-infinitas.com';
+  'https://historias-infinitas.com'
+).trim().replace(/\/+$/, '');
 
 const SITE_NAME = 'Historias Infinitas';
-const TITLE = 'Historias Infinitas — Memoriales digitales con IA y Realidad Aumentada';
+const TITLE = 'Historias Infinitas — Nichos Virtuales con IA y Realidad Aumentada';
 const DESCRIPTION =
-  'Preserva la memoria de quienes amas. Creamos memoriales digitales eternos con retratos artísticos generados por IA y Portales de Recuerdos en Realidad Aumentada — para mascotas y seres queridos.';
+  'Preserva la memoria de quienes amas. Creamos nichos virtuales eternos con retratos artísticos generados por IA y Portales de Recuerdos en Realidad Aumentada — para mascotas y seres queridos.';
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
@@ -22,14 +24,14 @@ export const metadata: Metadata = {
   generator: 'Next.js',
   referrer: 'origin-when-cross-origin',
   keywords: [
-    'memorial digital',
-    'memoriales para mascotas',
-    'memoriales para seres queridos',
+    'nicho virtual',
+    'nichos virtuales para mascotas',
+    'nichos virtuales para seres queridos',
     'homenaje digital',
     'tributo en línea',
     'retrato IA',
     'realidad aumentada',
-    'QR memorial',
+    'QR nicho virtual',
     'recordar mascota',
     'duelo mascota',
     'historias infinitas',
@@ -37,7 +39,7 @@ export const metadata: Metadata = {
   authors: [{ name: SITE_NAME, url: SITE_URL }],
   creator: SITE_NAME,
   publisher: SITE_NAME,
-  category: 'Memoriales digitales',
+  category: 'Nichos Virtuales',
   alternates: {
     canonical: '/',
     languages: {
@@ -58,7 +60,7 @@ export const metadata: Metadata = {
         url: '/og-default.jpg',
         width: 1200,
         height: 630,
-        alt: 'Historias Infinitas — Memoriales digitales con IA y Realidad Aumentada',
+        alt: 'Historias Infinitas — Nichos Virtuales con IA y Realidad Aumentada',
       },
     ],
   },
@@ -147,9 +149,9 @@ const organizationJsonLd = {
     },
   ],
   makesOffer: [
-    { '@type': 'Offer', name: 'Memorial Digital',   price: 299,   priceCurrency: 'MXN' },
-    { '@type': 'Offer', name: 'Memorial Artístico', price: 599,   priceCurrency: 'MXN' },
-    { '@type': 'Offer', name: 'Memorial Eterno',    price: 1799,  priceCurrency: 'MXN' },
+    { '@type': 'Offer', name: 'Nicho Virtual Digital',   price: 299,   priceCurrency: 'MXN' },
+    { '@type': 'Offer', name: 'Nicho Virtual Artístico', price: 599,   priceCurrency: 'MXN' },
+    { '@type': 'Offer', name: 'Nicho Virtual Eterno',    price: 1799,  priceCurrency: 'MXN' },
     { '@type': 'Offer', name: 'Partner · Pack 30',  price: 4999,  priceCurrency: 'MXN' },
     { '@type': 'Offer', name: 'Partner · Anual Pro',price: 14999, priceCurrency: 'MXN' },
   ],
@@ -195,7 +197,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <Analytics />
+      </body>
     </html>
   );
 }

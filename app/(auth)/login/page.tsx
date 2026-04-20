@@ -46,7 +46,7 @@ function LoginForm() {
       <p className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-4">Bienvenido de vuelta</p>
       <h1 className="font-serif text-4xl text-pizarra-800 mb-2">Iniciar sesión</h1>
       <p className="text-sm text-pizarra-500 mb-10">
-        Accede para continuar gestionando tus memoriales.
+        Accede para continuar gestionando tus nichos virtuales.
       </p>
 
       <form onSubmit={onSubmit} className="space-y-5">

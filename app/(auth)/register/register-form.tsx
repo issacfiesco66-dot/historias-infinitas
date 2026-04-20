@@ -64,7 +64,7 @@ export default function RegisterForm() {
       <div className="animate-fade-up text-center">
         <h1 className="font-serif text-3xl text-pizarra-800 mb-3">Revisa tu correo</h1>
         <p className="text-pizarra-500">
-          Te hemos enviado un enlace para confirmar tu cuenta y comenzar el memorial.
+          Te hemos enviado un enlace para confirmar tu cuenta y comenzar el nicho virtual.
         </p>
       </div>
     );

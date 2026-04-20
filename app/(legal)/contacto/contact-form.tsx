@@ -13,7 +13,7 @@ import { sendContactForm } from './actions';
 // Mapeo de plan IDs a asunto y mensaje inicial (programa de socios).
 const PLAN_TEMPLATES: Record<string, { subject: string; message: string }> = {
   partner_trial: {
-    subject: 'Interés en plan Prueba (5 memoriales)',
+    subject: 'Interés en plan Prueba (5 nichos virtuales)',
     message: 'Hola, nos interesa el plan Prueba del programa de socios. Contamos con [número] de familias atendidas al mes.',
   },
   partner_pack_30: {

@@ -3,22 +3,36 @@ import { VerticalLanding } from '../vertical-landing';
 import { Heart, TrendingUp, HeartHandshake, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Memorial digital para Clínicas Veterinarias — Historias Infinitas',
+  title: 'Nicho Virtual para Clínicas Veterinarias — Historias Infinitas',
   description:
-    'Ofrece a las familias de tus pacientes un memorial digital con retrato IA para honrar a su mascota. Con el logo de tu clínica. Desde $999 MXN. 30 días de garantía.',
-  alternates: { canonical: '/para-clinicas-veterinarias' },
+    'Ofrece a las familias de tus pacientes un nicho virtual con retrato IA para honrar a su mascota. Con el logo de tu clínica. Desde $999 MXN. 30 días de garantía.',
+  alternates: {
+    canonical: '/para-clinicas-veterinarias',
+    languages: {
+      'es-MX': '/para-clinicas-veterinarias',
+      'en-US': '/en/for-veterinary-clinics',
+      'x-default': '/para-clinicas-veterinarias',
+    },
+  },
   keywords: [
-    'memorial para mascotas veterinaria',
+    'nicho virtual para mascotas veterinaria',
     'servicio duelo mascota clínica',
     'homenaje digital mascota',
-    'cremación mascota memorial',
+    'cremación mascota nicho virtual',
     'tributo perro gato',
     'clínica veterinaria servicios extra',
+    'veterinaria CDMX',
+    'veterinaria Guadalajara',
+    'veterinaria Monterrey',
+    'veterinaria Puebla',
+    'veterinaria Querétaro',
+    'eutanasia mascota México',
+    'nicho virtual perro gato México',
   ],
   openGraph: {
     title: 'Un adiós digno a cada mascota — para Clínicas Veterinarias',
     description:
-      'Regala un memorial digital con retrato IA y QR a las familias que deben despedirse. Con el logo de tu clínica.',
+      'Regala un nicho virtual con retrato IA y QR a las familias que deben despedirse. Con el logo de tu clínica.',
     url: '/para-clinicas-veterinarias',
     type: 'article',
   },
@@ -39,20 +53,20 @@ export default function ParaClinicasVeterinariasPage() {
           </>
         ),
         intro:
-          'Cuando una mascota se va, la familia busca cerrar con amor. Ofrécele un memorial digital con retrato artístico por IA y QR — con el logo de tu clínica. Un gesto que convierte el duelo en recuerdo, y tu clínica en referencia.',
+          'Cuando una mascota se va, la familia busca cerrar con amor. Ofrécele un nicho virtual con retrato artístico por IA y QR — con el logo de tu clínica. Un gesto que convierte el duelo en recuerdo, y tu clínica en referencia.',
         pitch: 'El detalle que convierte el duelo en confianza',
         benefits: [
           {
             icon: Heart,
             title: 'Acompañamiento del duelo',
             text:
-              'El momento de la despedida es el más sensible. Un memorial tangible ayuda a las familias a procesar la pérdida y les queda algo hermoso que mostrar.',
+              'El momento de la despedida es el más sensible. Un nicho virtual tangible ayuda a las familias a procesar la pérdida y les queda algo hermoso que mostrar.',
           },
           {
             icon: HeartHandshake,
             title: 'Tu clínica como refugio',
             text:
-              'Tu logo aparece en cada memorial y en la placa grabada. Las familias asocian tu marca con el momento más humano de su historia.',
+              'Tu logo aparece en cada nicho virtual y en la placa grabada. Las familias asocian tu marca con el momento más humano de su historia.',
           },
           {
             icon: TrendingUp,
@@ -83,7 +97,7 @@ export default function ParaClinicasVeterinariasPage() {
           },
           {
             q: '¿El QR lleva a un sitio que podamos ver sin pagar?',
-            a: 'Antes del pago la URL es privada (modo borrador). Después del pago queda activa para siempre con hosting eterno. Si tu cliente no paga el plan base ($299 MXN), el memorial no se publica.',
+            a: 'Antes del pago la URL es privada (modo borrador). Después del pago queda activa para siempre con hosting eterno. Si tu cliente no paga el plan base ($299 MXN), el nicho virtual no se publica.',
           },
           {
             q: '¿Las placas físicas sirven para poner en urnas o jardines?',
@@ -91,6 +105,15 @@ export default function ParaClinicasVeterinariasPage() {
           },
         ],
         keywords: [],
+        deepContent: {
+          heading: 'Por qué las clínicas veterinarias de México necesitan un servicio de duelo real',
+          paragraphs: [
+            'En México se practican más de 1.5 millones de eutanasias veterinarias al año entre CDMX, Guadalajara, Monterrey, Puebla y las principales ciudades. La mayoría de las familias salen de la clínica con una urna o una caja de cartón — y con un vacío que nadie les ayuda a cerrar. Historias Infinitas convierte ese momento en uno de los más memorables del servicio veterinario: un nicho virtual con retrato artístico generado por inteligencia artificial, biografía de la mascota, galería de fotos y un código QR imprimible que la familia puede conservar para siempre.',
+            'El flujo es simple para tu clínica: al cerrar la cremación o la eutanasia, tu equipo entrega a la familia una tarjeta con el QR (o una placa de acero inoxidable grabada con láser, en el plan Eterno). La familia escanea, registra los datos de su mascota — perro, gato, ave, conejo, reptil o cualquier especie — y en minutos tienen un nicho virtual vivo con el logo de tu veterinaria al pie. Nuestro modelo de IA (Flux Kontext Max) preserva la identidad del animal con alta fidelidad incluso en razas poco comunes, manchas específicas o rasgos particulares.',
+            'Para ti es diferenciación real frente al resto de hospitales veterinarios en tu ciudad. Pocas clínicas en México ofrecen acompañamiento digital del duelo; tú serías referente en Ciudad de México, Guadalajara, Monterrey, Querétaro, Puebla, Mérida o donde estés. Además recibes 15% de comisión cada vez que una familia sube al plan artístico, al plan Eterno con placa o añade el Portal AR — ingreso pasivo que se acumula mes a mes sin que tengas que gestionar cobros, hosting ni soporte técnico.',
+            'La infraestructura cumple con la Ley Federal de Protección de Datos Personales en Posesión de Particulares (LFPDPPP). Los nichos virtuales son privados hasta que la familia paga el plan base; los datos se alojan con TLS y row-level security. Firmamos Acuerdo de Procesamiento de Datos (DPA) si lo solicitas. Todas las facturas van con CFDI 4.0 a nombre de tu razón social, y el envío de placas físicas es nacional sin costo adicional en el Pack 30.',
+          ],
+        },
       }}
     />
   );

@@ -7,6 +7,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { CheckCircle2, QrCode, Heart, AlertTriangle } from 'lucide-react';
 import { getPlan, type PlanId } from '@/lib/plans';
+import { PurchaseTracker } from './purchase-tracker';
 
 interface Props {
   params: { id: string };
@@ -49,6 +50,13 @@ export default async function CheckoutSuccessPage({ params, searchParams }: Prop
   // todavía está en borrador.
   let reconciled = memorial.status === 'publicado';
   let reconcileError: string | null = null;
+  let orderForTracking: {
+    id: string;
+    plan_id: string;
+    amount_total: number;
+    currency: string;
+    has_ar_addon: boolean;
+  } | null = null;
 
   if (!reconciled && searchParams.session_id && process.env.STRIPE_SECRET_KEY) {
     try {
@@ -106,14 +114,42 @@ export default async function CheckoutSuccessPage({ params, searchParams }: Prop
     }
   }
 
+  // Si está reconciliado, traemos los datos de la orden para el tracker de conversión.
+  if (reconciled && searchParams.session_id) {
+    const admin = createAdminClient();
+    const { data: order } = await admin
+      .from('orders')
+      .select('id, plan_id, amount_total, currency, has_ar_addon')
+      .eq('stripe_session_id', searchParams.session_id)
+      .maybeSingle();
+    if (order) {
+      orderForTracking = {
+        id: order.id,
+        plan_id: order.plan_id,
+        amount_total: Number(order.amount_total),
+        currency: order.currency,
+        has_ar_addon: Boolean(order.has_ar_addon),
+      };
+    }
+  }
+
   return (
     <div className="max-w-2xl mx-auto text-center py-10">
+      {orderForTracking && (
+        <PurchaseTracker
+          orderId={orderForTracking.id}
+          planId={orderForTracking.plan_id}
+          amount={orderForTracking.amount_total}
+          currency={orderForTracking.currency}
+          hasArAddon={orderForTracking.has_ar_addon}
+        />
+      )}
       <div className="mx-auto w-16 h-16 rounded-full bg-dorado-100 flex items-center justify-center mb-6">
         <CheckCircle2 className="h-8 w-8 text-dorado-600" />
       </div>
 
       <p className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-3">
-        {reconciled ? 'Memorial activo' : 'Orden recibida'}
+        {reconciled ? 'Nicho virtual activo' : 'Orden recibida'}
       </p>
       <h1 className="font-serif text-4xl md:text-5xl text-pizarra-800 leading-tight">
         Gracias por este gesto,<br />
@@ -122,7 +158,7 @@ export default async function CheckoutSuccessPage({ params, searchParams }: Prop
 
       <p className="text-pizarra-500 mt-4">
         {reconciled
-          ? 'Tu memorial ya es público — su URL única y el QR están listos.'
+          ? 'Tu nicho virtual ya es público — su URL única y el QR están listos.'
           : 'Hemos recibido tu orden y estamos confirmando el pago. Si no se activa en los próximos minutos, vuelve a esta página.'}
       </p>
 
@@ -139,7 +175,7 @@ export default async function CheckoutSuccessPage({ params, searchParams }: Prop
           <ol className="space-y-3 text-sm text-pizarra-700">
             <li className="flex gap-3">
               <Heart className="h-4 w-4 text-dorado-500 mt-0.5 shrink-0" />
-              Revisa tu memorial y completa los últimos detalles si lo deseas.
+              Revisa tu nicho virtual y completa los últimos detalles si lo deseas.
             </li>
             <li className="flex gap-3">
               <QrCode className="h-4 w-4 text-dorado-500 mt-0.5 shrink-0" />
@@ -151,11 +187,11 @@ export default async function CheckoutSuccessPage({ params, searchParams }: Prop
 
       <div className="mt-8 flex flex-col sm:flex-row items-center justify-center gap-3">
         <Button asChild variant="dorado">
-          <Link href={`/dashboard/memorial/${memorial.id}`}>Volver al memorial</Link>
+          <Link href={`/dashboard/memorial/${memorial.id}`}>Volver al nicho virtual</Link>
         </Button>
         {reconciled ? (
           <Button asChild variant="outline">
-            <Link href={`/memorial/${memorial.slug}`} target="_blank">Ver memorial público</Link>
+            <Link href={`/memorial/${memorial.slug}`} target="_blank">Ver nicho virtual público</Link>
           </Button>
         ) : (
           <Button asChild variant="outline">

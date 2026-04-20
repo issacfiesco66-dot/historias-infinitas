@@ -5,6 +5,10 @@ import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
+import { MemorialCounter } from '@/components/memorial-counter';
+
+// ISR cada 10 min: las estadísticas del contador se refrescan sin rebuild.
+export const revalidate = 600;
 import {
   ParallaxNichoCard,
   Reveal,
@@ -78,6 +82,10 @@ export default function HomePage() {
               </Button>
             </div>
 
+            <div className="mt-10 flex justify-center">
+              <MemorialCounter variant="hero" lang="es" />
+            </div>
+
             <div className="mt-16 flex items-center justify-center gap-2 text-pizarra-400">
               <span className="hairline" />
               <span className="text-xs uppercase tracking-widest">Hecho con cuidado</span>
@@ -105,7 +113,7 @@ export default function HomePage() {
             alt="El retrato luminoso de una mascota amada"
             eyebrow="El compañero que nunca se va"
             icon={<PawPrint className="h-5 w-5" />}
-            title="Memoriales de Mascotas"
+            title="Nichos Virtuales de Mascotas"
             description="Porque una huella en el corazón es eterna. Honra a tu mejor amigo con un retrato artístico que captura su alegría — y un portal que devuelve el brillo de su mirada a tu sala."
             cta={
               <Button asChild variant="dorado">
@@ -122,7 +130,7 @@ export default function HomePage() {
             alt="La silueta serena de un ser querido al atardecer"
             eyebrow="El árbol que te sostiene"
             icon={<Users className="h-5 w-5" />}
-            title="Memoriales de Seres Queridos"
+            title="Nichos Virtuales de Seres Queridos"
             description="Tu historia familiar merece ser contada. Preserva las lecciones, la voz y la mirada de quienes forjaron tu camino, para que las próximas generaciones los conozcan."
             cta={
               <Button asChild variant="dorado">
@@ -204,7 +212,7 @@ export default function HomePage() {
                 <span className="text-gradient-dorado italic">Empieza contigo.</span>
               </FadeH2>
               <FadeP delay={0.15} className="text-marfil/75 max-w-xl mx-auto mb-8">
-                Crear el memorial es gratuito. Acompañamos el proceso con el mismo
+                Crear el nicho virtual es gratuito. Acompañamos el proceso con el mismo
                 cuidado con el que tú guardas su recuerdo.
               </FadeP>
               <Button asChild variant="dorado" size="lg">
@@ -243,7 +251,7 @@ export default function HomePage() {
                   <span className="text-gradient-dorado italic">nunca te olviden</span>.
                 </FadeH2>
                 <FadeP delay={0.1} className="text-marfil/80 text-base md:text-lg max-w-xl mb-6">
-                  Regala a cada familia un memorial digital con retrato IA y QR —
+                  Regala a cada familia un nicho virtual con retrato IA y QR —
                   con <strong className="text-marfil">el logo y subdominio de tu empresa</strong>.
                   Desde <span className="text-dorado-300 font-medium">$999 MXN</span>.
                 </FadeP>
@@ -277,7 +285,7 @@ export default function HomePage() {
                   Oferta de entrada
                 </p>
                 <h3 className="font-serif text-2xl md:text-3xl text-pizarra-800 mb-1">
-                  Pack 30 memoriales
+                  Pack 30 nichos virtuales
                 </h3>
                 <p className="text-sm text-pizarra-500 italic mb-5">
                   Ahorra 40 % vs. retail · 5 placas físicas incluidas
@@ -288,7 +296,7 @@ export default function HomePage() {
                 </div>
 
                 <ul className="space-y-2 mb-6 text-sm text-pizarra-700">
-                  <LiCheck>30 memoriales con tu logo (vigencia 12 meses)</LiCheck>
+                  <LiCheck>30 nichos virtuales con tu logo (vigencia 12 meses)</LiCheck>
                   <LiCheck>Dashboard de socio + material de venta</LiCheck>
                   <LiCheck>5 placas de acero con tu logo, sin costo</LiCheck>
                   <LiCheck>Soporte dedicado por correo</LiCheck>

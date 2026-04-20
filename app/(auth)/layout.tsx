@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata: Metadata = {
   title: 'Iniciar sesión — Historias Infinitas',
-  description: 'Accede a tu cuenta de Historias Infinitas y gestiona los memoriales de quienes amas.',
+  description: 'Accede a tu cuenta de Historias Infinitas y gestiona los nichos virtuales de quienes amas.',
   robots: { index: false, follow: true },
 };
 

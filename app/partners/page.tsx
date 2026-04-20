@@ -15,7 +15,7 @@ import { PartnerPlansGrid } from './partner-plans';
 export const metadata: Metadata = {
   title: 'Programa de Socios — Historias Infinitas',
   description:
-    'Funerarias, clínicas veterinarias y hospicios: ofrece a tus familias una nueva forma de recordar con memoriales digitales, retratos IA y placas físicas con tu logo.',
+    'Funerarias, clínicas veterinarias y hospicios: ofrece a tus familias una nueva forma de recordar con nichos virtuales, retratos IA y placas físicas con tu logo.',
   alternates: { canonical: '/partners' },
 };
 
@@ -46,7 +46,7 @@ export default function PartnersPage() {
               <span className="text-gradient-dorado italic">nunca te olviden</span>.
             </FadeH1>
             <FadeP delay={0.1} className="text-marfil/80 mt-6 max-w-2xl text-lg md:text-xl leading-relaxed">
-              Regala a cada familia un memorial digital con retrato IA y QR — con
+              Regala a cada familia un nicho virtual con retrato IA y QR — con
               el <strong>logo y subdominio de tu empresa</strong>. Un gesto que
               eleva tu servicio y genera recomendaciones durante años.
             </FadeP>
@@ -62,7 +62,7 @@ export default function PartnersPage() {
 
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-marfil/70">
               <StatPill label="Setup en" value="< 48 h" />
-              <StatPill label="Memoriales activos" value="+1,000" />
+              <StatPill label="Nichos Virtuales activos" value="+1,000" />
               <StatPill label="Ahorro vs. retail" value="hasta 60 %" />
               <StatPill label="Comisión por upgrade" value="15 %" />
             </div>
@@ -90,7 +90,7 @@ export default function PartnersPage() {
           <BenefitCard
             icon={<Building2 className="h-6 w-6" />}
             title="Tu marca, tu subdominio"
-            text="Cada memorial vive en tunombre.historias-infinitas.com con tu logo. Los deudos te recuerdan — no a nosotros."
+            text="Cada nicho virtual vive en tunombre.historias-infinitas.com con tu logo. Los deudos te recuerdan — no a nosotros."
           />
           <BenefitCard
             icon={<TrendingUp className="h-6 w-6" />}
@@ -131,7 +131,7 @@ export default function PartnersPage() {
             <Step
               number="03"
               title="Tu equipo regala el QR"
-              text="Por cada familia, escanean el QR y completan el memorial. Nosotros cuidamos el resto."
+              text="Por cada familia, escanean el QR y completan el nicho virtual. Nosotros cuidamos el resto."
             />
           </div>
         </div>
@@ -169,7 +169,7 @@ export default function PartnersPage() {
                   30 días para probar. Si no funciona en tu operación, reembolsamos el plan completo.
                 </h3>
                 <p className="text-sm text-marfil/70">
-                  Los memoriales ya entregados a tus familias siguen activos para siempre.
+                  Los nichos virtuales ya entregados a tus familias siguen activos para siempre.
                 </p>
               </div>
             </CardContent>
@@ -210,13 +210,13 @@ export default function PartnersPage() {
         </Reveal>
 
         <div className="space-y-4">
-          <Faq q="¿Qué pasa si supero los memoriales de mi plan?">
-            Puedes comprar memoriales adicionales al precio preferente de socio
+          <Faq q="¿Qué pasa si supero los nichos virtuales de mi plan?">
+            Puedes comprar nichos virtuales adicionales al precio preferente de socio
             ($199 MXN c/u vs. $299 MXN retail) o hacer upgrade al siguiente plan
             — te damos crédito por lo ya pagado.
           </Faq>
           <Faq q="¿Puedo cancelar el plan anual?">
-            Sí, en cualquier momento. Los memoriales ya entregados a tus familias
+            Sí, en cualquier momento. Los nichos virtuales ya entregados a tus familias
             siguen vivos para siempre. No hacemos renovación automática sin tu
             confirmación.
           </Faq>
@@ -251,7 +251,7 @@ export default function PartnersPage() {
                 Empieza con el Pack 30 y recibe las placas de regalo.
               </h2>
               <p className="max-w-2xl mx-auto text-pizarra-800/85 mb-8">
-                30 memoriales, 5 placas físicas con tu logo y acceso al dashboard
+                30 nichos virtuales, 5 placas físicas con tu logo y acceso al dashboard
                 de socio — por menos de lo que vale un servicio funerario estándar.
               </p>
               <div className="flex flex-col sm:flex-row gap-3 justify-center">

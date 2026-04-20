@@ -53,7 +53,7 @@ export function DeleteMemorialButton({
           type="button"
           variant="ghost"
           size="icon"
-          title="Eliminar memorial"
+          title="Eliminar nicho virtual"
           onClick={() => setOpen(true)}
           className="text-pizarra-500 hover:text-red-600 hover:bg-red-50"
         >
@@ -96,11 +96,11 @@ export function DeleteMemorialButton({
                 </div>
                 <div>
                   <h3 className="font-serif text-xl text-pizarra-800">
-                    Eliminar memorial
+                    Eliminar nicho virtual
                   </h3>
                   <p className="text-sm text-pizarra-500 mt-1">
                     Esta acción es <strong>permanente</strong>. Se eliminarán el
-                    memorial, todas sus fotos, videos y el retrato IA.
+                    nicho virtual, todas sus fotos, videos y el retrato IA.
                     {' '}No se puede deshacer.
                   </p>
                 </div>

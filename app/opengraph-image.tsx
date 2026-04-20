@@ -5,7 +5,7 @@ import { ImageResponse } from 'next/og';
 // Dimensiones estándar 1200x630.
 
 export const runtime = 'edge';
-export const alt = 'Historias Infinitas — Memoriales digitales eternos';
+export const alt = 'Historias Infinitas — Nichos Virtuales eternos';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -82,7 +82,7 @@ export default async function OGImage() {
             zIndex: 1,
           }}
         >
-          Memoriales digitales con IA y Realidad Aumentada
+          Nichos Virtuales con IA y Realidad Aumentada
         </div>
 
         <div

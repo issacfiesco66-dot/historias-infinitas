@@ -42,7 +42,7 @@ export default async function PartnerDashboardPage() {
           Aún no eres socio
         </h1>
         <p className="text-pizarra-500 mb-8 max-w-md mx-auto">
-          El Programa de Socios te permite ofrecer memoriales digitales a
+          El Programa de Socios te permite ofrecer nichos virtuales a
           tus familias con tu marca. Conoce los planes y únete.
         </p>
         <Button asChild variant="dorado" size="lg">
@@ -126,7 +126,7 @@ export default async function PartnerDashboardPage() {
         />
         <KPICard
           icon={<Calendar className="h-5 w-5" />}
-          label="Memoriales entregados"
+          label="Nichos virtuales entregados"
           value={String((memorials ?? []).length)}
           sub="Últimos 90 días"
         />
@@ -138,12 +138,12 @@ export default async function PartnerDashboardPage() {
           <CardContent className="p-6 space-y-4">
             <div className="flex items-center gap-2 text-dorado-600">
               <ImageIcon className="h-4 w-4" />
-              <span className="uppercase tracking-widest text-xs">Tu marca en cada memorial</span>
+              <span className="uppercase tracking-widest text-xs">Tu marca en cada nicho virtual</span>
             </div>
             <h2 className="font-serif text-2xl text-pizarra-800">Logotipo</h2>
             <p className="text-sm text-pizarra-500">
               Sube tu logo (PNG transparente recomendado, máximo 2 MB). Aparecerá
-              al pie de cada memorial que originen tus familias.
+              al pie de cada nicho virtual que originen tus familias.
             </p>
             <LogoUploader partnerId={partner.id} initialLogoUrl={partner.logo_url} />
           </CardContent>
@@ -157,7 +157,7 @@ export default async function PartnerDashboardPage() {
             </div>
             <h2 className="font-serif text-2xl text-pizarra-800">Tu link referido</h2>
             <p className="text-sm text-pizarra-500">
-              Comparte este enlace o QR con tus familias. Cada memorial creado
+              Comparte este enlace o QR con tus familias. Cada nicho virtual creado
               desde aquí consume 1 crédito y queda vinculado a tu cuenta.
             </p>
 
@@ -179,7 +179,7 @@ export default async function PartnerDashboardPage() {
           <div className="flex items-end justify-between mb-5">
             <div>
               <p className="uppercase tracking-widest text-xs text-dorado-600 mb-1">
-                Memoriales recientes
+                Nichos Virtuales recientes
               </p>
               <h2 className="font-serif text-2xl text-pizarra-800">
                 Entregados por tu equipo
@@ -195,7 +195,7 @@ export default async function PartnerDashboardPage() {
           {(memorials ?? []).length === 0 ? (
             <div className="py-12 text-center">
               <p className="text-pizarra-500 mb-4">
-                Aún no hay memoriales originados por tu cuenta.
+                Aún no hay nichos virtuales originados por tu cuenta.
               </p>
               <Button asChild variant="dorado" size="sm">
                 <Link href="#">

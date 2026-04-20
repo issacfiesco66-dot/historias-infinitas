@@ -21,7 +21,7 @@ export function CopyReferralLink({ url }: { url: string }) {
     if (typeof navigator !== 'undefined' && 'share' in navigator) {
       try {
         await (navigator as any).share({
-          title: 'Comparte un memorial con tu familia',
+          title: 'Comparte un nicho virtual con tu familia',
           url,
         });
       } catch {

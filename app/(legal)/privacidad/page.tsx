@@ -28,9 +28,7 @@ export default function PrivacidadPage() {
       <h2>1. Identidad y domicilio del responsable</h2>
       <p>
         <strong>Historias Infinitas</strong> (en adelante &ldquo;el Responsable&rdquo;),
-        con razón social <strong>[RAZÓN SOCIAL, S.A. DE C.V.]</strong>, RFC{' '}
-        <strong>[RFC]</strong> y domicilio en <strong>[CALLE, NÚMERO, COLONIA,
-        ALCALDÍA/MUNICIPIO, ESTADO, CÓDIGO POSTAL, MÉXICO]</strong>, es el
+        con razón social <strong>historias-infinitas, S.A. DE C.V.</strong>, es el
         responsable del tratamiento de tus datos personales.
       </p>
       <p>
@@ -38,7 +36,7 @@ export default function PrivacidadPage() {
         <br />
         Correo: <a href="mailto:privacidad@historias-infinitas.com">privacidad@historias-infinitas.com</a>
         <br />
-        Teléfono: <strong>[+52 …]</strong>
+        Teléfono: <strong>+52 5610669353</strong>
       </p>
 
       <h2>2. Datos personales que recabamos</h2>
@@ -77,7 +75,7 @@ export default function PrivacidadPage() {
       <ul>
         <li>Crear y mantener tu cuenta de usuario.</li>
         <li>
-          Alojar el memorial digital, generar su URL única, su código QR y, en
+          Alojar el nicho virtual, generar su URL única, su código QR y, en
           su caso, el retrato con Inteligencia Artificial.
         </li>
         <li>Procesar pagos y emitir comprobantes fiscales.</li>

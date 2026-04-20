@@ -25,29 +25,27 @@ export default function TerminosPage() {
 
       <h2>1. Identificación del proveedor</h2>
       <p>
-        <strong>[RAZÓN SOCIAL, S.A. DE C.V.]</strong>, en adelante
-        &ldquo;Historias Infinitas&rdquo;, con RFC <strong>[RFC]</strong> y
-        domicilio en <strong>[DOMICILIO FISCAL COMPLETO]</strong>, es quien
-        presta los servicios descritos aquí.
+        <strong>historias-infinitas, S.A. DE C.V.</strong>, en adelante
+        &ldquo;Historias Infinitas&rdquo;, es quien presta los servicios descritos aquí.
         <br />
-        Contacto: <a href="mailto:hola@historias-infinitas.com">
-          hola@historias-infinitas.com
-        </a>
+        Contacto: <a href="mailto:hola@historias-infinitas.com">hola@historias-infinitas.com</a>
+        <br />
+        Teléfono: <strong>+52 5610669353</strong>
       </p>
 
       <h2>2. Descripción del servicio</h2>
       <p>
         Historias Infinitas es una plataforma que te permite crear un{' '}
-        <strong>memorial digital</strong> para un ser querido o una mascota, con
+        <strong>nicho virtual</strong> para un ser querido o una mascota, con
         biografía, fotografías, videos, un retrato generado por Inteligencia
         Artificial y, opcionalmente, un portal de Realidad Aumentada. Cada
-        memorial se asocia a una <strong>URL única permanente</strong> y a un
+        nicho virtual se asocia a una <strong>URL única permanente</strong> y a un
         código QR imprimible.
       </p>
       <p>Ofrecemos tres planes:</p>
       <ul>
         <li>
-          <strong>Digital</strong> — memorial en línea + QR digital. Pago único.
+          <strong>Digital</strong> — nicho virtual en línea + QR digital. Pago único.
         </li>
         <li>
           <strong>Artístico</strong> — incluye Digital + retrato IA en alta
@@ -88,11 +86,11 @@ export default function TerminosPage() {
         proporcionando tu Constancia de Situación Fiscal y uso de CFDI.
       </p>
 
-      <h2>5. Activación del memorial</h2>
+      <h2>5. Activación del nicho virtual</h2>
       <p>
-        El memorial permanece en <strong>modo borrador privado</strong> hasta
+        El nicho virtual permanece en <strong>modo borrador privado</strong> hasta
         que se completa el pago. A partir de la confirmación del pago, el
-        memorial se activa y su URL pública y QR quedan disponibles de forma
+        nicho virtual se activa y su URL pública y QR quedan disponibles de forma
         permanente, sujeto al cumplimiento continuo de estos Términos.
       </p>
 
@@ -140,8 +138,8 @@ export default function TerminosPage() {
         Eres propietario de las fotografías, videos y textos que subes. Al
         cargarlos nos otorgas una licencia <strong>limitada, no exclusiva, libre
         de regalías y revocable</strong> para procesarlos, alojarlos, mostrarlos
-        en la URL pública del memorial y —cuando el plan lo incluya— generar el
-        retrato IA derivado. Esta licencia termina al eliminar el memorial.
+        en la URL pública del nicho virtual y —cuando el plan lo incluya— generar el
+        retrato IA derivado. Esta licencia termina al eliminar el nicho virtual.
       </p>
       <p>Al cargar contenido garantizas que:</p>
       <ul>
@@ -197,7 +195,7 @@ export default function TerminosPage() {
       <p>
         Nos esforzamos por mantener el servicio disponible las 24 horas, los 365
         días del año. El compromiso de hosting &ldquo;eterno&rdquo; de los
-        memoriales significa que destinaremos los recursos razonables a
+        nichos virtuales significa que destinaremos los recursos razonables a
         preservarlos mientras exista Historias Infinitas. En caso de cese de
         operaciones daremos aviso con un mínimo de <strong>90 días</strong> y te
         proporcionaremos una exportación de tus datos.

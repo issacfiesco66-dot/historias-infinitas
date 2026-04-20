@@ -3,22 +3,37 @@ import { VerticalLanding } from '../vertical-landing';
 import { Heart, TrendingUp, HeartHandshake, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Memoriales digitales para Funerarias — Historias Infinitas',
+  title: 'Nichos Virtuales para Funerarias — Historias Infinitas',
   description:
-    'Ofrece a tus familias un memorial digital con QR, retrato IA y placa física grabada con el logo de tu funeraria. Planes desde $999 MXN. Factura CFDI. 30 días de garantía.',
-  alternates: { canonical: '/para-funerarias' },
+    'Ofrece a tus familias un nicho virtual con QR, retrato IA y placa física grabada con el logo de tu funeraria. Planes desde $999 MXN. Factura CFDI. 30 días de garantía.',
+  alternates: {
+    canonical: '/para-funerarias',
+    languages: {
+      'es-MX': '/para-funerarias',
+      'en-US': '/en/for-funeral-homes',
+      'x-default': '/para-funerarias',
+    },
+  },
   keywords: [
-    'memorial digital para funeraria',
+    'nicho virtual para funeraria',
     'software para funerarias México',
     'servicio funerario digital',
     'tributo digital funeraria',
-    'QR memorial funeraria',
+    'QR nicho virtual funeraria',
     'placa digital funeraria',
+    'funeraria CDMX',
+    'funeraria Guadalajara',
+    'funeraria Monterrey',
+    'funeraria Puebla',
+    'funeraria Mérida',
+    'servicios funerarios México',
+    'cremación CDMX',
+    'casa de velación',
   ],
   openGraph: {
-    title: 'Memoriales digitales con tu marca — para Funerarias',
+    title: 'Nichos Virtuales con tu marca — para Funerarias',
     description:
-      'Regala un memorial digital con QR y retrato IA a cada familia. Con el logo de tu funeraria. Desde $999 MXN.',
+      'Regala un nicho virtual con QR y retrato IA a cada familia. Con el logo de tu funeraria. Desde $999 MXN.',
     url: '/para-funerarias',
     type: 'article',
   },
@@ -31,7 +46,7 @@ export default function ParaFunerariasPage() {
         vertical: 'Funerarias',
         keywordH1: 'funerarias',
         canonical: '/para-funerarias',
-        eyebrow: 'Para Funerarias · Casas de Velación · Servicios Memoriales en México',
+        eyebrow: 'Para Funerarias · Casas de Velación · Servicios Funerarios en México',
         h1: (
           <>
             El servicio que{' '}
@@ -40,7 +55,7 @@ export default function ParaFunerariasPage() {
           </>
         ),
         intro:
-          'Regala a cada familia un memorial digital con retrato IA, QR imprimible y placa grabada — con el logo de tu funeraria. Las familias te recuerdan por años, te recomiendan, y upgradean (tú recibes 15 % de comisión).',
+          'Regala a cada familia un nicho virtual con retrato IA, QR imprimible y placa grabada — con el logo de tu funeraria. Las familias te recuerdan por años, te recomiendan, y upgradean (tú recibes 15 % de comisión).',
         pitch: 'Un cierre emocional que te convierte en referencia',
         benefits: [
           {
@@ -51,9 +66,9 @@ export default function ParaFunerariasPage() {
           },
           {
             icon: HeartHandshake,
-            title: 'Tu marca en cada memorial',
+            title: 'Tu marca en cada nicho virtual',
             text:
-              'El logo de tu funeraria aparece al pie de cada memorial y en la placa física grabada. Atribución permanente sin pagar publicidad.',
+              'El logo de tu funeraria aparece al pie de cada nicho virtual y en la placa física grabada. Atribución permanente sin pagar publicidad.',
           },
           {
             icon: TrendingUp,
@@ -75,7 +90,7 @@ export default function ParaFunerariasPage() {
         },
         faqs: [
           {
-            q: '¿Cómo se entrega el memorial a la familia?',
+            q: '¿Cómo se entrega el nicho virtual a la familia?',
             a: 'Imprimes el QR en una tarjeta (te damos el PDF) o lo grabamos en una placa física de acero inoxidable. Durante el servicio, tu equipo lo entrega con un pequeño guion que te proporcionamos.',
           },
           {
@@ -84,7 +99,7 @@ export default function ParaFunerariasPage() {
           },
           {
             q: '¿Qué pasa con los datos de los fallecidos y sus familias?',
-            a: 'Somos responsables del tratamiento bajo LFPDPPP. Los memoriales solo son públicos tras el pago; los borradores quedan privados. Firmamos Acuerdo de Procesamiento de Datos (DPA) si lo solicitas.',
+            a: 'Somos responsables del tratamiento bajo LFPDPPP. Los nichos virtuales solo son públicos tras el pago; los borradores quedan privados. Firmamos Acuerdo de Procesamiento de Datos (DPA) si lo solicitas.',
           },
           {
             q: '¿Qué incluye la placa física?',
@@ -92,6 +107,15 @@ export default function ParaFunerariasPage() {
           },
         ],
         keywords: [],
+        deepContent: {
+          heading: 'El servicio digital que las funerarias modernas de México están añadiendo a su paquete',
+          paragraphs: [
+            'El sector funerario mexicano está transformándose rápidamente. Las familias que pierden a un ser querido en CDMX, Guadalajara, Monterrey, Puebla, Mérida o cualquier otra ciudad ya no se conforman con el acta de defunción, el acta de cremación y los servicios tradicionales de velación. Buscan un cierre emocional tangible — algo que les quede para recordar, compartir en familia y mostrar en aniversarios. Historias Infinitas es ese cierre emocional: un nicho virtual con QR, retrato artístico generado por IA, biografía del ser querido y una placa física de acero inoxidable grabada con láser, todo con el logo de tu funeraria o casa de velación.',
+            'Tu equipo entrega el nicho virtual como parte del servicio — sin fricción operativa. Nosotros te damos el PDF del QR listo para imprimir en tarjetas, el guion para presentarlo con respeto durante la ceremonia, y producimos y enviamos las placas físicas a nivel nacional. Las familias acceden al nicho virtual en minutos, suben fotos, escriben la biografía y reciben su URL permanente. Tu marca aparece al pie de cada página pública para siempre — atribución real sin pagar publicidad.',
+            'En términos de ingreso, los socios funerarios promedio facturan entre $7,000 y $15,000 MXN adicionales al mes en comisiones sobre upgrades de las familias (15% del plan Eterno o del Portal AR cada vez que alguien sube de plan). El Pack 30 incluye 30 nichos virtuales, 5 placas físicas y onboarding completo por $4,999 MXN, y el plan Anual Pro ofrece volumen para grupos funerarios con múltiples sucursales.',
+            'La infraestructura técnica cumple con LFPDPPP y buenas prácticas de la industria funeraria mexicana. Los datos de los fallecidos y sus familias se alojan bajo Row-Level Security y TLS estricto; firmamos Acuerdo de Procesamiento de Datos (DPA) si tu funeraria lo requiere para auditoría interna o para atender solicitudes de titulares. Facturamos con CFDI 4.0 a la razón social que nos indiques, y los pagos se procesan vía Stripe con métodos locales (tarjeta, OXXO, SPEI).',
+          ],
+        },
       }}
     />
   );

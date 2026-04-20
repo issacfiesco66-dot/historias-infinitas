@@ -63,12 +63,17 @@ export async function POST(req: Request) {
   }
 
   /* ---------- 2. Filtrado ---------- */
+  const admin = createAdminClient();
+
+  if (event.type === 'charge.refunded') {
+    return handleChargeRefunded(event, stripe, admin);
+  }
+
   if (event.type !== 'checkout.session.completed') {
     return NextResponse.json({ received: true, ignored: event.type });
   }
 
   const session = event.data.object as Stripe.Checkout.Session;
-  const admin = createAdminClient();
 
   /* ---------- 3a. Idempotencia por event.id ---------- */
   try {
@@ -131,6 +136,7 @@ export async function POST(req: Request) {
   const shippingAddress = session.shipping_details
     ? {
         name:        session.shipping_details.name ?? null,
+        phone:       session.customer_details?.phone ?? null,
         line1:       session.shipping_details.address?.line1 ?? null,
         line2:       session.shipping_details.address?.line2 ?? null,
         city:        session.shipping_details.address?.city ?? null,
@@ -390,6 +396,99 @@ function formatMoney(amount: number, currency: string): string {
   } catch {
     return `${amount.toFixed(2)} ${currency.toUpperCase()}`;
   }
+}
+
+/* ============================================================================
+ *  Handler: reembolso (total o parcial) — despublicar memorial y marcar orden
+ * ========================================================================== */
+async function handleChargeRefunded(
+  event: Stripe.Event,
+  stripe: Stripe,
+  admin: ReturnType<typeof createAdminClient>,
+) {
+  const charge = event.data.object as Stripe.Charge;
+  const paymentIntent = typeof charge.payment_intent === 'string'
+    ? charge.payment_intent
+    : charge.payment_intent?.id;
+
+  if (!paymentIntent) {
+    console.warn('[stripe-webhook] refund sin payment_intent, ignorado');
+    return NextResponse.json({ ok: true, ignored: 'no_payment_intent' });
+  }
+
+  // Idempotencia por event.id
+  try {
+    const { error } = await admin
+      .from('stripe_events')
+      .insert({ id: event.id, type: event.type });
+    if (error?.code === '23505') {
+      return NextResponse.json({ ok: true, duplicated: true });
+    }
+  } catch (err) {
+    console.warn('[stripe-webhook] stripe_events insert (refund):', err);
+  }
+
+  // Stripe: payment_intent → checkout session
+  const sessions = await stripe.checkout.sessions.list({
+    payment_intent: paymentIntent,
+    limit: 1,
+  });
+  const session = sessions.data[0];
+
+  if (!session) {
+    console.warn(`[stripe-webhook] refund: no se encontró session para PI ${paymentIntent}`);
+    return NextResponse.json({ ok: true, ignored: 'no_session' });
+  }
+
+  // Flujo partner: suspender cuenta
+  if (session.metadata?.kind === 'partner_pack') {
+    const { error: partnerErr } = await admin
+      .from('partner_accounts')
+      .update({ status: 'suspended' })
+      .eq('stripe_session_id', session.id);
+    if (partnerErr) console.error('[stripe-webhook] partner suspend falló:', partnerErr);
+    else console.info(`[stripe-webhook] partner suspendido por refund (session ${session.id})`);
+    return NextResponse.json({ ok: true, kind: 'partner_suspended' });
+  }
+
+  // Flujo memorial
+  const { data: order, error: orderErr } = await admin
+    .from('orders')
+    .select('id, memorial_id, user_id')
+    .eq('stripe_session_id', session.id)
+    .maybeSingle();
+
+  if (orderErr || !order) {
+    console.warn(`[stripe-webhook] refund: orden no encontrada para session ${session.id}`);
+    return NextResponse.json({ ok: true, ignored: 'no_order' });
+  }
+
+  // Marca orden como cancelada
+  const { error: updateOrderErr } = await admin
+    .from('orders')
+    .update({ status: 'cancelled' })
+    .eq('id', order.id);
+  if (updateOrderErr) {
+    console.error('[stripe-webhook] refund: orders.update falló:', updateOrderErr);
+    return NextResponse.json({ error: 'order_update_failed' }, { status: 500 });
+  }
+
+  // Despublica el memorial (vuelve a borrador)
+  if (order.memorial_id) {
+    const { error: updateMemErr } = await admin
+      .from('memorials')
+      .update({ status: 'borrador', expires_at: null })
+      .eq('id', order.memorial_id);
+    if (updateMemErr) {
+      console.error('[stripe-webhook] refund: memorials.update falló:', updateMemErr);
+      return NextResponse.json({ error: 'memorial_update_failed' }, { status: 500 });
+    }
+  }
+
+  console.info(
+    `[stripe-webhook] refund procesado: order ${order.id}, memorial ${order.memorial_id} despublicado`,
+  );
+  return NextResponse.json({ ok: true, order_id: order.id, memorial_unpublished: true });
 }
 
 /* ============================================================================

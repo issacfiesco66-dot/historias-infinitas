@@ -44,7 +44,7 @@ export function ShareButtons({ url, name, epitaph }: Props) {
   return (
     <div className="bg-marfil border border-pizarra-100 rounded-xl p-5 shadow-solemn">
       <p className="uppercase tracking-widest text-[11px] text-dorado-600 mb-3">
-        Comparte este memorial
+        Comparte este nicho virtual
       </p>
 
       <div className="grid grid-cols-2 sm:grid-cols-5 gap-2">

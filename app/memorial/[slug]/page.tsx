@@ -2,11 +2,14 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
+import { createAdminClient } from '@/lib/supabase/admin';
+import { isAdminEmail } from '@/lib/admin';
 import { formatDate } from '@/lib/utils';
 import { ARPortal } from './ar-portal';
 import { BannerHero } from './banner-hero';
 import { MemorialExpired } from './memorial-expired';
 import { MemorialOpening } from './memorial-opening';
+import { AdminBar } from './admin-bar';
 import { Reveal, FadeH2, FadeP } from '@/components/viva-images';
 import { HexGallery } from '@/components/hex-gallery';
 import { PhotoWall } from '@/components/photo-wall';
@@ -36,15 +39,15 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   // Si el memorial expiró, tampoco dejamos que los motores lo indexen.
   if (data?.expires_at && new Date(data.expires_at).getTime() < Date.now()) {
     return {
-      title: 'Memorial — Historias Infinitas',
+      title: 'Nicho Virtual — Historias Infinitas',
       robots: { index: false, follow: false },
     };
   }
 
   if (!data) {
     return {
-      title: 'Memorial no encontrado — Historias Infinitas',
-      description: 'Este memorial no existe o aún no ha sido publicado.',
+      title: 'Nicho Virtual no encontrado — Historias Infinitas',
+      description: 'Este nicho virtual no existe o aún no ha sido publicado.',
       robots: { index: false },
     };
   }
@@ -86,15 +89,22 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
  * ========================================================================== */
 export default async function PublicMemorialPage({ params }: Props) {
   const supabase = createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+  const viewerIsAdmin = isAdminEmail(user?.email);
 
-  const { data: memorial } = await supabase
-    .from('memorials')
-    .select('*')
-    .eq('slug', params.slug)
-    .eq('status', 'publicado')
-    .single();
+  // Admin puede ver memoriales ocultos/borrador para moderarlos.
+  // Usuario normal: sólo publicados (RLS + filtro explícito).
+  const client = viewerIsAdmin ? createAdminClient() : supabase;
+  const query = client.from('memorials').select('*').eq('slug', params.slug);
+  if (!viewerIsAdmin) query.eq('status', 'publicado');
+
+  const { data: memorial } = await query.single();
 
   if (!memorial) notFound();
+
+  // Un visitante normal jamás debe ver un memorial no-publicado, aunque
+  // llegara por error. Defensa en profundidad sobre RLS.
+  if (!viewerIsAdmin && memorial.status !== 'publicado') notFound();
 
   // Si es memorial del plan de prueba y ya venció → pantalla "expirado" digna
   // (no un 404 brusco). La comprobación es en tiempo real: sin cron, al
@@ -186,7 +196,7 @@ export default async function PublicMemorialPage({ params }: Props) {
       {
         '@type': 'ListItem',
         position: 2,
-        name: m.type === 'mascota' ? 'Memoriales de mascotas' : 'Memoriales',
+        name: m.type === 'mascota' ? 'Nichos Virtuales de mascotas' : 'Nichos Virtuales',
         item: `${siteUrl}/memorial/${m.slug}`,
       },
       {
@@ -200,6 +210,14 @@ export default async function PublicMemorialPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-marfil">
+      {viewerIsAdmin && (
+        <AdminBar
+          slug={params.slug}
+          status={memorial.status as 'borrador' | 'publicado' | 'privado'}
+          memorialName={m.name}
+        />
+      )}
+
       {/* JSON-LD: Person/Pet + BreadcrumbList */}
       <script
         type="application/ld+json"

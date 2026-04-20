@@ -33,7 +33,7 @@ export function MemorialExpired({ name, ownerId, memorialId }: Props) {
         </h1>
 
         <p className="text-pizarra-500 text-base leading-relaxed max-w-md mx-auto mb-10">
-          Este memorial estaba en el plan de prueba y su tiempo terminó.
+          Este nicho virtual estaba en el plan de prueba y su tiempo terminó.
           Para que los recuerdos de {name.split(' ')[0]} sigan estando aquí,
           puedes renovar el acceso en cualquier momento.
         </p>
@@ -41,7 +41,7 @@ export function MemorialExpired({ name, ownerId, memorialId }: Props) {
         <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
           <Button asChild variant="dorado" size="lg">
             <Link href={`/dashboard/memorial/${memorialId}/checkout?renew=1`}>
-              Extender memorial
+              Extender nicho virtual
             </Link>
           </Button>
           <Button asChild variant="ghost" size="lg">

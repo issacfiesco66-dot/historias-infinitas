@@ -28,7 +28,7 @@ export default async function MemorialQrPage({ params }: { params: { id: string 
           href={`/dashboard/memorial/${memorial.id}`}
           className="text-sm text-pizarra-500 hover:text-pizarra-800"
         >
-          ← Volver al memorial
+          ← Volver al nicho virtual
         </Link>
         <div className="mx-auto w-14 h-14 rounded-full bg-dorado-100 flex items-center justify-center my-6">
           <Lock className="h-6 w-6 text-dorado-600" />
@@ -62,13 +62,13 @@ export default async function MemorialQrPage({ params }: { params: { id: string 
   return (
     <div className="max-w-2xl mx-auto text-center">
       <Link href={`/dashboard/memorial/${memorial.id}`} className="text-sm text-pizarra-500 hover:text-pizarra-800">
-        ← Volver al memorial
+        ← Volver al nicho virtual
       </Link>
 
       <p className="uppercase tracking-[0.3em] text-xs text-dorado-600 mt-6 mb-2">Código único</p>
       <h1 className="font-serif text-4xl text-pizarra-800 mb-2">QR de {memorial.name}</h1>
       <p className="text-pizarra-500 mb-10">
-        Imprímelo en placas, álbumes o lápidas. Al escanearlo se abrirá el memorial y el Portal AR.
+        Imprímelo en placas, álbumes o lápidas. Al escanearlo se abrirá el nicho virtual y el Portal AR.
       </p>
 
       <Card className="p-8">
@@ -86,7 +86,7 @@ export default async function MemorialQrPage({ params }: { params: { id: string 
               </a>
             </Button>
             <Button asChild variant="outline">
-              <Link href={publicUrl} target="_blank">Ver memorial</Link>
+              <Link href={publicUrl} target="_blank">Ver nicho virtual</Link>
             </Button>
           </div>
         </CardContent>

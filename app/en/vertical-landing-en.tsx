@@ -17,9 +17,16 @@ export interface VerticalCopyEN {
   testimonial: { quote: string; author: string };
   faqs: { q: string; a: string }[];
   canonical: string;
+  /** Long-form SEO content (optional). Rendered before the testimonial. */
+  deepContent?: { heading: string; paragraphs: string[] };
 }
 
 export function VerticalLandingEN({ copy }: { copy: VerticalCopyEN }) {
+  const SITE_URL =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    process.env.NEXT_PUBLIC_APP_URL ??
+    'https://historias-infinitas.com';
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -50,11 +57,25 @@ export function VerticalLandingEN({ copy }: { copy: VerticalCopyEN }) {
     },
   };
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/en` },
+      { '@type': 'ListItem', position: 2, name: 'Partners', item: `${SITE_URL}/en/partners` },
+      { '@type': 'ListItem', position: 3, name: copy.vertical, item: `${SITE_URL}${copy.canonical}` },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
       <section className="relative overflow-hidden bg-pizarra-800 text-marfil">
@@ -118,6 +139,23 @@ export function VerticalLandingEN({ copy }: { copy: VerticalCopyEN }) {
           ))}
         </div>
       </section>
+
+      {copy.deepContent && (
+        <section className="bg-marfil py-20">
+          <div className="container-wide max-w-3xl">
+            <Reveal>
+              <FadeH2 className="font-serif text-3xl md:text-4xl text-pizarra-800 mb-8">
+                {copy.deepContent.heading}
+              </FadeH2>
+              <div className="space-y-5 text-pizarra-600 leading-relaxed text-[15px] md:text-base">
+                {copy.deepContent.paragraphs.map((p, i) => (
+                  <FadeP key={i}>{p}</FadeP>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       <section className="bg-pizarra-800 text-marfil py-20">
         <div className="container-wide max-w-3xl text-center">

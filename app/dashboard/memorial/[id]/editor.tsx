@@ -393,7 +393,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
           memorialId={memorial.id}
           onActivated={() => {
             setStatus('publicado');
-            setToast('Memorial activado. Recargando…');
+            setToast('Nicho virtual activado. Recargando…');
             setTimeout(() => window.location.reload(), 1200);
           }}
         />
@@ -775,7 +775,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                         </div>
                         <p className="text-sm text-pizarra-600">
                           Este video se reproducirá automáticamente cuando alguien
-                          escanee el QR del memorial, tras la escena de despedida.
+                          escanee el QR del nicho virtual, tras la escena de despedida.
                         </p>
                       </div>
                     )}
@@ -845,9 +845,9 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                   <div className="flex items-start gap-3 bg-dorado-50 border border-dorado-200 rounded-xl p-4">
                     <Eye className="h-5 w-5 text-dorado-600 shrink-0 mt-0.5" />
                     <div className="text-sm text-pizarra-700">
-                      <p className="font-medium text-pizarra-800">Así se verá tu memorial.</p>
+                      <p className="font-medium text-pizarra-800">Así se verá tu nicho virtual.</p>
                       <p className="text-pizarra-600 mt-1">
-                        La vista previa es privada. Para que tu memorial sea público,
+                        La vista previa es privada. Para que tu nicho virtual sea público,
                         con su URL única, QR y botones de compartir,{' '}
                         <strong>necesitas completar el pago</strong>.
                       </p>
@@ -910,7 +910,7 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
           <MemorialPreview data={previewData} />
           {!locked && (
             <p className="text-[11px] text-pizarra-400 px-1 text-center">
-              El memorial se activa en su URL pública tras el pago.
+              El nicho virtual se activa en su URL pública tras el pago.
             </p>
           )}
         </div>

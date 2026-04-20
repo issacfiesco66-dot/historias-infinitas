@@ -30,9 +30,16 @@ export interface VerticalCopy {
   canonical: string;
   /** Keywords extra para meta tag */
   keywords: string[];
+  /** Contenido largo para SEO (opcional). Se renderiza antes del testimonial. */
+  deepContent?: { heading: string; paragraphs: string[] };
 }
 
 export function VerticalLanding({ copy }: { copy: VerticalCopy }) {
+  const SITE_URL =
+    process.env.NEXT_PUBLIC_SITE_URL ??
+    process.env.NEXT_PUBLIC_APP_URL ??
+    'https://historias-infinitas.com';
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
@@ -41,7 +48,7 @@ export function VerticalLanding({ copy }: { copy: VerticalCopy }) {
     inLanguage: 'es-MX',
     about: {
       '@type': 'Service',
-      name: `Memoriales digitales para ${copy.vertical.toLowerCase()}`,
+      name: `Nichos Virtuales para ${copy.vertical.toLowerCase()}`,
       provider: { '@type': 'Organization', name: 'Historias Infinitas' },
       areaServed: { '@type': 'Country', name: 'México' },
       offers: [
@@ -59,11 +66,25 @@ export function VerticalLanding({ copy }: { copy: VerticalCopy }) {
     },
   };
 
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL },
+      { '@type': 'ListItem', position: 2, name: 'Para socios', item: `${SITE_URL}/partners` },
+      { '@type': 'ListItem', position: 3, name: copy.vertical, item: `${SITE_URL}${copy.canonical}` },
+    ],
+  };
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
       {/* ============ HERO ============ */}
@@ -129,6 +150,24 @@ export function VerticalLanding({ copy }: { copy: VerticalCopy }) {
           ))}
         </div>
       </section>
+
+      {/* ============ CONTENIDO PROFUNDO (SEO) ============ */}
+      {copy.deepContent && (
+        <section className="bg-marfil py-20">
+          <div className="container-wide max-w-3xl">
+            <Reveal>
+              <FadeH2 className="font-serif text-3xl md:text-4xl text-pizarra-800 mb-8">
+                {copy.deepContent.heading}
+              </FadeH2>
+              <div className="space-y-5 text-pizarra-600 leading-relaxed text-[15px] md:text-base">
+                {copy.deepContent.paragraphs.map((p, i) => (
+                  <FadeP key={i}>{p}</FadeP>
+                ))}
+              </div>
+            </Reveal>
+          </div>
+        </section>
+      )}
 
       {/* ============ TESTIMONIO ============ */}
       <section className="bg-pizarra-800 text-marfil py-20">
