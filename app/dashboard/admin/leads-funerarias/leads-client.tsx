@@ -3,7 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import { ExternalLink, Search } from 'lucide-react';
-import type { PartnerLead, PartnerLeadStatus } from '@/lib/partner-leads';
+import type { PartnerLead, PartnerLeadStatus, PartnerLeadVertical } from '@/lib/partner-leads';
 
 interface Props {
   leads: PartnerLead[];
@@ -25,16 +25,37 @@ const STATUS_BADGE: Record<PartnerLeadStatus, string> = {
   converted: 'bg-emerald-100 text-emerald-700 border-emerald-200',
 };
 
+const VERTICAL_LABEL: Record<PartnerLeadVertical, string> = {
+  funeraria:   'Funeraria',
+  veterinaria: 'Veterinaria',
+  hospicio:    'Hospicio',
+  geriatrico:  'Geriátrico',
+  otro:        'Otro',
+};
+
+const VERTICAL_BADGE: Record<PartnerLeadVertical, string> = {
+  funeraria:   'bg-pizarra-800 text-marfil border-pizarra-900',
+  veterinaria: 'bg-emerald-700 text-white border-emerald-800',
+  hospicio:    'bg-blue-700 text-white border-blue-800',
+  geriatrico:  'bg-purple-700 text-white border-purple-800',
+  otro:        'bg-gray-500 text-white border-gray-600',
+};
+
 type FilterValue = PartnerLeadStatus | 'all';
+type VerticalFilterValue = PartnerLeadVertical | 'all';
 
 export function LeadsFunerariaPanel({ leads }: Props) {
   const [filter, setFilter] = useState<FilterValue>('all');
+  const [verticalFilter, setVerticalFilter] = useState<VerticalFilterValue>('all');
   const [search, setSearch] = useState('');
 
   const visible = useMemo(() => {
     let list = leads;
     if (filter !== 'all') {
       list = list.filter((l) => l.status === filter);
+    }
+    if (verticalFilter !== 'all') {
+      list = list.filter((l) => (l.vertical ?? 'funeraria') === verticalFilter);
     }
     if (search.trim()) {
       const q = search.trim().toLowerCase();
@@ -46,7 +67,7 @@ export function LeadsFunerariaPanel({ leads }: Props) {
       );
     }
     return list;
-  }, [leads, filter, search]);
+  }, [leads, filter, verticalFilter, search]);
 
   const counts = useMemo(() => {
     const c: Record<FilterValue, number> = {
@@ -61,8 +82,48 @@ export function LeadsFunerariaPanel({ leads }: Props) {
     return c;
   }, [leads]);
 
+  const verticalCounts = useMemo(() => {
+    const c: Record<VerticalFilterValue, number> = {
+      all: leads.length,
+      funeraria: 0,
+      veterinaria: 0,
+      hospicio: 0,
+      geriatrico: 0,
+      otro: 0,
+    };
+    for (const l of leads) {
+      const v = (l.vertical ?? 'funeraria') as PartnerLeadVertical;
+      c[v] = (c[v] ?? 0) + 1;
+    }
+    return c;
+  }, [leads]);
+
   return (
     <div className="space-y-5">
+      {/* Filtro por vertical */}
+      <div className="flex flex-wrap items-center gap-2">
+        <span className="text-[10px] font-semibold uppercase tracking-wider text-pizarra-400 mr-1">
+          Vertical:
+        </span>
+        {(['all', 'funeraria', 'veterinaria', 'hospicio', 'geriatrico', 'otro'] as VerticalFilterValue[]).map((v) => {
+          const count = verticalCounts[v];
+          if (v !== 'all' && v !== verticalFilter && count === 0) return null; // oculta verticales vacías
+          const active = verticalFilter === v;
+          const label = v === 'all' ? 'Todas' : VERTICAL_LABEL[v as PartnerLeadVertical] + 's';
+          return (
+            <button
+              key={v}
+              onClick={() => setVerticalFilter(v)}
+              className={`rounded-full px-2.5 py-1 text-[11px] font-semibold transition-colors ${
+                active ? 'bg-pizarra-800 text-marfil' : 'bg-pizarra-100 text-pizarra-600 hover:bg-pizarra-200'
+              }`}
+            >
+              {label} <span className="ml-1 opacity-75">({count})</span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* Toolbar */}
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div className="flex flex-wrap gap-2">
@@ -120,7 +181,8 @@ export function LeadsFunerariaPanel({ leads }: Props) {
           <table className="w-full text-sm">
             <thead className="bg-pizarra-50 text-pizarra-500 uppercase text-[10px] tracking-widest">
               <tr>
-                <th className="px-4 py-3 text-left font-semibold">Funeraria</th>
+                <th className="px-4 py-3 text-left font-semibold">Negocio</th>
+                <th className="px-4 py-3 text-left font-semibold">Vertical</th>
                 <th className="px-4 py-3 text-left font-semibold">Teléfono</th>
                 <th className="px-4 py-3 text-left font-semibold">Ciudad</th>
                 <th className="px-4 py-3 text-left font-semibold">Estado</th>
@@ -129,9 +191,18 @@ export function LeadsFunerariaPanel({ leads }: Props) {
               </tr>
             </thead>
             <tbody>
-              {visible.map((l) => (
+              {visible.map((l) => {
+                const vertical = (l.vertical ?? 'funeraria') as PartnerLeadVertical;
+                return (
                 <tr key={l.id} className="border-t border-pizarra-100 hover:bg-pizarra-50/50">
                   <td className="px-4 py-3 font-medium text-pizarra-800">{l.business_name}</td>
+                  <td className="px-4 py-3">
+                    <span
+                      className={`inline-block rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${VERTICAL_BADGE[vertical]}`}
+                    >
+                      {VERTICAL_LABEL[vertical]}
+                    </span>
+                  </td>
                   <td className="px-4 py-3 text-pizarra-600 font-mono text-xs">{l.phone}</td>
                   <td className="px-4 py-3 text-pizarra-500">
                     {l.city ?? '—'}
@@ -157,7 +228,8 @@ export function LeadsFunerariaPanel({ leads }: Props) {
                     </Link>
                   </td>
                 </tr>
-              ))}
+                );
+              })}
             </tbody>
           </table>
         </div>

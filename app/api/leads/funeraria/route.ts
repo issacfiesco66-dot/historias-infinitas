@@ -139,6 +139,7 @@ export async function POST(req: Request) {
     .insert({
       business_name:   data.business_name,
       phone:           data.phone,
+      vertical:        data.vertical ?? 'funeraria',
       city:            data.city ?? null,
       state:           data.state ?? null,
       google_place_id: data.google_place_id ?? null,

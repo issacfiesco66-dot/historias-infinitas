@@ -122,7 +122,7 @@ export default async function AdminPage() {
             href="/dashboard/admin/leads-funerarias"
             className="text-sm font-semibold text-dorado-600 hover:text-dorado-800 border border-dorado-300 rounded-lg px-3 py-1.5 bg-dorado-50/50"
           >
-            📞 Leads funerarias →
+            📞 Leads B2B →
           </Link>
           <Link href="/dashboard" className="text-sm text-pizarra-500 hover:text-pizarra-800">
             ← Volver a mis nichos virtuales

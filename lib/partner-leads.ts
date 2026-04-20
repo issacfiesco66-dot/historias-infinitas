@@ -18,6 +18,21 @@ export type PartnerLeadStatus =
   | 'opted_out'
   | 'converted';
 
+export type PartnerLeadVertical =
+  | 'funeraria'
+  | 'veterinaria'
+  | 'hospicio'
+  | 'geriatrico'
+  | 'otro';
+
+export const PARTNER_VERTICALS: readonly PartnerLeadVertical[] = [
+  'funeraria',
+  'veterinaria',
+  'hospicio',
+  'geriatrico',
+  'otro',
+] as const;
+
 export interface PartnerLead {
   id: string;
   business_name: string;
@@ -27,6 +42,7 @@ export interface PartnerLead {
   google_place_id: string | null;
   source: string;
   status: PartnerLeadStatus;
+  vertical: PartnerLeadVertical;
   token: string;
   notes: string | null;
   metadata: Record<string, unknown>;
@@ -42,6 +58,7 @@ export interface PartnerLead {
 export interface IngestLeadPayload {
   business_name: string;
   phone: string;
+  vertical?: PartnerLeadVertical;
   city?: string;
   state?: string;
   google_place_id?: string;
@@ -70,6 +87,13 @@ export function validateIngestPayload(
   if (!/^\+?\d{8,15}$/.test(phone)) return { ok: false, error: 'phone_formato_invalido' };
 
   const out: IngestLeadPayload = { business_name: name, phone };
+
+  if (typeof b.vertical === 'string') {
+    const v = b.vertical.trim().toLowerCase();
+    if (PARTNER_VERTICALS.includes(v as PartnerLeadVertical)) {
+      out.vertical = v as PartnerLeadVertical;
+    }
+  }
 
   if (typeof b.city === 'string' && b.city.trim()) out.city = b.city.trim().slice(0, 120);
   if (typeof b.state === 'string' && b.state.trim()) out.state = b.state.trim().slice(0, 120);

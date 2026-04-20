@@ -74,9 +74,9 @@ export default async function LeadsFunerariasPage() {
           <p className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-2">
             Panel privado · Leads B2B
           </p>
-          <h1 className="font-serif text-4xl text-pizarra-800">Funerarias — Pipeline</h1>
+          <h1 className="font-serif text-4xl text-pizarra-800">Partners B2B — Pipeline</h1>
           <p className="text-pizarra-500 mt-1 text-sm">
-            {rows.length} lead{rows.length !== 1 && 's'} totales — scrapedos por indexa e
+            {rows.length} lead{rows.length !== 1 && 's'} totales (funerarias, veterinarias, hospicios) — scrapedos por indexa e
             ingestados vía <code className="bg-pizarra-100 px-1 py-0.5 rounded text-xs">/api/leads/funeraria</code>.
           </p>
         </div>
