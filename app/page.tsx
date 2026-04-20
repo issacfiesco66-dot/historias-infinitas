@@ -75,7 +75,7 @@ export default function HomePage() {
 
             <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
               <Button asChild variant="dorado" size="lg">
-                <Link href="/register">Comenzar su tributo</Link>
+                <Link href="/empieza">Comenzar su tributo</Link>
               </Button>
               <Button asChild variant="outline" size="lg">
                 <Link href="#como-funciona">Descubrir el proceso</Link>
@@ -117,7 +117,7 @@ export default function HomePage() {
             description="Porque una huella en el corazón es eterna. Honra a tu mejor amigo con un retrato artístico que captura su alegría — y un portal que devuelve el brillo de su mirada a tu sala."
             cta={
               <Button asChild variant="dorado">
-                <Link href="/register?type=mascota">
+                <Link href="/empieza?type=mascota">
                   Comenzar su tributo <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -134,7 +134,7 @@ export default function HomePage() {
             description="Tu historia familiar merece ser contada. Preserva las lecciones, la voz y la mirada de quienes forjaron tu camino, para que las próximas generaciones los conozcan."
             cta={
               <Button asChild variant="dorado">
-                <Link href="/register?type=ser_querido">
+                <Link href="/empieza?type=ser_querido">
                   Preservar su historia <ArrowRight className="ml-2 h-4 w-4" />
                 </Link>
               </Button>
@@ -216,7 +216,7 @@ export default function HomePage() {
                 cuidado con el que tú guardas su recuerdo.
               </FadeP>
               <Button asChild variant="dorado" size="lg">
-                <Link href="/register">Comenzar su tributo</Link>
+                <Link href="/empieza">Comenzar su tributo</Link>
               </Button>
             </div>
           </div>

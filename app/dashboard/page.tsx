@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { PlusCircle, Eye, QrCode, Sparkles, CreditCard, Lock } from 'lucide-react';
 import { DeleteMemorialButton } from '@/components/delete-memorial-button';
+import { ClaimPendingMemorial } from './claim-pending-memorial';
 import type { Memorial } from '@/types/database';
 import { formatDate } from '@/lib/utils';
 
@@ -21,6 +22,7 @@ export default async function DashboardHome() {
 
   return (
     <div className="space-y-10">
+      <ClaimPendingMemorial />
       <div className="flex items-start justify-between flex-wrap gap-4">
         <div>
           <p className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-2">Panel privado</p>

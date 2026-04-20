@@ -23,7 +23,7 @@ export function SiteHeader() {
             Iniciar sesión
           </Link>
           <Button asChild variant="dorado" size="sm">
-            <Link href="/register">Crear nicho virtual</Link>
+            <Link href="/empieza">Crear nicho virtual</Link>
           </Button>
         </div>
       </div>
