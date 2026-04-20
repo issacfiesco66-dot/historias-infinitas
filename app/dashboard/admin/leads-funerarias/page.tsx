@@ -66,11 +66,6 @@ export default async function LeadsFunerariasPage() {
     byStatus[l.status] = (byStatus[l.status] ?? 0) + 1;
   }
 
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, '') ??
-    process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') ??
-    'https://historias-infinitas.com';
-
   return (
     <div className="space-y-8">
       {/* ——— cabecera ——— */}
@@ -100,7 +95,7 @@ export default async function LeadsFunerariasPage() {
       </div>
 
       {/* ——— panel interactivo ——— */}
-      <LeadsFunerariaPanel leads={rows} baseUrl={baseUrl} />
+      <LeadsFunerariaPanel leads={rows} />
     </div>
   );
 }

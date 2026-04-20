@@ -2,12 +2,11 @@
 
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
-import { Copy, Terminal, ExternalLink, X, Search } from 'lucide-react';
+import { ExternalLink, Search } from 'lucide-react';
 import type { PartnerLead, PartnerLeadStatus } from '@/lib/partner-leads';
 
 interface Props {
   leads: PartnerLead[];
-  baseUrl: string;
 }
 
 const STATUS_LABEL: Record<PartnerLeadStatus, string> = {
@@ -28,10 +27,9 @@ const STATUS_BADGE: Record<PartnerLeadStatus, string> = {
 
 type FilterValue = PartnerLeadStatus | 'all';
 
-export function LeadsFunerariaPanel({ leads, baseUrl }: Props) {
+export function LeadsFunerariaPanel({ leads }: Props) {
   const [filter, setFilter] = useState<FilterValue>('all');
   const [search, setSearch] = useState('');
-  const [scraperOpen, setScraperOpen] = useState(false);
 
   const visible = useMemo(() => {
     let list = leads;
@@ -98,15 +96,13 @@ export function LeadsFunerariaPanel({ leads, baseUrl }: Props) {
               className="w-64 rounded-lg border border-pizarra-200 bg-marfil pl-9 pr-3 py-1.5 text-sm outline-none focus:border-dorado-500 focus:ring-2 focus:ring-dorado-500/20"
             />
           </div>
-          <button
-            onClick={() => setScraperOpen(true)}
-            className="inline-flex items-center gap-2 rounded-xl bg-pizarra-800 text-marfil px-4 py-2 text-sm font-semibold hover:bg-pizarra-900 transition-colors"
-            title="Armar comando de terminal para el scraper"
-          >
-            <Terminal size={14} />
-            Ejecutar scraper
-          </button>
         </div>
+      </div>
+
+      {/* Nota: el scraper se ejecuta desde /admin/prospectos → tab Funerarias en indexa */}
+      <div className="rounded-xl border border-pizarra-200 bg-pizarra-50 px-4 py-2.5 text-xs text-pizarra-500">
+        Este panel es <strong>solo lectura</strong>. Para ejecutar el scraper, marcar enviado/BAJA
+        o gestionar los leads, ve al admin de indexa.
       </div>
 
       {/* Tabla */}
@@ -167,138 +163,6 @@ export function LeadsFunerariaPanel({ leads, baseUrl }: Props) {
         </div>
       )}
 
-      {/* Modal scraper */}
-      {scraperOpen && (
-        <ScraperModal onClose={() => setScraperOpen(false)} baseUrl={baseUrl} />
-      )}
-    </div>
-  );
-}
-
-/* ============================================================================
- *  Modal: Ejecutar scraper
- * ========================================================================== */
-function ScraperModal({ onClose, baseUrl }: { onClose: () => void; baseUrl: string }) {
-  const [ciudad, setCiudad] = useState('Toluca');
-  const [max, setMax] = useState(15);
-  const [dryRun, setDryRun] = useState(false);
-  const [copied, setCopied] = useState(false);
-
-  const cmd = useMemo(() => {
-    const parts = [
-      'python scraper_funerarias.py',
-      dryRun ? '--dry-run' : '',
-      `--ciudad "${ciudad.replace(/"/g, '\\"')}"`,
-      `--max ${Math.max(1, Math.min(100, Number(max) || 15))}`,
-    ].filter(Boolean);
-    return parts.join(' ');
-  }, [ciudad, max, dryRun]);
-
-  async function copyCmd() {
-    try {
-      await navigator.clipboard.writeText(cmd);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
-    } catch {
-      /* ignore */
-    }
-  }
-
-  return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-pizarra-900/50 backdrop-blur-sm p-4"
-      onClick={onClose}
-    >
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-lg rounded-2xl bg-marfil p-6 shadow-solemn border border-pizarra-200"
-      >
-        <div className="flex items-start justify-between mb-4">
-          <div>
-            <p className="uppercase tracking-[0.3em] text-[10px] text-dorado-600 mb-1">
-              Scraper de funerarias
-            </p>
-            <h2 className="font-serif text-2xl text-pizarra-800">
-              Ejecutar scraper local
-            </h2>
-          </div>
-          <button
-            onClick={onClose}
-            className="text-pizarra-400 hover:text-pizarra-700"
-            aria-label="Cerrar"
-          >
-            <X size={20} />
-          </button>
-        </div>
-
-        <p className="text-xs text-pizarra-600 mb-4 leading-relaxed">
-          El scraper usa Playwright (navegador headless) que <strong>no corre en Vercel</strong> —
-          tiene que ejecutarse en tu máquina. Arma tu comando aquí y cópialo al portapapeles;
-          luego pégalo en tu terminal (<code>E:\Indexa</code>).
-        </p>
-
-        <div className="space-y-3 mb-4">
-          <div>
-            <label className="block text-xs font-semibold text-pizarra-600 mb-1">Ciudad</label>
-            <input
-              type="text"
-              value={ciudad}
-              onChange={(e) => setCiudad(e.target.value)}
-              className="w-full rounded-lg border border-pizarra-200 bg-white px-3 py-2 text-sm outline-none focus:border-dorado-500 focus:ring-2 focus:ring-dorado-500/20"
-              placeholder="Toluca, Guadalajara, Monterrey..."
-            />
-          </div>
-          <div className="flex items-end gap-3">
-            <div className="flex-1">
-              <label className="block text-xs font-semibold text-pizarra-600 mb-1">
-                Máximo de resultados
-              </label>
-              <input
-                type="number"
-                min={1}
-                max={100}
-                value={max}
-                onChange={(e) => setMax(Math.max(1, Math.min(100, Number(e.target.value) || 15)))}
-                className="w-full rounded-lg border border-pizarra-200 bg-white px-3 py-2 text-sm outline-none focus:border-dorado-500 focus:ring-2 focus:ring-dorado-500/20"
-              />
-            </div>
-            <label className="flex items-center gap-2 text-xs text-pizarra-600 pb-2 cursor-pointer">
-              <input
-                type="checkbox"
-                checked={dryRun}
-                onChange={(e) => setDryRun(e.target.checked)}
-                className="h-4 w-4 rounded accent-dorado-600"
-              />
-              Dry-run (preview, no guarda)
-            </label>
-          </div>
-        </div>
-
-        <div className="rounded-xl bg-pizarra-900 text-marfil p-4 font-mono text-xs break-all relative">
-          <button
-            onClick={copyCmd}
-            className="absolute top-2 right-2 inline-flex items-center gap-1 rounded-md bg-pizarra-700 hover:bg-pizarra-600 px-2 py-1 text-[10px] font-semibold"
-          >
-            <Copy size={12} />
-            {copied ? 'Copiado' : 'Copiar'}
-          </button>
-          <p className="text-pizarra-400 text-[10px] mb-1">$ cd E:\Indexa</p>
-          <p className="pr-20">$ {cmd}</p>
-        </div>
-
-        <div className="mt-4 text-[11px] text-pizarra-500 leading-relaxed">
-          <p className="mb-1"><strong>Cuando termine</strong>, vuelve aquí — la tabla se refresca sola.</p>
-          <p>Los leads aparecen primero en{' '}
-            <a
-              href={`${baseUrl}/dashboard/admin/leads-funerarias`}
-              className="text-dorado-600 hover:underline"
-            >
-              este panel
-            </a>
-            {' '}con estado <em>contacted</em>. Cuando la funeraria abra su link personalizado, pasan a <em>engaged</em>.
-          </p>
-        </div>
-      </div>
     </div>
   );
 }
