@@ -11,6 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Reveal, FadeH1, FadeH2, FadeP, DustParticles } from '@/components/viva-images';
 import { PARTNER_PLANS } from '@/lib/partner-plans';
 import { PartnerPlansGrid } from './partner-plans';
+import { CalBookingScript, CalBookingButton } from '@/components/cal-booking';
 
 export const metadata: Metadata = {
   title: 'Programa de Socios — Historias Infinitas',
@@ -23,6 +24,7 @@ export default function PartnersPage() {
   return (
     <>
       <SiteHeader />
+      <CalBookingScript />
 
       {/* ============ HERO ============ */}
       <section className="relative overflow-hidden bg-pizarra-800 text-marfil">
@@ -55,9 +57,13 @@ export default function PartnersPage() {
               <Button asChild variant="dorado" size="lg">
                 <Link href="#planes">Ver planes y precios</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="!bg-transparent !text-marfil border-marfil/40 hover:!bg-marfil/10">
-                <Link href="/contacto?plan=institucional">Hablar con ventas</Link>
-              </Button>
+              <CalBookingButton
+                variant="outline"
+                size="lg"
+                className="!bg-transparent !text-marfil border-marfil/40 hover:!bg-marfil/10"
+              >
+                Agendar demo · 15 min
+              </CalBookingButton>
             </div>
 
             <div className="mt-10 flex flex-wrap gap-x-8 gap-y-3 text-sm text-marfil/70">
@@ -258,9 +264,13 @@ export default function PartnersPage() {
                 <Button asChild size="lg" className="bg-pizarra-900 hover:bg-pizarra-800 text-marfil">
                   <Link href="#planes">Contratar ahora</Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="border-pizarra-900 text-pizarra-900 hover:bg-pizarra-900/10">
-                  <Link href="/contacto?plan=institucional">Hablar con ventas</Link>
-                </Button>
+                <CalBookingButton
+                  size="lg"
+                  variant="outline"
+                  className="border-pizarra-900 text-pizarra-900 hover:bg-pizarra-900/10"
+                >
+                  Agendar demo · 15 min
+                </CalBookingButton>
               </div>
             </CardContent>
           </Card>

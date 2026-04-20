@@ -6,6 +6,7 @@ import {
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Reveal, FadeH1, FadeH2, FadeP, DustParticles } from '@/components/viva-images';
+import { CalBookingButton } from '@/components/cal-booking';
 
 export interface VerticalCopy {
   /** Para el schema.org WebPage + título */
@@ -115,11 +116,13 @@ export function VerticalLanding({ copy }: { copy: VerticalCopy }) {
               <Button asChild variant="dorado" size="lg">
                 <Link href="/partners#planes">Ver planes y contratar</Link>
               </Button>
-              <Button asChild variant="outline" size="lg" className="!bg-transparent !text-marfil border-marfil/40 hover:!bg-marfil/10">
-                <Link href={`/contacto?plan=partner_institucional&vertical=${encodeURIComponent(copy.vertical)}`}>
-                  Hablar con ventas
-                </Link>
-              </Button>
+              <CalBookingButton
+                variant="outline"
+                size="lg"
+                className="!bg-transparent !text-marfil border-marfil/40 hover:!bg-marfil/10"
+              >
+                Agendar demo · 15 min
+              </CalBookingButton>
             </div>
           </Reveal>
         </div>
@@ -229,9 +232,13 @@ export function VerticalLanding({ copy }: { copy: VerticalCopy }) {
                 <Button asChild size="lg" className="bg-pizarra-900 hover:bg-pizarra-800 text-marfil">
                   <Link href="/partners#planes">Contratar Pack 30</Link>
                 </Button>
-                <Button asChild size="lg" variant="outline" className="border-pizarra-900 text-pizarra-900 hover:bg-pizarra-900/10">
-                  <Link href="/contacto">Hablar con un asesor</Link>
-                </Button>
+                <CalBookingButton
+                  size="lg"
+                  variant="outline"
+                  className="border-pizarra-900 text-pizarra-900 hover:bg-pizarra-900/10"
+                >
+                  Agendar demo · 15 min
+                </CalBookingButton>
               </div>
             </CardContent>
           </Card>
