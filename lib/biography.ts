@@ -35,7 +35,11 @@ export interface BiographyInput {
   tone?: BiographyTone;
 }
 
-const DEFAULT_TEXT_MODEL = 'meta/meta-llama-3.1-405b-instruct';
+// Llama 3 70B — fiable, buen español, ~$0.001 USD por generación, schema
+// estable (usa `max_new_tokens`). 3.1 405B es mejor en prosa pero cambia
+// el schema (`max_tokens`) y a veces no responde vía .run() por tiempo de
+// cold-start. Override con REPLICATE_TEXT_MODEL si quieres probar otro.
+const DEFAULT_TEXT_MODEL = 'meta/meta-llama-3-70b-instruct';
 const TEXT_MODEL = (process.env.REPLICATE_TEXT_MODEL || DEFAULT_TEXT_MODEL) as `${string}/${string}`;
 
 const SYSTEM_PROMPT = `Eres un escritor con empatía y calma que ayuda a familias en duelo a redactar la biografía de un ser querido o una mascota que falleció. Tu trabajo es convertir los recuerdos sueltos que te comparten en un texto cálido, digno y sereno.
@@ -96,20 +100,52 @@ function buildUserPrompt(input: BiographyInput): string {
   return lines.join('\n');
 }
 
-interface LlamaStreamedOutput {
-  [key: number]: string;
-  join?: (sep: string) => string;
+/**
+ * Normaliza la salida de Replicate a string. Los modelos Llama devuelven
+ * uno de tres formatos según la versión del SDK / tamaño del modelo:
+ *   1. AsyncIterable de tokens (streaming)
+ *   2. Array de strings (tokens ya juntados)
+ *   3. String directo
+ */
+async function normalizeToText(raw: unknown): Promise<string> {
+  if (raw == null) return '';
+
+  // 1. AsyncIterable (streaming)
+  if (typeof raw === 'object' && Symbol.asyncIterator in (raw as object)) {
+    let acc = '';
+    for await (const chunk of raw as AsyncIterable<unknown>) {
+      acc += typeof chunk === 'string' ? chunk : String(chunk ?? '');
+    }
+    return acc;
+  }
+
+  // 2. Array de tokens
+  if (Array.isArray(raw)) return raw.map((x) => String(x ?? '')).join('');
+
+  // 3. String
+  if (typeof raw === 'string') return raw;
+
+  return String(raw);
 }
 
-function normalizeLlamaOutput(raw: unknown): string {
-  if (typeof raw === 'string') return raw;
-  if (Array.isArray(raw)) return raw.join('');
-  if (raw && typeof raw === 'object') {
-    const maybeArr = raw as LlamaStreamedOutput;
-    if (typeof maybeArr.join === 'function') return maybeArr.join('');
-    // AsyncIterator case handled before this call; defensive string coerce.
-  }
-  return String(raw ?? '').trim();
+/**
+ * Construye los parámetros para Replicate según el modelo detectado.
+ * Llama 3 usa max_new_tokens; 3.1 usa max_tokens.
+ */
+function buildModelInput(userPrompt: string) {
+  const modelLower = TEXT_MODEL.toLowerCase();
+  const is31 = modelLower.includes('llama-3.1') || modelLower.includes('llama-3-1');
+  const tokenLimitKey = is31 ? 'max_tokens' : 'max_new_tokens';
+
+  return {
+    prompt: userPrompt,
+    system_prompt: SYSTEM_PROMPT,
+    [tokenLimitKey]: 700,
+    temperature: 0.65,
+    top_p: 0.9,
+    presence_penalty: 0.3,
+    frequency_penalty: 0.2,
+  };
 }
 
 export interface GenerateBiographyResult {
@@ -127,24 +163,28 @@ export async function generateBiography(input: BiographyInput): Promise<Generate
   }
 
   const userPrompt = buildUserPrompt(input);
+  const modelInput = buildModelInput(userPrompt);
 
-  const output = await replicate.run(TEXT_MODEL, {
-    input: {
-      prompt: userPrompt,
-      system_prompt: SYSTEM_PROMPT,
-      max_tokens: 700,
-      max_new_tokens: 700,
-      temperature: 0.65,
-      top_p: 0.9,
-      presence_penalty: 0.3,
-      frequency_penalty: 0.2,
-    },
-  });
+  let output: unknown;
+  try {
+    output = await replicate.run(TEXT_MODEL, { input: modelInput });
+  } catch (err: any) {
+    const detail = err?.response?.data ?? err?.detail ?? err?.message ?? String(err);
+    const enriched = new Error(
+      `replicate_run_failed (model=${TEXT_MODEL}): ${
+        typeof detail === 'string' ? detail : JSON.stringify(detail).slice(0, 500)
+      }`,
+    );
+    (enriched as any).cause = err;
+    throw enriched;
+  }
 
-  const text = normalizeLlamaOutput(output).trim();
+  const text = (await normalizeToText(output)).trim();
 
   if (!text || text.length < 40) {
-    throw new Error(`biography_empty_output: ${JSON.stringify(output).slice(0, 200)}`);
+    throw new Error(
+      `biography_empty_output (model=${TEXT_MODEL}): ${JSON.stringify(output).slice(0, 300)}`,
+    );
   }
 
   return { text, model: TEXT_MODEL, prompt: userPrompt };

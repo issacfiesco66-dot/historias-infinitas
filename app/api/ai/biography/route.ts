@@ -97,12 +97,19 @@ export async function POST(req: Request) {
       model,
     });
   } catch (err: any) {
-    console.error('[api/ai/biography]', err);
-    const msg = err?.message ?? 'Error interno';
+    // Log detallado en el server para Vercel — incluye message, cause y stack.
+    console.error('[api/ai/biography] generation failed:', {
+      message: err?.message,
+      cause: err?.cause?.message ?? err?.cause,
+      stack: err?.stack?.split('\n').slice(0, 4).join('\n'),
+    });
+    const msg = String(err?.message ?? 'Error interno');
     const userSafe =
       msg === 'notes_too_short' || msg === 'notes_too_long'
         ? msg
-        : 'No pudimos generar el borrador. Intenta de nuevo en un momento.';
-    return NextResponse.json({ error: userSafe }, { status: 500 });
+        : msg.startsWith('replicate_run_failed')
+          ? 'El modelo de IA rechazó la petición. Verifica REPLICATE_API_TOKEN y el modelo configurado.'
+          : 'No pudimos generar el borrador. Intenta de nuevo en un momento.';
+    return NextResponse.json({ error: userSafe, debug: msg.slice(0, 200) }, { status: 500 });
   }
 }

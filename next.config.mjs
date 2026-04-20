@@ -39,17 +39,24 @@ const supabaseCsp = supabaseHost ? `https://${supabaseHost}` : 'https://*.supaba
 // Preview y Production; sin permitirlo en CSP, la consola se llena de
 // errores aunque la app funcione. Es de Vercel, seguro permitirlo.
 const vercelLive = 'https://vercel.live https://*.pusher.com wss://*.pusher.com';
+// Google Tag Manager + Google Ads (gtag.js) para tracking de conversiones.
+// Dominios documentados por Google para CSP en
+// https://developers.google.com/tag-platform/security/guides/csp
+const googleTagScripts = 'https://www.googletagmanager.com';
+const googleTagConnect = 'https://www.google-analytics.com https://*.analytics.google.com https://*.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://stats.g.doubleclick.net';
+const googleTagImages  = 'https://www.google-analytics.com https://www.googletagmanager.com https://www.googleadservices.com https://googleads.g.doubleclick.net https://*.g.doubleclick.net https://www.google.com https://www.google.com.mx';
+const googleTagFrames  = 'https://td.doubleclick.net https://bid.g.doubleclick.net';
 const csp = [
   `default-src 'self'`,
-  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ajax.googleapis.com https://js.stripe.com ${vercelLive}`,
+  `script-src 'self' 'unsafe-inline' 'unsafe-eval' https://ajax.googleapis.com https://js.stripe.com ${googleTagScripts} ${vercelLive}`,
   `style-src 'self' 'unsafe-inline' https://fonts.googleapis.com ${vercelLive}`,
-  `img-src 'self' data: blob: ${supabaseCsp} https://replicate.delivery https://pbxt.replicate.delivery ${vercelLive}`,
+  `img-src 'self' data: blob: ${supabaseCsp} https://replicate.delivery https://pbxt.replicate.delivery ${googleTagImages} ${vercelLive}`,
   `font-src 'self' https://fonts.gstatic.com data: ${vercelLive}`,
   // connect-src: agrega ajax.googleapis.com para que model-viewer pueda
   // cargar su sourcemap (solo DevTools lo pide; no rompe nada si falla,
   // pero ensucia la consola).
-  `connect-src 'self' ${supabaseCsp} wss://${supabaseHost || '*.supabase.co'} https://api.stripe.com https://api.replicate.com https://ajax.googleapis.com ${vercelLive}`,
-  `frame-src 'self' https://js.stripe.com https://hooks.stripe.com ${vercelLive}`,
+  `connect-src 'self' ${supabaseCsp} wss://${supabaseHost || '*.supabase.co'} https://api.stripe.com https://api.replicate.com https://ajax.googleapis.com ${googleTagConnect} ${vercelLive}`,
+  `frame-src 'self' https://js.stripe.com https://hooks.stripe.com ${googleTagFrames} ${vercelLive}`,
   `media-src 'self' blob: data: ${supabaseCsp}`,
   `worker-src 'self' blob:`,
   `object-src 'none'`,
