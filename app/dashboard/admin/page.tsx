@@ -117,9 +117,17 @@ export default async function AdminPage() {
             Sesión activa como <strong>{user.email}</strong>
           </p>
         </div>
-        <Link href="/dashboard" className="text-sm text-pizarra-500 hover:text-pizarra-800">
-          ← Volver a mis nichos virtuales
-        </Link>
+        <div className="flex flex-col sm:flex-row items-end sm:items-center gap-3">
+          <Link
+            href="/dashboard/admin/leads-funerarias"
+            className="text-sm font-semibold text-dorado-600 hover:text-dorado-800 border border-dorado-300 rounded-lg px-3 py-1.5 bg-dorado-50/50"
+          >
+            📞 Leads funerarias →
+          </Link>
+          <Link href="/dashboard" className="text-sm text-pizarra-500 hover:text-pizarra-800">
+            ← Volver a mis nichos virtuales
+          </Link>
+        </div>
       </div>
 
       {/* ——— KPIs ——— */}
