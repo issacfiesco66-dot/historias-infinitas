@@ -16,6 +16,7 @@ import {
   Palette, CreditCard, Trash2, ArrowRight, Share2,
 } from 'lucide-react';
 import { MemorialPreview } from './memorial-preview';
+import { BiographyAssistant } from './biography-assistant';
 import { ShareButtons } from '@/components/share-buttons';
 import { PORTRAIT_STYLES, type PortraitStyleId } from '@/lib/portrait-styles';
 import type { Memorial, MemorialMedia, MemorialStatus } from '@/types/database';
@@ -504,7 +505,19 @@ export function MemorialEditor({ memorial, initialMedia }: Props) {
                   </div>
 
                   <div className="space-y-2">
-                    <Label htmlFor="biography">Biografía</Label>
+                    <div className="flex items-center justify-between gap-3 flex-wrap">
+                      <Label htmlFor="biography">Biografía</Label>
+                      <BiographyAssistant
+                        memorialId={memorial.id}
+                        subjectName={form.name || memorial.name}
+                        type={memorial.type}
+                        hasExistingBiography={Boolean(form.biography.trim())}
+                        onAccept={(text) => {
+                          setForm((prev) => ({ ...prev, biography: text }));
+                          setToast('Borrador cargado. Revísalo y edita lo que quieras.');
+                        }}
+                      />
+                    </div>
                     <p className="text-[11px] text-pizarra-400 -mt-1">
                       Usa saltos de línea para dar ritmo. La primera letra se convertirá en capital decorativa.
                     </p>
