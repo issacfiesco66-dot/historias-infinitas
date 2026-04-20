@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import {
   Heart, Handshake, Sparkles, Building2, TrendingUp,
-  ShieldCheck, HeartHandshake, Award, Star,
+  ShieldCheck, HeartHandshake, Award, Star, Coins,
 } from 'lucide-react';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
@@ -12,6 +12,8 @@ import { Reveal, FadeH1, FadeH2, FadeP, DustParticles } from '@/components/viva-
 import { PARTNER_PLANS } from '@/lib/partner-plans';
 import { PartnerPlansGrid } from './partner-plans';
 import { CalBookingScript, CalBookingButton } from '@/components/cal-booking';
+import { createAdminClient } from '@/lib/supabase/admin';
+import type { PartnerLead } from '@/lib/partner-leads';
 
 export const metadata: Metadata = {
   title: 'Programa de Socios — Historias Infinitas',
@@ -20,7 +22,48 @@ export const metadata: Metadata = {
   alternates: { canonical: '/partners' },
 };
 
-export default function PartnersPage() {
+export const dynamic = 'force-dynamic';
+
+/**
+ * Busca un lead por token y, si aplica, lo marca como 'engaged'.
+ * Idempotente: si ya está engaged/converted no re-escribe engaged_at.
+ */
+async function resolveLeadFromToken(
+  token: string | undefined,
+): Promise<PartnerLead | null> {
+  if (!token || typeof token !== 'string' || token.length < 16 || token.length > 100) {
+    return null;
+  }
+  if (!/^[a-f0-9]+$/i.test(token)) return null; // el token es hex puro
+
+  const admin = createAdminClient();
+  const { data: lead } = await admin
+    .from('partner_leads')
+    .select('*')
+    .eq('token', token)
+    .maybeSingle<PartnerLead>();
+
+  if (!lead) return null;
+  if (lead.status === 'opted_out') return null; // no personalizamos para opt-outs
+
+  // Marca engaged si aún no está engaged/converted
+  if (lead.status === 'scraped' || lead.status === 'contacted') {
+    await admin
+      .from('partner_leads')
+      .update({ status: 'engaged', engaged_at: new Date().toISOString() })
+      .eq('id', lead.id);
+  }
+
+  return lead;
+}
+
+export default async function PartnersPage({
+  searchParams,
+}: { searchParams: { lead?: string } }) {
+  const lead = await resolveLeadFromToken(searchParams.lead);
+  const firstName = lead?.business_name ?? null;
+  const city = lead?.city ?? null;
+
   return (
     <>
       <SiteHeader />
@@ -41,7 +84,9 @@ export default function PartnersPage() {
         <div className="container-wide relative py-20 md:py-28">
           <Reveal>
             <FadeP className="uppercase tracking-[0.3em] text-[11px] md:text-sm text-dorado-300 mb-5">
-              Programa de socios · Funerarias · Clínicas veterinarias · Hospicios
+              {firstName
+                ? <>Propuesta para <span className="text-marfil">{firstName}</span>{city ? ` · ${city}` : ''}</>
+                : 'Programa de socios · Funerarias · Clínicas veterinarias · Hospicios'}
             </FadeP>
             <FadeH1 className="font-serif text-4xl md:text-6xl lg:text-7xl leading-[1.05] text-marfil max-w-4xl">
               El detalle que hace que tus familias{' '}
@@ -142,6 +187,42 @@ export default function PartnersPage() {
           </div>
         </div>
       </section>
+
+      {/* ============ MARGEN DE REVENTA (solo si llegan con ?lead=<token>) ============ */}
+      {firstName && (
+        <section className="container-wide pt-20">
+          <Reveal>
+            <Card className="bg-gradient-to-br from-dorado-500 to-dorado-600 border-dorado-400 shadow-dorado">
+              <CardContent className="p-8 md:p-12 text-pizarra-900">
+                <div className="flex flex-col md:flex-row gap-8 items-start">
+                  <div className="h-16 w-16 rounded-full bg-pizarra-900/10 flex items-center justify-center shrink-0">
+                    <Coins className="h-8 w-8 text-pizarra-900" />
+                  </div>
+                  <div className="flex-1">
+                    <p className="uppercase tracking-widest text-[11px] text-pizarra-900/70 mb-2">
+                      Tu margen por paquete
+                    </p>
+                    <h2 className="font-serif text-3xl md:text-4xl leading-tight mb-4">
+                      {firstName} revende 30 nichos a <span className="italic">$800–$1,000</span> c/u,
+                      tu costo es <span className="italic">$167</span>.
+                    </h2>
+                    <div className="grid sm:grid-cols-3 gap-4 mt-6 text-sm">
+                      <MarginCell label="Tu inversión (Pack 30)" value="$4,999 MXN" />
+                      <MarginCell label="Ingreso potencial (30 × $900)" value="$27,000 MXN" />
+                      <MarginCell label="Utilidad estimada" value="~$22,000 MXN" highlight />
+                    </div>
+                    <p className="mt-6 text-sm text-pizarra-900/80 leading-relaxed">
+                      Cada familia paga el nicho virtual + placa con tu logo — tú cobras lo mismo
+                      que cobrarías por una placa física, pero con un servicio que dura para
+                      siempre y te trae recomendaciones por años.
+                    </p>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          </Reveal>
+        </section>
+      )}
 
       {/* ============ PLANES ============ */}
       <section id="planes" className="container-wide py-24">
@@ -322,6 +403,26 @@ function Step({ number, title, text }: { number: string; title: string; text: st
         <p className="text-pizarra-500 text-sm leading-relaxed">{text}</p>
       </div>
     </Reveal>
+  );
+}
+
+function MarginCell({
+  label, value, highlight,
+}: { label: string; value: string; highlight?: boolean }) {
+  return (
+    <div
+      className={
+        'rounded-xl px-4 py-3 border ' +
+        (highlight
+          ? 'bg-pizarra-900 border-pizarra-900 text-marfil'
+          : 'bg-marfil/50 border-pizarra-900/10 text-pizarra-900')
+      }
+    >
+      <p className={'uppercase tracking-widest text-[10px] mb-1 ' + (highlight ? 'text-dorado-300' : 'text-pizarra-900/60')}>
+        {label}
+      </p>
+      <p className="font-serif text-xl">{value}</p>
+    </div>
   );
 }
 
