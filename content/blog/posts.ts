@@ -803,6 +803,318 @@ export const BLOG_POSTS: BlogPost[] = [
 </ul>
 `,
   },
+
+  // ============================================================
+  // 8. Rituales mexicanos — Día de Muertos + modernos (alto volumen ES)
+  // ============================================================
+  {
+    slug: 'rituales-despedida-tradiciones-mexicanas',
+    title: 'Rituales de despedida: tradiciones mexicanas para honrar a los que se fueron',
+    description:
+      'Guía completa de los rituales de despedida en México: Día de Muertos, novenarios, 40 días, levantar cruz, cabo de año, y cómo los memoriales digitales se integran a cada tradición sin reemplazarla.',
+    datePublished: '2026-04-20',
+    dateModified: '2026-04-20',
+    author: { name: 'Equipo editorial · Historias Infinitas' },
+    keywords: [
+      'rituales de despedida méxico',
+      'tradiciones día de muertos',
+      'novenario mexicano',
+      'levantar cruz',
+      '40 días duelo',
+      'cabo de año',
+      'altar de muertos',
+      'tradiciones funerarias méxico',
+    ],
+    readingMinutes: 10,
+    image: '/images/blog/rituales-mexicanos.webp',
+    imageAlt: 'Un altar de Día de Muertos con veladoras, cempasúchil y fotografías familiares',
+    excerpt:
+      'México es uno de los países con tradición funeraria más rica del mundo. Este recorrido explica Día de Muertos, novenario, 40 días, levantar cruz y cabo de año — y cómo complementarlos hoy sin perder su raíz.',
+    category: 'Duelo y memoria',
+    published: true,
+    body: `
+<p class="lede">México es uno de los países con tradición funeraria más rica y viva del mundo. Nuestros rituales no "despiden" al difunto — lo mantienen en la conversación familiar durante años. Esta guía recorre las cinco tradiciones más arraigadas (Día de Muertos, novenario, 40 días, levantar cruz y cabo de año), explica su origen y describe cómo los memoriales digitales pueden complementarlas hoy sin reemplazarlas.</p>
+
+<h2>1. Día de Muertos · 1 y 2 de noviembre</h2>
+<p>Es la tradición funeraria mexicana con mayor proyección global. Declarada Patrimonio Cultural Inmaterial de la Humanidad por la UNESCO en 2008. Mezcla raíces mesoamericanas (Mictlán, Mictlantecuhtli) con elementos católicos (Día de Todos los Santos y Fieles Difuntos) tras la Conquista.</p>
+<h3>El altar de muertos</h3>
+<p>Se monta en casa, cementerio o trabajo. Elementos clásicos:</p>
+<ul>
+  <li><strong>Cempasúchil</strong> (Tagetes erecta): la flor naranja cuyo aroma guía a las almas. Se marca un camino desde la puerta hasta el altar.</li>
+  <li><strong>Papel picado</strong>: representa el aire, uno de los cuatro elementos.</li>
+  <li><strong>Veladoras y copal</strong>: luz y aroma para que el alma encuentre el camino.</li>
+  <li><strong>Sal</strong>: purifica y ayuda a que el espíritu no se corrompa en el viaje.</li>
+  <li><strong>Agua</strong>: para calmar la sed después del largo camino.</li>
+  <li><strong>Fotografías</strong>: retratos del difunto, generalmente en la parte más alta del altar.</li>
+  <li><strong>Comida y bebida favorita</strong> del fallecido: mole, tamales, pan de muerto, tequila, mezcal, chocolate de agua.</li>
+  <li><strong>Calaveritas de azúcar</strong> con el nombre del difunto.</li>
+</ul>
+<p>El 1 de noviembre se recuerda a los niños (Día de los Angelitos); el 2, a los adultos.</p>
+
+<h3>Cómo integrar un memorial digital</h3>
+<p>Cada año más familias añaden al altar una <strong>placa de acero con QR</strong> que lleva al <a href="/blog/que-es-un-nicho-virtual">nicho virtual</a> del fallecido. Los familiares que viven en Estados Unidos o que no pudieron viajar a casa escanean el QR desde donde estén y se "conectan" al altar. Es especialmente valorado en comunidades mexicanas en Los Ángeles, Chicago, Houston y Nueva York.</p>
+
+<h2>2. Novenario · nueve días después del fallecimiento</h2>
+<p>Tradición católica de raíz mexicana adaptada. Durante nueve días consecutivos tras la muerte, la familia se reúne cada tarde para rezar un rosario. El último día (la "levantada" o "novena") se acompaña de comida: mole, tamales, pan. Tiene función doble: honrar al difunto y sostener a la familia en el tramo más duro del duelo.</p>
+<p>En familias modernas urbanas, el novenario puede condensarse en uno o dos encuentros presenciales complementados con rosarios por videollamada. Algunas familias además <strong>comparten por WhatsApp un mensaje diario</strong> con una foto del fallecido y un recuerdo — el inicio informal de un memorial colaborativo que luego se compila en un nicho virtual.</p>
+
+<h2>3. 40 días · el umbral del duelo</h2>
+<p>Tradición que mezcla elementos católicos (los 40 días entre la Resurrección y la Ascensión) con creencias populares sobre el alma. Se considera que hasta el día 40 el alma aún transita entre el mundo de los vivos y el reposo final. En muchas comunidades se celebra una <strong>misa de 40 días</strong> (o cuarentena) para marcar el cierre del duelo más intenso.</p>
+<p>Es también el momento típico en que la familia se siente con energía para <strong>armar el memorial digital</strong>. Las primeras semanas suelen ser demasiado crudas para sentarse a escribir la biografía; al día 40, cuando se reúnen las fotos y las anécdotas para la misa, muchas familias aprovechan para crear el nicho virtual.</p>
+
+<h2>4. Levantar la cruz · entre 9 y 30 días</h2>
+<p>Ritual fuerte en el centro y sur de México (Oaxaca, Puebla, Tlaxcala, Veracruz). Los primeros 9 días tras el entierro, se coloca una cruz de cal, ceniza o pétalos de cempasúchil en el suelo del cuarto donde ocurrió la muerte. Al noveno día (o cuando la familia decida), se hace una ceremonia de "levantar la cruz": se recogen los materiales, se reza, y se colocan en un recipiente para llevarlos al panteón.</p>
+<p>Este ritual simboliza que el alma "suelta" la casa. Muchas familias lo acompañan con la <strong>primera publicación del nicho virtual</strong> — el momento en que el memorial deja de ser borrador privado y se comparte con la familia extendida.</p>
+
+<h2>5. Cabo de año · primer aniversario</h2>
+<p>El primer aniversario de la muerte es un umbral importante en la cultura mexicana. Se celebra una misa o reunión familiar — en algunas comunidades con comida tradicional del fallecido. Es un momento para "cerrar" el ciclo de duelo intenso y entrar a la fase de integración (donde la ausencia se vuelve parte serena de la vida familiar).</p>
+<p>Muchas familias aprovechan el cabo de año para <strong>actualizar el nicho virtual</strong>: subir las fotos tomadas durante ese año en los lugares favoritos del difunto, añadir cartas escritas por nietos, y regenerar el retrato IA con nuevos estilos. Algunas además imprimen un libro físico con el contenido del memorial digital como regalo para la abuela, el padre viudo o los hijos.</p>
+
+<h2>Tradiciones regionales notables</h2>
+<ul>
+  <li><strong>Janitzio (Michoacán)</strong>: el "trasnoche" en el panteón de la isla con veladoras durante toda la noche del 1 al 2 de noviembre — uno de los rituales más visitados por extranjeros.</li>
+  <li><strong>Oaxaca</strong>: las "comparsas" en Etla y las procesiones nocturnas con música, disfraces y flores.</li>
+  <li><strong>Zona Maya (Yucatán, Quintana Roo, Campeche)</strong>: el "Hanal Pixán" (comida de las ánimas) con pibipollo, mucbipollo y atoles especiales.</li>
+  <li><strong>Norte de México</strong>: mezcla con tradiciones estadounidenses — el Halloween del 31 de octubre va tomando fuerza en Nuevo León y Tamaulipas, conviviendo con el altar tradicional.</li>
+</ul>
+
+<h2>Cómo la tecnología se integra sin reemplazar</h2>
+<p>Una pregunta legítima: ¿los memoriales digitales desplazan las tradiciones? No — las amplifican. Observaciones de los últimos años:</p>
+<ul>
+  <li>Familias mexicanas en el extranjero usan el nicho virtual para "visitar" el altar desde lejos durante Día de Muertos.</li>
+  <li>Los nietos que no conocieron al abuelo aprenden su historia en el memorial digital, lo que les permite integrarse con sentido a los rituales familiares.</li>
+  <li>Las fotos antiguas de archivo familiar se digitalizan y se conservan contra el tiempo y la humedad — una función práctica que las cajas de recuerdos no cubren.</li>
+  <li>Los memoriales digitales permiten <strong>escuchar la voz</strong> del fallecido (audios, videos). En la generación de los abuelos que murieron en los 80s y 90s rara vez conservamos su voz; hoy podemos evitar esa pérdida.</li>
+</ul>
+
+<h2>Lectura relacionada</h2>
+<ul>
+  <li><a href="/blog/como-superar-duelo-perdida-mascota">Cómo superar el duelo por la pérdida de una mascota</a></li>
+  <li><a href="/blog/que-es-un-nicho-virtual">Qué es un nicho virtual</a></li>
+  <li><a href="/blog/memorial-digital-vs-lapida-tradicional">Memorial digital vs lápida tradicional</a></li>
+</ul>
+`,
+  },
+
+  // ============================================================
+  // 9. QR en lápidas — guía legal y técnica, B2B + familias
+  // ============================================================
+  {
+    slug: 'codigo-qr-lapidas-guia-legal-tecnica-mexico',
+    title: 'Código QR en lápidas: guía técnica y legal en México (2026)',
+    description:
+      'Guía completa para incorporar un código QR a una lápida o placa funeraria en México: materiales, técnicas de grabado, normativa de cementerios, durabilidad, costos y cómo elegir el proveedor.',
+    datePublished: '2026-04-20',
+    dateModified: '2026-04-20',
+    author: { name: 'Equipo de tecnología · Historias Infinitas' },
+    keywords: [
+      'código QR en lápida',
+      'QR lápida méxico',
+      'placa funeraria QR',
+      'grabar QR acero inoxidable',
+      'normativa cementerios méxico',
+      'lápida digital',
+      'memorial QR',
+    ],
+    readingMinutes: 8,
+    image: '/images/blog/qr-lapida.webp',
+    imageAlt: 'Una placa de acero inoxidable con un QR grabado en láser sobre una lápida de mármol',
+    excerpt:
+      'Incluir un QR en una lápida es más simple de lo que parece. Esta guía cubre materiales (acero vs latón vs cerámica), técnicas de grabado, normativa por tipo de cementerio, durabilidad real y costos promedio.',
+    category: 'Memoriales digitales',
+    published: true,
+    body: `
+<p class="lede">Añadir un código QR a una lápida ya no es una rareza — en cementerios premium de CDMX, Monterrey, Guadalajara y Mérida es cada vez más común. La familia que escanee el QR llega al nicho virtual del difunto con biografía completa, fotos, videos y hasta un Portal de Realidad Aumentada. Pero hay decisiones técnicas y legales importantes antes de elegir el proveedor. Esta guía las cubre todas.</p>
+
+<h2>¿Por qué ponerle QR a una lápida?</h2>
+<ul>
+  <li><strong>Contenido infinitamente mayor</strong>: la lápida tiene espacio para ~50 palabras; el memorial digital para biografía, galería de fotos, videos, retrato IA y Portal AR.</li>
+  <li><strong>Accesibilidad para familiares lejanos</strong>: quien no puede visitar el cementerio escanea el QR desde su celular y entra al nicho virtual.</li>
+  <li><strong>Actualizable</strong>: si aparece una foto nueva o la nieta escribe una carta, se añade al memorial sin cambiar la lápida.</li>
+  <li><strong>Costo bajo comparado con sustituir la lápida</strong>: una placa con QR cuesta $400-1,500 MXN; sustituir una lápida completa, $8,000-45,000 MXN.</li>
+</ul>
+
+<h2>Materiales: cuál durar más</h2>
+<table>
+  <thead>
+    <tr><th>Material</th><th>Durabilidad intemperie</th><th>Costo (MXN)</th><th>Notas</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Acero inoxidable 304</td><td>100+ años</td><td>$600–1,200</td><td>Estándar recomendado. Resiste sal, sol, lluvia ácida.</td></tr>
+    <tr><td>Acero inoxidable 316 (marino)</td><td>150+ años</td><td>$900–1,800</td><td>Para cementerios costeros (Veracruz, Mazatlán, Cancún).</td></tr>
+    <tr><td>Latón grabado</td><td>40-60 años</td><td>$400–900</td><td>Se oxida con el tiempo — crea una pátina estética pero el QR puede volverse ilegible.</td></tr>
+    <tr><td>Aluminio anodizado</td><td>25-40 años</td><td>$250–500</td><td>Opción económica. El anodizado se degrada con UV intenso.</td></tr>
+    <tr><td>Cerámica esmaltada</td><td>80-120 años</td><td>$700–1,400</td><td>Bella pero frágil — se rompe con golpes.</td></tr>
+    <tr><td>Vinil / calcomanía impresa</td><td>2-5 años</td><td>$100–300</td><td>No recomendada. Se despinta con UV.</td></tr>
+  </tbody>
+</table>
+
+<p><strong>Recomendación Historias Infinitas</strong>: acero inoxidable 304, grabado láser profundo (50-80 micrones), tamaño 60×60 mm. Ese estándar dura más de un siglo a la intemperie bajo condiciones normales.</p>
+
+<h2>Técnicas de grabado</h2>
+<h3>Láser de fibra (recomendado)</h3>
+<p>El estándar actual. Un láser de fibra dopada con iterbio vaporiza capas microscópicas del acero creando contraste permanente. La profundidad típica (50-80 micrones) resiste raspones, impactos ligeros y 100+ años de intemperie. Costo por pieza: $200-400 MXN en un taller especializado. Tiempo por pieza: 60-90 segundos.</p>
+<h3>Grabado químico (anodizado reverso)</h3>
+<p>Técnica antigua que usa ácido para marcar. Menor precisión (los QR pequeños quedan borrosos) pero da tonos más cálidos. No recomendado para QR por precisión insuficiente.</p>
+<h3>Marcado mecánico (golpeteo de punto)</h3>
+<p>Usado en aeroespacial. Muy durable pero el acabado es punteado — el QR puede no ser legible por algunos teléfonos.</p>
+<h3>Impresión digital directa</h3>
+<p>No recomendada para exteriores. La tinta se degrada en 2-5 años.</p>
+
+<h2>Tamaño del QR y legibilidad</h2>
+<ul>
+  <li><strong>Mínimo recomendado</strong>: 40×40 mm. Debajo de ese tamaño, teléfonos con cámara modesta fallan al escanear.</li>
+  <li><strong>Óptimo</strong>: 60×60 mm. Permite lectura rápida desde 20-30 cm de distancia incluso con luz baja.</li>
+  <li><strong>Versión del QR</strong>: Versión 3 (29×29 módulos) con corrección de errores nivel H (30% redundante). Sobrevive a un raspón o a suciedad parcial.</li>
+  <li><strong>URL corta</strong>: usa un slug limpio como <code>historias-infinitas.com/m/rosa-y-fernando</code>, no un UUID largo. Menos datos = QR más legible en tamaños pequeños.</li>
+</ul>
+
+<h2>Normativa por tipo de cementerio en México</h2>
+<h3>Cementerios públicos</h3>
+<p>Depende del reglamento municipal. En general:</p>
+<ul>
+  <li><strong>CDMX</strong>: permite placas adicionales siempre que no excedan 20% del área de la lápida original y no contengan publicidad. Ver Reglamento de Cementerios del GCDMX, artículo 42.</li>
+  <li><strong>Estado de México</strong>: reglamento por municipio. La mayoría permite añadir placas.</li>
+  <li><strong>Guadalajara, Monterrey, Puebla</strong>: permitido en general, solicitar en administración antes de colocar.</li>
+</ul>
+<h3>Cementerios privados y panteones particulares</h3>
+<p>Reglas más flexibles. Los cementerios premium (Jardines del Recuerdo, Panteón Francés, Memorial Gardens) tienen lineamientos propios sobre materiales aceptados. Consulta siempre con la administración antes de instalar.</p>
+<h3>Cementerios indígenas o comunitarios</h3>
+<p>Rige el derecho usos y costumbres. Consulta con el comisariado del pueblo antes de instalar cualquier elemento contemporáneo.</p>
+
+<h2>Instalación: opciones</h2>
+<ul>
+  <li><strong>Adherido con silicón estructural</strong>: resina transparente de grado marino. Durabilidad 20+ años. Reversible si se requiere.</li>
+  <li><strong>Atornillado</strong>: tornillos de acero inoxidable con tapón ornamental. Permanente. Requiere perforar la lápida.</li>
+  <li><strong>Marco soporte lateral</strong>: un pequeño marco independiente que se coloca al lado de la lápida — útil cuando no se quiere modificar la lápida original.</li>
+  <li><strong>Piedra base bajo la lápida</strong>: integrado al monumento durante la fabricación. Para lápidas nuevas.</li>
+</ul>
+
+<h2>Privacidad y seguridad del nicho virtual</h2>
+<ul>
+  <li>Cualquiera que escanee el QR accede al memorial — asegúrate de que la familia esté de acuerdo con esta visibilidad pública.</li>
+  <li>Si la familia quiere un memorial privado (solo para invitados), <a href="/blog/que-es-un-nicho-virtual">Historias Infinitas</a> permite activar "modo protegido con PIN" — el QR lleva a una pantalla de autenticación antes de mostrar el contenido.</li>
+  <li>Los datos del memorial están bajo LFPDPPP. La familia tiene derechos ARCO (Acceso, Rectificación, Cancelación, Oposición).</li>
+</ul>
+
+<h2>Costos promedio (2026)</h2>
+<p>Opciones en México con Historias Infinitas:</p>
+<ul>
+  <li><strong>Plan Eterno</strong>: $1,799 MXN. Incluye el nicho virtual + placa de acero 304 grabada a láser (60×60 mm) + envío nacional. Opción más común.</li>
+  <li><strong>Partner · Pack 30</strong>: para funerarias, $4,999 MXN por 30 memoriales + 5 placas con el logo de la funeraria.</li>
+  <li><strong>Placas adicionales (solo para partners)</strong>: $399 MXN cada una.</li>
+</ul>
+<p>Hacerlo por cuenta propia: tener el nicho digital en un servidor propio + grabar la placa en un taller local cuesta similar ($1,000-1,500 MXN) pero sin garantía de permanencia ni cumplimiento legal.</p>
+
+<h2>Lectura relacionada</h2>
+<ul>
+  <li><a href="/blog/memorial-digital-vs-lapida-tradicional">Memorial digital vs lápida tradicional</a></li>
+  <li><a href="/blog/que-es-un-nicho-virtual">Qué es un nicho virtual</a></li>
+  <li><a href="/para-funerarias">Para funerarias: ofrecer placas con QR a tus familias</a></li>
+</ul>
+`,
+  },
+
+  // ============================================================
+  // 10. Historia de memoriales digitales — artículo de autoridad
+  // ============================================================
+  {
+    slug: 'historia-memoriales-digitales-2000-2026',
+    title: 'Historia de los memoriales digitales: de 2000 a 2026',
+    description:
+      'Recorrido por 26 años de evolución de los memoriales digitales: de los primeros obituarios en línea hasta los nichos virtuales con IA y Realidad Aumentada. Hitos, empresas clave y tendencias.',
+    datePublished: '2026-04-20',
+    dateModified: '2026-04-20',
+    author: { name: 'Equipo editorial · Historias Infinitas' },
+    keywords: [
+      'historia memoriales digitales',
+      'evolución memoriales en línea',
+      'legacy.com',
+      'forever missed',
+      'historia tributos digitales',
+      'timeline memorial online',
+    ],
+    readingMinutes: 9,
+    image: '/images/blog/historia-memoriales.webp',
+    imageAlt: 'Una línea de tiempo visual que recorre los hitos de los memoriales digitales desde 2000 hasta 2026',
+    excerpt:
+      'Los memoriales digitales no nacieron con la IA. Tienen 26 años de historia. Este recorrido muestra cómo pasamos de los obituarios estáticos de 2000 a los nichos virtuales con retrato IA y Realidad Aumentada de 2026.',
+    category: 'Memoriales digitales',
+    published: true,
+    body: `
+<p class="lede">Los memoriales digitales no nacieron con la Inteligencia Artificial. Su historia tiene 26 años — una historia que arranca con obituarios estáticos en HTML y llega a nichos virtuales con retratos IA identity-preserving, placas de acero grabadas con láser y Portales de Realidad Aumentada WebXR. Este recorrido resume los hitos técnicos, las empresas clave y los cambios culturales que nos trajeron hasta 2026.</p>
+
+<h2>2000-2005 · La era de los obituarios en línea</h2>
+<p>La primera generación de memoriales digitales fueron esencialmente <strong>obituarios impresos puestos en web</strong>. Plataformas como <strong>Legacy.com</strong> (fundada en 1998 por estudiantes de Medill) se asociaron con periódicos estadounidenses (Tribune, Gannett) para ofrecer la versión digital del obituario del periódico. El contenido era limitado: nombre, fechas, 1-2 párrafos, una foto.</p>
+<p>Características de la era:</p>
+<ul>
+  <li>HTML estático servido desde servidores propios de los diarios.</li>
+  <li>Libros de condolencias digitales (guest books) donde los lectores dejaban mensajes.</li>
+  <li>Cobros al periódico, no al usuario final.</li>
+  <li>En México, los primeros obituarios digitales llegan con <em>Reforma</em> y <em>El Universal</em> alrededor de 2003.</li>
+</ul>
+
+<h2>2006-2010 · MySpace, la primera era del memorial social</h2>
+<p>Cuando MySpace llega a 100M+ de usuarios (2008), algo inesperado ocurre: las familias de jóvenes fallecidos dejan las cuentas abiertas y las usan como "memorial" público. Amigos comentan en el muro del perfil, suben fotos, dejan canciones. Es la primera vez que el "memorial digital" deja de ser algo que publica el periódico y pasa a ser algo que construye la comunidad.</p>
+<p>El problema: cuando MySpace decayó (2010-2013), miles de memoriales desaparecieron. Esto sensibilizó al mercado sobre el riesgo de confiar la memoria a una red social.</p>
+
+<h2>2010-2014 · Nacen las plataformas especializadas</h2>
+<p>Aparecen las primeras startups dedicadas exclusivamente a memoriales:</p>
+<ul>
+  <li><strong>ForeverMissed</strong> (2009, Canadá): plantilla configurable con bio, galería, guest book. Modelo freemium con cuota mensual para mantener el memorial sin anuncios.</li>
+  <li><strong>Keeper Memorial</strong> (2011): similar, con foco en memoriales para mascotas.</li>
+  <li><strong>MyKeeper</strong> (2012): extensión con integración a funerarias como canal B2B.</li>
+  <li><strong>Tributes.com</strong>: consolidación del modelo "periódico + memorial".</li>
+</ul>
+<p>El patrón común: HTML estático con galería, comentarios de visitantes, y permanencia atada a una suscripción mensual. Si la familia dejaba de pagar, el memorial se archivaba o desaparecía — un antipatrón que sigue siendo crítica en el sector.</p>
+
+<h2>2015-2018 · Facebook Memorial y el caso de las redes sociales</h2>
+<p>Facebook lanza en 2015 la función "Legacy Contact" permitiendo designar a alguien que administre tu perfil tras tu muerte. La cuenta se convierte en "memorializada" (aparece el prefijo "Remembering"). Esto democratiza el memorial digital — cualquier cuenta de Facebook puede serlo — pero a costa de la dependencia total de la plataforma.</p>
+<p>Surge la crítica: <em>"¿qué pasa cuando Facebook desaparezca o cambie las políticas?"</em> — pregunta que, 10 años después, sigue sin respuesta satisfactoria.</p>
+
+<h2>2019-2021 · QR en lápidas y placas físicas</h2>
+<p>Con la pandemia del COVID-19, las familias que no podían viajar a los funerales buscan alternativas para "acompañar" a distancia. Aparecen las primeras placas físicas con QR vendidas directamente al consumidor — no a través de funerarias. Empresas como <strong>Living Headstones</strong> (UK) y <strong>QRmemorial</strong> (USA) popularizan el concepto.</p>
+<p>Al mismo tiempo, los cementerios premium en Europa y EEUU empiezan a permitir (o incluso fomentar) la instalación de placas QR como complemento de lápidas tradicionales. En México, los primeros cementerios en aceptarlo fueron Jardines del Recuerdo (Estado de México) y Panteón Francés de la Piedad (CDMX).</p>
+
+<h2>2022-2023 · Entra la IA generativa</h2>
+<p>Con el lanzamiento de Stable Diffusion (2022) y el boom de la IA generativa en 2023, las startups memoriales empiezan a experimentar con <strong>retratos artísticos generados</strong>. Los primeros resultados son insatisfactorios para casos emocionales: la IA deforma las caras, cambia etnias, inventa rasgos. El caso de uso técnicamente es posible pero no apto para producto.</p>
+
+<h2>2024 · El salto técnico definitivo</h2>
+<p>Dos lanzamientos cambian el panorama:</p>
+<ol>
+  <li><strong>Black Forest Labs</strong> (agosto 2024) publica la familia <strong>Flux</strong>, con arquitectura "flow matching" que preserva mejor la identidad durante la transformación de estilo.</li>
+  <li><strong>WebXR</strong> se consolida como estándar soportado por iOS 17+ y Android 14+, permitiendo Realidad Aumentada en el navegador sin instalar apps.</li>
+</ol>
+<p>Por primera vez, un retrato IA de calidad editorial + un Portal AR que funciona desde cualquier teléfono son comercialmente viables.</p>
+
+<h2>2025-2026 · La era actual: nichos virtuales integrados</h2>
+<p>Lo que define la generación actual de memoriales digitales:</p>
+<ul>
+  <li><strong>Retrato IA identity-preserving</strong> (Flux Kontext Max, Imagen 4). Ver nuestro <a href="/blog/ia-preserva-identidad-retratos-flux-kontext-max">artículo técnico</a>.</li>
+  <li><strong>Portal AR WebXR</strong> sin instalación de app.</li>
+  <li><strong>Placa física de acero</strong> grabada a láser como puente digital-físico.</li>
+  <li><strong>Pago único sin suscripción</strong>: la familia paga una sola vez y el memorial dura para siempre (modelo que remplazó el freemium con cuota mensual).</li>
+  <li><strong>Bilingüe y multicountry</strong>: el mismo memorial accesible en varios idiomas para familias diaspóricas.</li>
+  <li><strong>Cumplimiento legal robusto</strong>: LFPDPPP en México, GDPR en Europa, CCPA en EEUU — con DPAs firmables y derechos ARCO o equivalentes.</li>
+  <li><strong>B2B con funerarias</strong>: los servicios funerarios premium incluyen memoriales digitales con su marca como parte del paquete.</li>
+</ul>
+
+<h2>Tendencias emergentes (2026-2028)</h2>
+<ul>
+  <li><strong>Retrato animado sutil</strong>: modelos generativos que hacen que el retrato parpadee, sonría o asienta. Útil en el Portal AR, pero delicado éticamente.</li>
+  <li><strong>Voz sintetizada desde un audio corto</strong>: permite que el memorial "hable" con la voz del fallecido — el caso de uso más sensible éticamente. Requiere protocolos claros de consentimiento previo.</li>
+  <li><strong>Descentralización mediante blockchain</strong>: propuestas para que el memorial viva en redes descentralizadas (IPFS + Arweave) garantizando permanencia independiente de cualquier empresa. Aún experimental.</li>
+  <li><strong>Integración con DNA storage</strong>: almacenamiento digital del memorial codificado en ADN sintético como backup de muy larga duración (1000+ años). Aún en investigación en laboratorios universitarios.</li>
+</ul>
+
+<h2>Lectura relacionada</h2>
+<ul>
+  <li><a href="/blog/que-es-un-nicho-virtual">Qué es un nicho virtual: guía 2026</a></li>
+  <li><a href="/blog/ia-preserva-identidad-retratos-flux-kontext-max">Cómo la IA preserva identidad en retratos</a></li>
+  <li><a href="/blog/memorial-digital-vs-lapida-tradicional">Memorial digital vs lápida tradicional</a></li>
+</ul>
+`,
+  },
 ];
 
 /**

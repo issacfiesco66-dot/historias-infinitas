@@ -789,6 +789,323 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
 </ul>
 `,
   },
+
+  // ============================================================
+  // 8. Farewell rituals across cultures — adapted from MX version
+  // ============================================================
+  {
+    slug: 'farewell-rituals-memorial-traditions-us-canada',
+    esSlug: 'rituales-despedida-tradiciones-mexicanas',
+    title: 'Farewell rituals: how US and Canadian families honor those who are gone',
+    description:
+      'A complete guide to the farewell rituals most common in the US and Canada: wakes, celebrations of life, scattering ceremonies, Memorial Day, and how digital memorials complement them without replacing tradition.',
+    datePublished: '2026-04-20',
+    dateModified: '2026-04-20',
+    author: { name: 'Historias Infinitas · Editorial Team' },
+    keywords: [
+      'farewell rituals usa',
+      'memorial traditions',
+      'celebration of life',
+      'scattering ashes ceremony',
+      'memorial day traditions',
+      'modern funeral rituals',
+      'funeral customs us canada',
+    ],
+    readingMinutes: 9,
+    image: '/images/blog/memorial-traditions.webp',
+    imageAlt: 'A small shrine at home with candles, family photos, and fresh flowers',
+    excerpt:
+      'US and Canadian families have moved far beyond the church-only funeral. This guide walks through wakes, celebrations of life, scattering ceremonies, Memorial Day — and how digital memorials fit into each.',
+    category: 'Grief & Memory',
+    published: true,
+    body: `
+<p class="lede">In the past two decades, families in the US and Canada have re-invented the farewell. The traditional church funeral followed by burial is no longer the default — celebrations of life, home wakes, scattering ceremonies, and Memorial Day tributes now coexist. This guide walks through the most common rituals, their origins, and how a digital memorial fits into each one without replacing tradition.</p>
+
+<h2>1. The wake or viewing · the first 24–72 hours</h2>
+<p>Historically a Christian practice — the vigil kept by family before burial — the wake now takes many forms. In urban US and Canadian families, it usually happens at a funeral home (or at home in more intimate settings) over 2–6 hours, with an open or closed casket and time for friends to share words.</p>
+<p>Many families now bring a <strong>tablet or laptop</strong> to show a slideshow of photos. Increasingly, they display a QR code linking to a <a href="/en/blog/what-is-a-digital-memorial">digital memorial</a> so guests can access the full gallery from their phone instead of crowding around the screen.</p>
+
+<h2>2. The celebration of life · the new standard</h2>
+<p>Rising steadily since 2010, the "celebration of life" has replaced the traditional funeral in many secular or less religious families. It happens anywhere — a favorite restaurant, a beach, a backyard — and centers on stories and music the person loved, not religious rites. Standard elements:</p>
+<ul>
+  <li>Opening by a family member (not a clergy person).</li>
+  <li>Music selected by the deceased or by their closest family.</li>
+  <li>Open mic: attendees share memories.</li>
+  <li>Food and drink the person enjoyed — often Mexican food, BBQ, Italian, depending on heritage.</li>
+  <li>A photo board or video slideshow.</li>
+  <li>Printed QR code cards handing guests access to the digital memorial.</li>
+</ul>
+<p>The digital memorial is particularly well-suited to celebrations of life because they are often less scripted and leave room for personal contributions that can be added to the memorial later.</p>
+
+<h2>3. Scattering ashes · a modern ritual</h2>
+<p>When the family chooses cremation (over 55% of US deaths in 2024, per NFDA) and the ashes are scattered rather than interred, the family loses the physical "place to visit" that a headstone provides. The digital memorial fills that gap.</p>
+<p>Common scattering practices:</p>
+<ul>
+  <li><strong>At sea</strong>: requires permit from EPA in US, or follows provincial rules in Canada.</li>
+  <li><strong>Ash-scattering gardens</strong>: many cemeteries now offer dedicated areas.</li>
+  <li><strong>Favorite outdoor place</strong>: mountain, beach, forest trail — legal if on private property or with permit.</li>
+  <li><strong>Home garden</strong>: fully legal on private land.</li>
+</ul>
+<p>A laser-engraved steel plate with a QR code can be hung from a tree where the ashes were scattered, affixed to a favorite rock, or placed in the garden — giving the family a tangible place to return to even without a cemetery plot.</p>
+
+<h2>4. Memorial Day · May 25 ± last Monday</h2>
+<p>US federal holiday honoring those who died in military service, now extended informally to honor anyone who has passed. Many families visit cemeteries, clean grave sites, plant flowers, and gather for small tributes. It is one of the two highest-visit weekends at US cemeteries (the other is around Christmas).</p>
+<p>Families increasingly use Memorial Day as the moment to <strong>update the digital memorial</strong>: add a photo from the past year, write a letter, or record a short video message from newly-born grandchildren who never met the deceased.</p>
+
+<h2>5. Anniversary observances · the first year and beyond</h2>
+<p>The first anniversary is a significant marker in most cultures. Families who live apart use the digital memorial to "gather" virtually: each family member contributes a memory on the anniversary date, regardless of where they live. Some families schedule an annual video call anchored to the memorial.</p>
+
+<h2>6. Jewish, Hispanic, Irish and other cultural layers</h2>
+<ul>
+  <li><strong>Jewish shiva</strong>: 7 days of at-home mourning with visits, no music, no leather shoes. The digital memorial becomes a place to receive condolence messages from those who cannot attend in person.</li>
+  <li><strong>Hispanic novenario</strong>: 9 days of rosary-based gatherings. Common among Mexican-American, Cuban-American and other Hispanic US families. The digital memorial often starts as a shared album during the novenario.</li>
+  <li><strong>Irish-American wakes</strong>: traditionally longer, with music and drinking. The digital memorial preserves the jokes, stories and songs that characterize this ritual.</li>
+  <li><strong>Chinese Qingming</strong>: spring festival honoring ancestors. Chinese-American families increasingly pair altar visits with digital memorial updates.</li>
+  <li><strong>Filipino pasiyam</strong>: 9 days of prayers. Very active in Filipino-American communities in California, Texas and Hawaii.</li>
+</ul>
+
+<h2>Indigenous traditions</h2>
+<p>Indigenous and First Nations communities in the US and Canada have their own rituals that deserve respectful honoring. If your family has Indigenous roots, consult with elders and tribal leaders before integrating any digital element. Some communities welcome the technology; others prefer that memorials remain analog and sacred.</p>
+
+<h2>How technology complements without replacing</h2>
+<p>A fair question: do digital memorials displace traditional rituals? They do not — they amplify them. Observations from the past years:</p>
+<ul>
+  <li>Families spread across the US and Canada use the digital memorial to "visit" the memorial from anywhere on anniversaries.</li>
+  <li>Grandchildren who never met the grandparent learn their story through the memorial, which helps them join family rituals with meaning.</li>
+  <li>Old family photos get digitized and preserved against time and humidity — something physical boxes cannot do.</li>
+  <li>Digital memorials let you <strong>hear the voice</strong> of the deceased (audio, video). For grandparents who passed in the 80s or 90s, we rarely have their voice preserved; today we can avoid that loss.</li>
+</ul>
+
+<h2>Related reading</h2>
+<ul>
+  <li><a href="/en/blog/how-to-cope-with-pet-loss">How to cope with the loss of a pet</a></li>
+  <li><a href="/en/blog/what-is-a-digital-memorial">What is a digital memorial</a></li>
+  <li><a href="/en/blog/digital-memorial-vs-traditional-headstone">Digital memorial vs. traditional headstone</a></li>
+</ul>
+`,
+  },
+
+  // ============================================================
+  // 9. QR codes on headstones — US/CA legal and technical guide
+  // ============================================================
+  {
+    slug: 'qr-codes-on-headstones-technical-legal-guide',
+    esSlug: 'codigo-qr-lapidas-guia-legal-tecnica-mexico',
+    title: 'QR codes on headstones: a technical and legal guide for the US and Canada (2026)',
+    description:
+      'Complete guide to adding a QR code to a headstone in the US or Canada: materials, engraving techniques, cemetery regulations, durability, costs, and how to pick the right provider.',
+    datePublished: '2026-04-20',
+    dateModified: '2026-04-20',
+    author: { name: 'Historias Infinitas · Technology Team' },
+    keywords: [
+      'qr code on headstone',
+      'qr memorial plaque',
+      'laser engraved qr steel',
+      'cemetery regulations qr',
+      'digital headstone',
+      'memorial qr code',
+    ],
+    readingMinutes: 8,
+    image: '/images/blog/qr-headstone.webp',
+    imageAlt: 'A laser-engraved stainless steel QR plaque on a marble headstone',
+    excerpt:
+      'Adding a QR to a headstone is simpler than it looks. This guide covers materials (steel vs. brass vs. ceramic), engraving techniques, cemetery rules by state and province, real-world durability, and average costs.',
+    category: 'Digital Memorials',
+    published: true,
+    body: `
+<p class="lede">Adding a QR code to a headstone is no longer unusual — in premium cemeteries across the US (California, New York, Florida) and Canada (Ontario, BC) it is increasingly the norm. A family member who scans the QR reaches the full digital memorial with biography, photos, videos, AI portrait, and AR portal. But there are technical and legal decisions to make before picking a provider. This guide covers them all.</p>
+
+<h2>Why add a QR to a headstone?</h2>
+<ul>
+  <li><strong>Infinitely more content</strong>: the headstone has room for ~50 words; the digital memorial holds a full biography, photo gallery, videos, AI portrait, and AR Portal.</li>
+  <li><strong>Access for distant family</strong>: whoever cannot visit the cemetery scans the QR from their phone and enters the memorial.</li>
+  <li><strong>Updatable</strong>: if a new photo surfaces or a grandchild writes a letter, it's added to the memorial without touching the stone.</li>
+  <li><strong>Low cost vs. replacing the headstone</strong>: a QR plate costs $30–120 USD; replacing a full headstone is $1,500–10,000 USD.</li>
+</ul>
+
+<h2>Materials: which lasts longer</h2>
+<table>
+  <thead>
+    <tr><th>Material</th><th>Weather durability</th><th>Cost (USD)</th><th>Notes</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>304 stainless steel</td><td>100+ years</td><td>$40–80</td><td>Recommended standard. Resists salt, sun, acid rain.</td></tr>
+    <tr><td>316 marine-grade stainless</td><td>150+ years</td><td>$60–120</td><td>For coastal cemeteries (Florida, California coast, Atlantic Canada).</td></tr>
+    <tr><td>Engraved brass</td><td>40–60 years</td><td>$30–65</td><td>Oxidizes over time — creates aesthetic patina but QR may become unreadable.</td></tr>
+    <tr><td>Anodized aluminum</td><td>25–40 years</td><td>$20–35</td><td>Economical option. Anodizing degrades under intense UV.</td></tr>
+    <tr><td>Enameled ceramic</td><td>80–120 years</td><td>$50–100</td><td>Beautiful but fragile — breaks under impact.</td></tr>
+    <tr><td>Vinyl sticker / decal</td><td>2–5 years</td><td>$8–20</td><td>Not recommended. Fades under UV.</td></tr>
+  </tbody>
+</table>
+<p><strong>Historias Infinitas recommendation</strong>: 304 stainless steel, deep laser engraving (50–80 microns), 2.4 × 2.4 in (60 × 60 mm). That standard lasts over a century outdoors under normal conditions.</p>
+
+<h2>Engraving techniques</h2>
+<h3>Fiber laser (recommended)</h3>
+<p>Current standard. An ytterbium-doped fiber laser vaporizes microscopic layers of steel, creating permanent contrast. Typical depth (50–80 microns) resists scratches, light impacts, and 100+ years of weather. Cost per piece: $15–35 USD at a specialty shop. Time per piece: 60–90 seconds.</p>
+<h3>Chemical etching (reverse anodizing)</h3>
+<p>Older acid-based technique. Lower precision — small QRs blur — though it gives warmer tones. Not recommended for QR codes due to insufficient precision.</p>
+<h3>Dot-peen mechanical marking</h3>
+<p>Used in aerospace. Very durable but the finish is dotted — some phones fail to read the QR.</p>
+<h3>Direct digital printing</h3>
+<p>Not recommended for outdoor use. Ink degrades in 2–5 years.</p>
+
+<h2>QR size and readability</h2>
+<ul>
+  <li><strong>Minimum recommended</strong>: 1.6 × 1.6 in (40 × 40 mm). Below that, phones with modest cameras fail to scan.</li>
+  <li><strong>Optimal</strong>: 2.4 × 2.4 in (60 × 60 mm). Fast reading from 8–12 inches even in low light.</li>
+  <li><strong>QR version</strong>: Version 3 (29 × 29 modules) with error correction level H (30% redundancy). Survives a scratch or partial dirt.</li>
+  <li><strong>Short URL</strong>: use a clean slug like <code>historias-infinitas.com/m/rosa-and-fernando</code>, not a long UUID. Less data = more readable QR at small sizes.</li>
+</ul>
+
+<h2>Cemetery regulations by region</h2>
+<h3>United States (state and municipal)</h3>
+<p>Varies widely. General patterns:</p>
+<ul>
+  <li><strong>Public cemeteries</strong>: often have sizing restrictions (plaque must not exceed 15–20% of headstone area). Check with cemetery administration.</li>
+  <li><strong>Religious cemeteries (Catholic, Jewish, Protestant)</strong>: some require that any added plaque be consistent with the religious aesthetic. QR codes are generally accepted if modestly integrated.</li>
+  <li><strong>Military cemeteries (Arlington, national cemeteries)</strong>: Veterans Affairs has strict rules. QR plaques generally not permitted on headstones in federal cemeteries.</li>
+  <li><strong>Private cemeteries</strong>: flexible, set their own rules. Most premium cemeteries (Forest Lawn, Cypress Hills) allow QR plaques.</li>
+</ul>
+<h3>Canada</h3>
+<ul>
+  <li><strong>Provincial regulation</strong>: each province sets cemetery rules. Ontario, Quebec and BC generally allow QR plaques.</li>
+  <li><strong>First Nations burial grounds</strong>: consult the community. Some welcome the technology; others do not.</li>
+</ul>
+
+<h2>Installation options</h2>
+<ul>
+  <li><strong>Structural silicone adhesive</strong>: marine-grade transparent resin. 20+ year durability. Reversible if needed.</li>
+  <li><strong>Bolted</strong>: stainless steel bolts with decorative caps. Permanent. Requires drilling the headstone.</li>
+  <li><strong>Lateral frame support</strong>: a small independent frame placed next to the headstone — useful when you do not want to modify the original stone.</li>
+  <li><strong>Integrated base stone</strong>: built into the monument at fabrication time. For new headstones.</li>
+</ul>
+
+<h2>Privacy and security of the digital memorial</h2>
+<ul>
+  <li>Anyone who scans the QR accesses the memorial — make sure the family is comfortable with public visibility.</li>
+  <li>If the family wants a private memorial (invitees only), <a href="/en/blog/what-is-a-digital-memorial">Historias Infinitas</a> supports a "PIN-protected mode" — the QR leads to an auth screen before showing content.</li>
+  <li>Data is handled under CCPA (California), GDPR (EU visitors), and PIPEDA (Canada). The family holds access, correction, and deletion rights.</li>
+</ul>
+
+<h2>Average costs (2026)</h2>
+<p>Options in the US and Canada with Historias Infinitas:</p>
+<ul>
+  <li><strong>Eternal plan</strong>: $105 USD. Includes the digital memorial + 304 steel plate laser-engraved (2.4 × 2.4 in) + shipping to US or Canada. Most common option.</li>
+  <li><strong>Partner · Pack 30</strong>: for funeral homes, $299 USD for 30 memorials + 5 plates with the funeral home's logo.</li>
+  <li><strong>Additional plates (for partners only)</strong>: $25 USD each.</li>
+</ul>
+<p>Going DIY: hosting the digital memorial on your own server + laser-engraving a plate at a local shop costs similar ($60–110 USD) but without continuity guarantees or legal compliance.</p>
+
+<h2>Related reading</h2>
+<ul>
+  <li><a href="/en/blog/digital-memorial-vs-traditional-headstone">Digital memorial vs. traditional headstone</a></li>
+  <li><a href="/en/blog/what-is-a-digital-memorial">What is a digital memorial</a></li>
+  <li><a href="/en/for-funeral-homes">For funeral homes: offering QR plates to your families</a></li>
+</ul>
+`,
+  },
+
+  // ============================================================
+  // 10. History of digital memorials — authority article
+  // ============================================================
+  {
+    slug: 'history-of-digital-memorials-2000-2026',
+    esSlug: 'historia-memoriales-digitales-2000-2026',
+    title: 'The history of digital memorials: from 2000 to 2026',
+    description:
+      'A 26-year tour of how digital memorials evolved: from the first online obituaries to digital memorials with AI portraits and Augmented Reality. Milestones, key companies, and trends.',
+    datePublished: '2026-04-20',
+    dateModified: '2026-04-20',
+    author: { name: 'Historias Infinitas · Editorial Team' },
+    keywords: [
+      'history of digital memorials',
+      'online memorial evolution',
+      'legacy.com',
+      'forever missed',
+      'digital tribute history',
+      'memorial online timeline',
+    ],
+    readingMinutes: 9,
+    image: '/images/blog/history-digital-memorials.webp',
+    imageAlt: 'A visual timeline showing the milestones of digital memorials from 2000 to 2026',
+    excerpt:
+      'Digital memorials did not arrive with AI. They have a 26-year history. This tour shows how we moved from static 2000 obituaries to 2026 digital memorials with AI portraits and Augmented Reality.',
+    category: 'Digital Memorials',
+    published: true,
+    body: `
+<p class="lede">Digital memorials did not start with Artificial Intelligence. Their history goes back 26 years — a journey that began with static HTML obituaries and reached identity-preserving AI portraits, laser-engraved steel plates, and WebXR Augmented Reality portals. This tour summarizes the technical milestones, the key companies, and the cultural shifts that brought us to 2026.</p>
+
+<h2>2000–2005 · The era of online obituaries</h2>
+<p>The first generation of digital memorials were essentially <strong>printed obituaries put on the web</strong>. Platforms like <strong>Legacy.com</strong> (founded in 1998 by Medill students) partnered with US newspapers (Tribune, Gannett) to offer the digital version of the paper's obituary. Content was limited: name, dates, 1–2 paragraphs, one photo.</p>
+<p>Characteristics of the era:</p>
+<ul>
+  <li>Static HTML served from newspaper servers.</li>
+  <li>Digital guest books where readers left messages.</li>
+  <li>Newspapers paid; end users did not.</li>
+  <li>Early adopters: Chicago Tribune, LA Times, Globe and Mail in Canada.</li>
+</ul>
+
+<h2>2006–2010 · MySpace, the first social memorial era</h2>
+<p>When MySpace reached 100M+ users (2008), something unexpected happened: families of deceased young people left the accounts open and used them as public "memorials." Friends commented on the profile wall, uploaded photos, dropped songs. It was the first time the "digital memorial" stopped being something a newspaper published and became something a community built.</p>
+<p>The problem: when MySpace declined (2010–2013), thousands of memorials disappeared. This sensitized the market to the risk of trusting memory to a social network.</p>
+
+<h2>2010–2014 · Dedicated platforms emerge</h2>
+<p>First startups focused exclusively on memorials:</p>
+<ul>
+  <li><strong>ForeverMissed</strong> (2009, Canada): configurable template with bio, gallery, guest book. Freemium model with a monthly fee for ad-free hosting.</li>
+  <li><strong>Keeper Memorial</strong> (2011): similar, with pet memorial focus.</li>
+  <li><strong>MyKeeper</strong> (2012): extension with funeral home integration as B2B channel.</li>
+  <li><strong>Tributes.com</strong>: consolidation of the "newspaper + memorial" model.</li>
+</ul>
+<p>The common pattern: static HTML with gallery, visitor comments, and permanence tied to a monthly subscription. If the family stopped paying, the memorial was archived or disappeared — an antipattern still critiqued today.</p>
+
+<h2>2015–2018 · Facebook Memorial and social media as default</h2>
+<p>Facebook launched "Legacy Contact" in 2015, letting you designate someone to administer your profile after death. The account becomes "memorialized" (the "Remembering" prefix appears). This democratized the digital memorial — any Facebook account could become one — but at the cost of total platform dependence.</p>
+<p>The critique emerged: <em>"what happens when Facebook disappears or changes policies?"</em> — a question that, 10 years later, still lacks a satisfying answer.</p>
+
+<h2>2019–2021 · QR on headstones and physical plates</h2>
+<p>With the COVID-19 pandemic, families unable to travel to funerals looked for alternatives to "accompany" from afar. The first physical plates with QR codes sold directly to consumers — not through funeral homes — appeared. Companies like <strong>Living Headstones</strong> (UK) and <strong>QRmemorial</strong> (USA) popularized the concept.</p>
+<p>At the same time, premium cemeteries in the US, UK, and Canada began allowing (or even encouraging) QR plaque installation as a complement to traditional headstones. Forest Lawn (Los Angeles) was one of the first major chains to formally support it.</p>
+
+<h2>2022–2023 · Generative AI enters</h2>
+<p>With the launch of Stable Diffusion (2022) and the generative AI boom in 2023, memorial startups began experimenting with <strong>AI-generated artistic portraits</strong>. Early results were unsatisfactory for emotional use cases: the AI deformed faces, shifted ethnicities, invented features. The use case was technically possible but not product-ready.</p>
+
+<h2>2024 · The defining technical leap</h2>
+<p>Two releases changed the landscape:</p>
+<ol>
+  <li><strong>Black Forest Labs</strong> (August 2024) published the <strong>Flux</strong> family, with "flow matching" architecture that better preserves identity during style transformation.</li>
+  <li><strong>WebXR</strong> consolidated as a standard supported by iOS 17+ and Android 14+, enabling browser-based Augmented Reality without app installs.</li>
+</ol>
+<p>For the first time, editorial-quality identity-preserving AI portraits + an AR Portal that works on any phone became commercially viable.</p>
+
+<h2>2025–2026 · The current era: integrated digital memorials</h2>
+<p>What defines the current generation of digital memorials:</p>
+<ul>
+  <li><strong>Identity-preserving AI portraits</strong> (Flux Kontext Max, Imagen 4). See our <a href="/en/blog/ai-identity-preservation-portraits-flux-kontext-max">technical article</a>.</li>
+  <li><strong>WebXR AR Portal</strong> without app install.</li>
+  <li><strong>Laser-engraved steel plate</strong> as a digital-physical bridge.</li>
+  <li><strong>One-time payment, no subscription</strong>: the family pays once and the memorial lasts forever (the model that replaced freemium-with-monthly-fee).</li>
+  <li><strong>Bilingual and multi-country</strong>: the same memorial accessible in multiple languages for diasporic families.</li>
+  <li><strong>Robust legal compliance</strong>: CCPA in the US, GDPR in Europe, PIPEDA in Canada, LFPDPPP in Mexico — with signable DPAs and data subject rights.</li>
+  <li><strong>B2B with funeral homes</strong>: premium funeral services include branded digital memorials as part of the package.</li>
+</ul>
+
+<h2>Emerging trends (2026–2028)</h2>
+<ul>
+  <li><strong>Subtle animated portraits</strong>: generative models that make portraits blink, smile, or nod. Useful in AR Portal, but ethically delicate.</li>
+  <li><strong>Voice synthesis from a short audio sample</strong>: lets the memorial "speak" in the deceased's voice — the most ethically sensitive use case. Requires clear prior-consent protocols.</li>
+  <li><strong>Decentralized storage via blockchain</strong>: proposals for memorials living on decentralized networks (IPFS + Arweave) guaranteeing permanence independent of any company. Still experimental.</li>
+  <li><strong>DNA storage integration</strong>: digital memorial encoded in synthetic DNA as a very-long-term backup (1000+ years). Still university-lab research.</li>
+</ul>
+
+<h2>Related reading</h2>
+<ul>
+  <li><a href="/en/blog/what-is-a-digital-memorial">What is a digital memorial: the 2026 guide</a></li>
+  <li><a href="/en/blog/ai-identity-preservation-portraits-flux-kontext-max">How AI preserves identity in portraits</a></li>
+  <li><a href="/en/blog/digital-memorial-vs-traditional-headstone">Digital memorial vs. traditional headstone</a></li>
+</ul>
+`,
+  },
 ];
 
 /**
