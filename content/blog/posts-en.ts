@@ -8,6 +8,12 @@
  * `esSlug` so the blog pages can emit correct hreflang alternates.
  */
 
+export interface HowToStepEN {
+  name: string;
+  text: string;
+  minutes?: number;
+}
+
 export interface BlogPostEN {
   slug: string;
   title: string;
@@ -25,6 +31,12 @@ export interface BlogPostEN {
   published: boolean;
   /** Slug of the paired Spanish version — used for hreflang. */
   esSlug: string;
+  /** Steps of the guide (optional). If present, HowTo schema is emitted. */
+  howTo?: {
+    name: string;
+    totalMinutes?: number;
+    steps: HowToStepEN[];
+  };
 }
 
 export const BLOG_POSTS_EN: BlogPostEN[] = [
@@ -140,6 +152,19 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
   {
     slug: 'what-is-a-digital-memorial',
     esSlug: 'que-es-un-nicho-virtual',
+    howTo: {
+      name: 'How to create a digital memorial step by step',
+      totalMinutes: 25,
+      steps: [
+        { name: 'Go to Historias Infinitas', text: 'Visit historias-infinitas.com/register. No account required at first; email is only requested when saving.', minutes: 1 },
+        { name: 'Pick the memorial type', text: 'Choose between a memorial for a pet or a loved one. The flow adapts to the case.', minutes: 1 },
+        { name: 'Upload photos', text: 'Upload the best 10-40 photos. Recommended: baby/puppy photo, an adult portrait, a favorite moment, and a recent photo.', minutes: 8 },
+        { name: 'Write the biography', text: 'Write the biography guided by the template: birth, adoption/childhood, life, personality, farewell.', minutes: 10 },
+        { name: 'Pick the AI portrait style', text: 'Select from classical oil, soft watercolor, editorial gold, and more. Three variations generated in ~2 minutes.', minutes: 3 },
+        { name: 'Complete payment', text: 'Pay your chosen plan with Stripe (USD or MXN). If you picked the Eternal plan, the steel plate ships in 7-10 business days.', minutes: 2 },
+        { name: 'Share URL and QR', text: 'Share the URL and QR code with family. The memorial is live immediately.', minutes: 1 },
+      ],
+    },
     title: 'What is a digital memorial: the complete 2026 guide',
     description:
       'A digital memorial is a permanent web page with a biography, AI portrait, and QR code that preserves the memory of a loved one or pet. This guide explains how it works, what it costs, and how it compares to a headstone.',
@@ -658,6 +683,16 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
   {
     slug: 'funeral-home-digitization-30-day-guide',
     esSlug: 'como-funeraria-digitaliza-servicios-30-dias',
+    howTo: {
+      name: 'How to digitize a funeral home in 30 days',
+      totalMinutes: 43200,
+      steps: [
+        { name: 'Week 1 · Onboarding and branding', text: 'Sign up for a Partner plan (Trial or Pack 30), send your vectorized logo, sign DPA if applicable, get dashboard access, and complete a Zoom onboarding.' },
+        { name: 'Week 2 · Operational integration', text: 'Decide positioning (included in package vs. premium add-on), train the sales team, print the first QR cards, and receive physical plates with your logo.' },
+        { name: 'Week 3 · First real deliveries', text: 'Build the first 3-5 real digital memorials, deliver QR cards at the service and the physical plate privately to immediate family. Request feedback after 15 days.' },
+        { name: 'Week 4 · Optimization and scale', text: 'Review adoption and satisfaction metrics, tune pricing, add to permanent sales materials, and plan a 90-day refresh.' },
+      ],
+    },
     title: 'How a funeral home digitizes its services in 30 days: a week-by-week guide',
     description:
       'A 4-week roadmap for a US or Canadian funeral home to add digital services (memorials, QR codes, AI-engraved plates) to its catalog without disrupting existing workflows. With metrics, pricing, and a sales script.',

@@ -102,6 +102,27 @@ export default function BlogPostEN({ params }: Props) {
     { name: post.title, path: `/en/blog/${post.slug}` },
   ]);
 
+  const howToJsonLd = post.howTo
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        '@id': `${SITE_URL}/en/blog/${post.slug}#howto`,
+        name: post.howTo.name,
+        description: post.description,
+        inLanguage: 'en-US',
+        ...(post.howTo.totalMinutes
+          ? { totalTime: `PT${post.howTo.totalMinutes}M` }
+          : {}),
+        step: post.howTo.steps.map((s, idx) => ({
+          '@type': 'HowToStep',
+          position: idx + 1,
+          name: s.name,
+          text: s.text,
+          ...(s.minutes ? { timeRequired: `PT${s.minutes}M` } : {}),
+        })),
+      }
+    : null;
+
   return (
     <>
       <script
@@ -112,6 +133,12 @@ export default function BlogPostEN({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLd) }}
       />
+      {howToJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+        />
+      )}
       <SiteHeaderEN />
 
       <main className="container-solemn py-12 md:py-20">

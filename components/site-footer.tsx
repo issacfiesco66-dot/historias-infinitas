@@ -20,6 +20,8 @@ export async function SiteFooter() {
           <Link className="block hover:text-dorado-300" href="/#seres-queridos">Nichos Virtuales de Seres Queridos</Link>
           <Link className="block hover:text-dorado-300" href="/#como-funciona">Cómo funciona</Link>
           <Link className="block hover:text-dorado-300" href="/blog">Blog · Duelo y memoria</Link>
+          <Link className="block hover:text-dorado-300" href="/acerca">Acerca de</Link>
+          <Link className="block hover:text-dorado-300" href="/testimonios">Testimonios</Link>
           <Link className="block hover:text-dorado-300" href="/partners">Para funerarias y veterinarias</Link>
         </div>
         <div className="text-sm space-y-2">

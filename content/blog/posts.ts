@@ -10,6 +10,18 @@
  * individuales en `content/blog/*.md` parseados con gray-matter.
  */
 
+/**
+ * Un paso individual dentro de una guía HowTo. Cuando un post declara
+ * `howTo`, la página /blog/[slug] emite schema HowTo además del BlogPosting
+ * — Google y los LLMs usan HowTo para responder queries "cómo hacer X".
+ */
+export interface HowToStep {
+  name: string;
+  text: string;
+  /** Duración del paso en minutos (opcional) */
+  minutes?: number;
+}
+
 export interface BlogPost {
   slug: string;
   title: string;
@@ -39,6 +51,12 @@ export interface BlogPost {
   category: 'Duelo y memoria' | 'Memoriales digitales' | 'Tecnología IA' | 'B2B';
   /** Mostrar o no en el índice público. Poner false para borradores. */
   published: boolean;
+  /** Pasos de la guía (opcional). Si está presente, se emite schema HowTo. */
+  howTo?: {
+    name: string;
+    totalMinutes?: number;
+    steps: HowToStep[];
+  };
 }
 
 export const BLOG_POSTS: BlogPost[] = [
@@ -149,6 +167,19 @@ export const BLOG_POSTS: BlogPost[] = [
   // ============================================================
   {
     slug: 'que-es-un-nicho-virtual',
+    howTo: {
+      name: 'Cómo crear un nicho virtual paso a paso',
+      totalMinutes: 25,
+      steps: [
+        { name: 'Entrar a Historias Infinitas', text: 'Entra a historias-infinitas.com/empieza. No necesitas crear cuenta al principio; solo se pide el correo cuando vas a guardar.', minutes: 1 },
+        { name: 'Elegir tipo de memorial', text: 'Elige entre memorial para mascota o para ser querido. El flujo se adapta al caso.', minutes: 1 },
+        { name: 'Subir fotografías', text: 'Sube las mejores 10-40 fotografías. Recomendadas: foto bebé/cachorro, foto adulta, foto en un momento favorito, foto reciente.', minutes: 8 },
+        { name: 'Escribir la biografía', text: 'Escribe la biografía guiada por la plantilla: nacimiento, adopción/infancia, vida, personalidad, despedida.', minutes: 10 },
+        { name: 'Elegir estilo del retrato IA', text: 'Selecciona estilo entre óleo clásico, acuarela suave, editorial dorado u otros. Se generan 3 variantes en ~2 minutos.', minutes: 3 },
+        { name: 'Completar pago', text: 'Paga el plan elegido con Stripe (MXN o USD). Si elegiste Plan Eterno, la placa de acero se envía en 7-10 días hábiles.', minutes: 2 },
+        { name: 'Compartir URL y QR', text: 'Comparte la URL y el código QR con la familia. El nicho virtual queda activo inmediatamente.', minutes: 1 },
+      ],
+    },
     title: 'Qué es un nicho virtual: guía definitiva 2026',
     description:
       'Un nicho virtual es una página web permanente con biografía, retrato IA y QR que preserva la memoria de un ser querido o una mascota. Esta guía explica cómo funciona, qué cuesta y cómo se compara con una lápida.',
@@ -672,6 +703,16 @@ export const BLOG_POSTS: BlogPost[] = [
   // ============================================================
   {
     slug: 'como-funeraria-digitaliza-servicios-30-dias',
+    howTo: {
+      name: 'Cómo digitalizar una funeraria en 30 días',
+      totalMinutes: 43200, // 30 días en minutos
+      steps: [
+        { name: 'Semana 1 · Onboarding y marca', text: 'Contratar plan Partner (Prueba o Pack 30), enviar logo vectorial, firmar DPA si aplica, recibir accesos al dashboard y onboarding por Zoom.' },
+        { name: 'Semana 2 · Integración operativa', text: 'Decidir posicionamiento (incluido en paquete o add-on premium), capacitar equipo de ventas, imprimir primeras tarjetas QR y recibir placas físicas con logo.' },
+        { name: 'Semana 3 · Primeras entregas', text: 'Crear los primeros 3-5 nichos virtuales reales, entregar QR durante misa/velación y placa física a la familia directa. Pedir feedback a los 15 días.' },
+        { name: 'Semana 4 · Optimización y escala', text: 'Revisar métricas de adopción y satisfacción, ajustar pricing, añadir al material de venta permanente, planear refresh a 90 días.' },
+      ],
+    },
     title: 'Cómo una funeraria mexicana digitaliza sus servicios en 30 días: guía semana por semana',
     description:
       'Roadmap de 4 semanas para que una funeraria en México incorpore servicios digitales (memoriales, QR, placas grabadas con IA) a su catálogo sin romper los flujos existentes. Con métricas, pricing y script de venta.',

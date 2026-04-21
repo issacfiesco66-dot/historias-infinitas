@@ -54,6 +54,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...pair('/para-funerarias',          '/en/for-funeral-homes',      { priority: 0.9, changeFrequency: 'weekly' }),
     ...pair('/para-clinicas-veterinarias','/en/for-veterinary-clinics',{ priority: 0.9, changeFrequency: 'weekly' }),
     ...pair('/para-hospicios',           '/en/for-hospices',           { priority: 0.8, changeFrequency: 'weekly' }),
+    ...pair('/acerca',                   '/en/about',                  { priority: 0.7, changeFrequency: 'monthly' }),
+    ...pair('/testimonios',              '/en/testimonials',           { priority: 0.6, changeFrequency: 'monthly' }),
     ...pair('/contacto',                 '/en/contact',                { priority: 0.5, changeFrequency: 'monthly' }),
     ...pair('/privacidad',               '/en/privacy',                { priority: 0.3, changeFrequency: 'yearly' }),
     ...pair('/terminos',                 '/en/terms',                  { priority: 0.3, changeFrequency: 'yearly' }),

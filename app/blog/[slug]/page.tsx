@@ -108,6 +108,30 @@ export default function BlogPostPage({ params }: Props) {
     { name: post.title, path: `/blog/${post.slug}` },
   ]);
 
+  // Si el post declara pasos HowTo, emitimos también el schema HowTo.
+  // Google lo usa para rich snippets de "cómo hacer X" y los LLMs lo citan
+  // directamente en respuestas paso-a-paso.
+  const howToJsonLd = post.howTo
+    ? {
+        '@context': 'https://schema.org',
+        '@type': 'HowTo',
+        '@id': `${SITE_URL}/blog/${post.slug}#howto`,
+        name: post.howTo.name,
+        description: post.description,
+        inLanguage: 'es-MX',
+        ...(post.howTo.totalMinutes
+          ? { totalTime: `PT${post.howTo.totalMinutes}M` }
+          : {}),
+        step: post.howTo.steps.map((s, idx) => ({
+          '@type': 'HowToStep',
+          position: idx + 1,
+          name: s.name,
+          text: s.text,
+          ...(s.minutes ? { timeRequired: `PT${s.minutes}M` } : {}),
+        })),
+      }
+    : null;
+
   return (
     <>
       <script
@@ -118,6 +142,12 @@ export default function BlogPostPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLd) }}
       />
+      {howToJsonLd && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(howToJsonLd) }}
+        />
+      )}
       <SiteHeader />
 
       <main className="container-solemn py-12 md:py-20">
