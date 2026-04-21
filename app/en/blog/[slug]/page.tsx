@@ -1,10 +1,9 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
-import { SiteHeader } from '@/components/site-header';
-import { SiteFooter } from '@/components/site-footer';
-import { getBlogPostBySlug, getAllPublishedPosts } from '@/content/blog/posts';
-import { getEnSlugForEsSlug } from '@/content/blog/posts-en';
+import { SiteHeaderEN } from '@/components/site-header-en';
+import { SiteFooterEN } from '@/components/site-footer-en';
+import { getBlogPostEnBySlug, getAllPublishedPostsEN } from '@/content/blog/posts-en';
 import { breadcrumbJsonLd } from '@/lib/seo/breadcrumbs';
 
 const SITE_URL = (
@@ -17,39 +16,32 @@ interface Props {
   params: { slug: string };
 }
 
-// Pre-generamos cada artículo en build time — HTML estático, TTFB < 50 ms.
 export async function generateStaticParams() {
-  return getAllPublishedPosts().map((p) => ({ slug: p.slug }));
+  return getAllPublishedPostsEN().map((p) => ({ slug: p.slug }));
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const post = getBlogPostBySlug(params.slug);
-  if (!post) return { title: 'Artículo no encontrado' };
-
-  // Si existe una versión EN del post, emitimos hreflang alternates.
-  // Google usa esto para agrupar ambas URLs como variantes del mismo contenido.
-  const enSlug = getEnSlugForEsSlug(post.slug);
-  const languages: Record<string, string> = {
-    'es-MX': `/blog/${post.slug}`,
-    'x-default': `/blog/${post.slug}`,
-  };
-  if (enSlug) {
-    languages['en-US'] = `/en/blog/${enSlug}`;
-  }
+  const post = getBlogPostEnBySlug(params.slug);
+  if (!post) return { title: 'Article not found' };
 
   return {
     title: post.title,
     description: post.description,
     keywords: post.keywords,
     alternates: {
-      canonical: `/blog/${post.slug}`,
-      languages,
+      canonical: `/en/blog/${post.slug}`,
+      languages: {
+        'es-MX': `/blog/${post.esSlug}`,
+        'en-US': `/en/blog/${post.slug}`,
+        'x-default': `/blog/${post.esSlug}`,
+      },
     },
     openGraph: {
       title: post.title,
       description: post.description,
-      url: `/blog/${post.slug}`,
+      url: `/en/blog/${post.slug}`,
       type: 'article',
+      locale: 'en_US',
       publishedTime: post.datePublished,
       modifiedTime: post.dateModified,
       authors: [post.author.name],
@@ -64,17 +56,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   };
 }
 
-export default function BlogPostPage({ params }: Props) {
-  const post = getBlogPostBySlug(params.slug);
+export default function BlogPostEN({ params }: Props) {
+  const post = getBlogPostEnBySlug(params.slug);
   if (!post) notFound();
 
-  // Schema Article — es el formato que Google, ChatGPT, Perplexity y Gemini
-  // esperan para citar un artículo de blog. Incluir `wordCount` y `articleBody`
-  // mejora las probabilidades de que se use como fuente en respuestas.
   const articleJsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
-    '@id': `${SITE_URL}/blog/${post.slug}`,
+    '@id': `${SITE_URL}/en/blog/${post.slug}`,
     headline: post.title,
     description: post.description,
     datePublished: post.datePublished,
@@ -93,19 +82,24 @@ export default function BlogPostPage({ params }: Props) {
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `${SITE_URL}/blog/${post.slug}`,
+      '@id': `${SITE_URL}/en/blog/${post.slug}`,
     },
-    inLanguage: 'es-MX',
+    inLanguage: 'en-US',
     keywords: post.keywords.join(', '),
     articleSection: post.category,
     timeRequired: `PT${post.readingMinutes}M`,
     isAccessibleForFree: true,
+    translationOfWork: {
+      '@type': 'CreativeWork',
+      '@id': `${SITE_URL}/blog/${post.esSlug}`,
+      inLanguage: 'es-MX',
+    },
   };
 
   const bcLd = breadcrumbJsonLd([
-    { name: 'Inicio', path: '/' },
-    { name: 'Blog', path: '/blog' },
-    { name: post.title, path: `/blog/${post.slug}` },
+    { name: 'Home', path: '/en' },
+    { name: 'Blog', path: '/en/blog' },
+    { name: post.title, path: `/en/blog/${post.slug}` },
   ]);
 
   return (
@@ -118,13 +112,13 @@ export default function BlogPostPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLd) }}
       />
-      <SiteHeader />
+      <SiteHeaderEN />
 
       <main className="container-solemn py-12 md:py-20">
         <article className="max-w-3xl mx-auto">
           <header className="mb-10">
             <div className="flex items-center gap-2 mb-4 text-xs uppercase tracking-widest text-dorado-600">
-              <Link href="/blog" className="hover:text-dorado-800">Blog</Link>
+              <Link href="/en/blog" className="hover:text-dorado-800">Blog</Link>
               <span className="text-pizarra-300">/</span>
               <span className="text-pizarra-500">{post.category}</span>
             </div>
@@ -138,14 +132,22 @@ export default function BlogPostPage({ params }: Props) {
               <span>{post.author.name}</span>
               <span className="text-pizarra-300">·</span>
               <time dateTime={post.datePublished}>
-                {new Date(post.datePublished).toLocaleDateString('es-MX', {
+                {new Date(post.datePublished).toLocaleDateString('en-US', {
                   day: 'numeric',
                   month: 'long',
                   year: 'numeric',
                 })}
               </time>
               <span className="text-pizarra-300">·</span>
-              <span>{post.readingMinutes} min de lectura</span>
+              <span>{post.readingMinutes} min read</span>
+              <span className="text-pizarra-300">·</span>
+              <Link
+                href={`/blog/${post.esSlug}`}
+                className="text-dorado-600 hover:text-dorado-700 underline"
+                hrefLang="es-MX"
+              >
+                Leer en español
+              </Link>
             </div>
           </header>
 
@@ -156,27 +158,27 @@ export default function BlogPostPage({ params }: Props) {
 
           <footer className="mt-16 pt-8 border-t border-pizarra-100">
             <p className="text-sm text-pizarra-500 mb-4">
-              ¿Perdiste a alguien que quieres recordar para siempre?
+              Lost someone you want to remember forever?
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
               <Link
-                href="/empieza"
+                href="/register"
                 className="inline-flex items-center justify-center rounded-xl bg-dorado-500 text-pizarra-900 px-6 py-3 font-medium hover:bg-dorado-600 transition"
               >
-                Crear un nicho virtual
+                Create a digital memorial
               </Link>
               <Link
-                href="/blog"
+                href="/en/blog"
                 className="inline-flex items-center justify-center rounded-xl border border-pizarra-300 text-pizarra-700 px-6 py-3 font-medium hover:bg-pizarra-50 transition"
               >
-                Volver al blog
+                Back to blog
               </Link>
             </div>
           </footer>
         </article>
       </main>
 
-      <SiteFooter />
+      <SiteFooterEN />
     </>
   );
 }

@@ -16,6 +16,7 @@ export function SiteHeaderEN() {
           <Link href="/en#pets" className="hover:text-pizarra-900 transition">Pets</Link>
           <Link href="/en#loved-ones" className="hover:text-pizarra-900 transition">Loved Ones</Link>
           <Link href="/en/partners" className="hover:text-pizarra-900 transition">For Business</Link>
+          <Link href="/en/blog" className="hover:text-pizarra-900 transition">Blog</Link>
         </nav>
 
         <div className="flex items-center gap-3">

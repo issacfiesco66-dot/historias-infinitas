@@ -17,6 +17,7 @@ export function SiteFooterEN() {
           <p className="uppercase tracking-widest text-xs text-dorado-300 mb-2">Explore</p>
           <Link className="block hover:text-dorado-300" href="/en#pets">Pet Memorials</Link>
           <Link className="block hover:text-dorado-300" href="/en#loved-ones">Memorials for Loved Ones</Link>
+          <Link className="block hover:text-dorado-300" href="/en/blog">Blog · Grief & memory</Link>
           <Link className="block hover:text-dorado-300" href="/en/partners">Partner Program</Link>
           <Link className="block hover:text-dorado-300" href="/en/for-funeral-homes">For Funeral Homes</Link>
           <Link className="block hover:text-dorado-300" href="/en/for-veterinary-clinics">For Veterinary Clinics</Link>

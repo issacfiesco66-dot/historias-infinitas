@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { createClient } from '@/lib/supabase/server';
 import { getAllPublishedPosts } from '@/content/blog/posts';
+import { getAllPublishedPostsEN, getEnSlugForEsSlug } from '@/content/blog/posts-en';
 
 const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ??
@@ -56,18 +57,49 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...pair('/contacto',                 '/en/contact',                { priority: 0.5, changeFrequency: 'monthly' }),
     ...pair('/privacidad',               '/en/privacy',                { priority: 0.3, changeFrequency: 'yearly' }),
     ...pair('/terminos',                 '/en/terms',                  { priority: 0.3, changeFrequency: 'yearly' }),
-    { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
+    ...pair('/blog', '/en/blog', { priority: 0.8, changeFrequency: 'daily' }),
     { url: `${SITE_URL}/login`,    lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${SITE_URL}/register`, lastModified: now, changeFrequency: 'yearly', priority: 0.4 },
   ];
 
-  // Artículos del blog — editorial content es el motor de GEO.
-  const blogRoutes: MetadataRoute.Sitemap = getAllPublishedPosts().map((p) => ({
-    url: `${SITE_URL}/blog/${p.slug}`,
+  // Artículos del blog ES — editorial content es el motor de GEO.
+  // Cuando el post tenga contraparte EN, emitimos hreflang alternates.
+  const blogRoutesES: MetadataRoute.Sitemap = getAllPublishedPosts().map((p) => {
+    const enSlug = getEnSlugForEsSlug(p.slug);
+    const entry: MetadataRoute.Sitemap[number] = {
+      url: `${SITE_URL}/blog/${p.slug}`,
+      lastModified: new Date(p.dateModified),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    };
+    if (enSlug) {
+      entry.alternates = {
+        languages: {
+          es: `${SITE_URL}/blog/${p.slug}`,
+          en: `${SITE_URL}/en/blog/${enSlug}`,
+          'x-default': `${SITE_URL}/blog/${p.slug}`,
+        },
+      };
+    }
+    return entry;
+  });
+
+  // Artículos del blog EN — paralelos a los ES, con hreflang inverso.
+  const blogRoutesEN: MetadataRoute.Sitemap = getAllPublishedPostsEN().map((p) => ({
+    url: `${SITE_URL}/en/blog/${p.slug}`,
     lastModified: new Date(p.dateModified),
     changeFrequency: 'monthly' as const,
     priority: 0.7,
+    alternates: {
+      languages: {
+        es: `${SITE_URL}/blog/${p.esSlug}`,
+        en: `${SITE_URL}/en/blog/${p.slug}`,
+        'x-default': `${SITE_URL}/blog/${p.esSlug}`,
+      },
+    },
   }));
+
+  const blogRoutes = [...blogRoutesES, ...blogRoutesEN];
 
   // Memoriales públicos
   let memorialRoutes: MetadataRoute.Sitemap = [];
