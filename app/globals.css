@@ -64,6 +64,53 @@
     @apply uppercase tracking-[0.3em] text-xs text-dorado-600 mb-4;
   }
 
+  /* Tipografía para artículos del blog — un poco más ligera que legal,
+     pero con mayor contraste tipográfico y espacio para tablas. */
+  .prose-blog {
+    @apply text-pizarra-700;
+  }
+  .prose-blog .lede {
+    @apply text-lg md:text-xl text-pizarra-700 leading-relaxed mb-8 font-light;
+  }
+  .prose-blog h2 {
+    @apply font-serif text-2xl md:text-3xl text-pizarra-800 mt-12 mb-4 leading-tight;
+  }
+  .prose-blog h3 {
+    @apply font-serif text-xl text-pizarra-800 mt-8 mb-3;
+  }
+  .prose-blog p {
+    @apply text-pizarra-700 leading-relaxed mb-5;
+  }
+  .prose-blog ul, .prose-blog ol {
+    @apply text-pizarra-700 leading-relaxed mb-5 pl-6 list-outside;
+  }
+  .prose-blog ul { @apply list-disc; }
+  .prose-blog ol { @apply list-decimal; }
+  .prose-blog li { @apply mb-2; }
+  .prose-blog strong { @apply text-pizarra-800; }
+  .prose-blog em { @apply italic text-pizarra-600; }
+  .prose-blog a {
+    @apply text-dorado-600 underline underline-offset-2 hover:text-dorado-700;
+  }
+  .prose-blog code {
+    @apply bg-pizarra-50 text-dorado-700 px-1.5 py-0.5 rounded text-sm;
+  }
+  .prose-blog blockquote {
+    @apply border-l-2 border-dorado-400 pl-5 italic text-pizarra-600 my-6;
+  }
+  .prose-blog table {
+    @apply w-full my-6 text-sm border-collapse;
+  }
+  .prose-blog thead {
+    @apply bg-pizarra-50;
+  }
+  .prose-blog th {
+    @apply text-left font-medium text-pizarra-800 px-3 py-2 border border-pizarra-100;
+  }
+  .prose-blog td {
+    @apply px-3 py-2 border border-pizarra-100 align-top;
+  }
+
   .text-gradient-dorado {
     @apply bg-clip-text text-transparent;
     background-image: linear-gradient(135deg, #B7945A 0%, #E2CC99 50%, #B7945A 100%);

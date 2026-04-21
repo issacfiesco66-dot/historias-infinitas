@@ -2,6 +2,8 @@
 
 > Digital memorial platform serving Mexico, the United States and Canada. Creates memorial websites for loved ones and pets with AI-generated artistic portraits (Flux Kontext Max), Augmented Reality portals, permanent public URLs, printable QR codes and optional stainless-steel physical plates. Designed for families and for business partners: funeral homes, veterinary clinics, hospices and senior living.
 
+> For the full extended content (definitions, use cases, tech stack, FAQs, partner program details), see [llms-full.txt](https://historias-infinitas.com/llms-full.txt).
+
 ## EN · What we offer
 
 - **Individual digital memorials** with biography, epitaph, photo and video gallery, and an AI-generated artistic portrait that preserves identity from a real photograph.

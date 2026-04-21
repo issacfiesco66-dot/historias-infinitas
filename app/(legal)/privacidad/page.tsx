@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
+import { breadcrumbJsonLd } from '@/lib/seo/breadcrumbs';
 
 export const metadata: Metadata = {
-  title: 'Aviso de Privacidad — Historias Infinitas',
+  title: 'Aviso de Privacidad',
   description:
     'Aviso de privacidad integral conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares (LFPDPPP) de México.',
   alternates: { canonical: '/privacidad' },
@@ -9,9 +10,18 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = '17 de abril de 2026';
 
+const bcLd = breadcrumbJsonLd([
+  { name: 'Inicio', path: '/' },
+  { name: 'Aviso de Privacidad', path: '/privacidad' },
+]);
+
 export default function PrivacidadPage() {
   return (
     <article className="prose-legal mx-auto max-w-3xl">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLd) }}
+      />
       <p className="meta">Última actualización · {LAST_UPDATED}</p>
       <h1>Aviso de Privacidad Integral</h1>
 

@@ -1,7 +1,8 @@
 import type { Metadata } from 'next';
+import { breadcrumbJsonLd } from '@/lib/seo/breadcrumbs';
 
 export const metadata: Metadata = {
-  title: 'Términos y Condiciones — Historias Infinitas',
+  title: 'Términos y Condiciones',
   description:
     'Términos y condiciones de uso del servicio Historias Infinitas, conforme a la legislación mexicana aplicable (Código de Comercio, LFPC, LFDA).',
   alternates: { canonical: '/terminos' },
@@ -9,9 +10,18 @@ export const metadata: Metadata = {
 
 const LAST_UPDATED = '17 de abril de 2026';
 
+const bcLd = breadcrumbJsonLd([
+  { name: 'Inicio', path: '/' },
+  { name: 'Términos y Condiciones', path: '/terminos' },
+]);
+
 export default function TerminosPage() {
   return (
     <article className="prose-legal mx-auto max-w-3xl">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLd) }}
+      />
       <p className="meta">Última actualización · {LAST_UPDATED}</p>
       <h1>Términos y Condiciones</h1>
 

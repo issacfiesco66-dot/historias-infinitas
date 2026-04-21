@@ -2,17 +2,27 @@ import type { Metadata } from 'next';
 import { Suspense } from 'react';
 import { Mail, MapPin, Phone, Clock, ShieldCheck } from 'lucide-react';
 import { ContactForm } from './contact-form';
+import { breadcrumbJsonLd } from '@/lib/seo/breadcrumbs';
 
 export const metadata: Metadata = {
-  title: 'Contacto — Historias Infinitas',
+  title: 'Contacto',
   description:
     'Escríbenos. Respondemos cada mensaje con el cuidado que tu historia merece.',
   alternates: { canonical: '/contacto' },
 };
 
+const bcLd = breadcrumbJsonLd([
+  { name: 'Inicio', path: '/' },
+  { name: 'Contacto', path: '/contacto' },
+]);
+
 export default function ContactoPage() {
   return (
     <div className="mx-auto max-w-5xl">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLd) }}
+      />
       <div className="prose-legal text-center max-w-2xl mx-auto">
         <p className="meta">Estamos contigo</p>
         <h1>Hablemos con calma</h1>

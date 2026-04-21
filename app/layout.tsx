@@ -14,6 +14,20 @@ const TITLE = 'Historias Infinitas — Nichos Virtuales con IA y Realidad Aument
 const DESCRIPTION =
   'Preserva la memoria de quienes amas. Creamos nichos virtuales eternos con retratos artísticos generados por IA y Portales de Recuerdos en Realidad Aumentada — para mascotas y seres queridos.';
 
+// sameAs para schema.org Organization. Se llena vía env vars para que
+// puedas publicar perfiles a medida que los crees sin redeploy.
+// Cada URL válida cuenta como señal de entidad para Google Knowledge Graph
+// y para que los LLMs (ChatGPT, Perplexity, Gemini) reconozcan a la marca.
+const SOCIAL_SAME_AS: string[] = [
+  process.env.NEXT_PUBLIC_SOCIAL_LINKEDIN,
+  process.env.NEXT_PUBLIC_SOCIAL_INSTAGRAM,
+  process.env.NEXT_PUBLIC_SOCIAL_FACEBOOK,
+  process.env.NEXT_PUBLIC_SOCIAL_YOUTUBE,
+  process.env.NEXT_PUBLIC_SOCIAL_TIKTOK,
+  process.env.NEXT_PUBLIC_SOCIAL_TWITTER,
+  process.env.NEXT_PUBLIC_SOCIAL_WIKIPEDIA,
+].filter((v): v is string => typeof v === 'string' && v.length > 0);
+
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: {
@@ -115,26 +129,60 @@ export const viewport: Viewport = {
 };
 
 // JSON-LD para la Organización — se inyecta a nivel raíz para que aparezca
-// en todas las páginas (mejora el Knowledge Graph de Google).
+// en todas las páginas (mejora el Knowledge Graph de Google y el reconocimiento
+// de entidad por parte de los LLMs).
 const organizationJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
+  '@id': `${SITE_URL}/#organization`,
   name: SITE_NAME,
+  alternateName: ['HistoriasInfinitas', 'Historias Infinitas MX'],
   legalName: SITE_NAME,
   url: SITE_URL,
-  logo: `${SITE_URL}/icon.svg`,
+  logo: {
+    '@type': 'ImageObject',
+    url: `${SITE_URL}/icon.svg`,
+    width: 512,
+    height: 512,
+  },
   image: `${SITE_URL}/og-default.jpg`,
   description: DESCRIPTION,
-  areaServed: { '@type': 'Country', name: 'México' },
-  priceRange: '$299 – $14,999 MXN',
+  slogan: 'Preserva la memoria de quienes amas. Para siempre.',
   foundingDate: '2026',
-  sameAs: [] as string[],
+  // Los LLMs usan areaServed para decidir qué tan relevante es la marca
+  // en respuestas con intención geográfica.
+  areaServed: [
+    { '@type': 'Country', name: 'Mexico' },
+    { '@type': 'Country', name: 'United States' },
+    { '@type': 'Country', name: 'Canada' },
+  ],
+  // knowsAbout alimenta el entity graph y mejora citaciones en respuestas
+  // con intención temática ("memoriales digitales", "duelo mascota", etc.).
+  knowsAbout: [
+    'Digital memorials',
+    'Virtual memorials for pets',
+    'Memorial websites',
+    'AI-generated portraits',
+    'Augmented Reality tributes',
+    'QR code memorials',
+    'Grief and bereavement support',
+    'Funeral home digitalization',
+    'Pet loss and pet grief',
+    'Hospice and palliative care support',
+    'Nichos virtuales',
+    'Homenajes digitales',
+    'Tributos en línea',
+    'Duelo por mascotas',
+  ],
+  priceRange: '$299 – $14,999 MXN',
+  sameAs: SOCIAL_SAME_AS,
   contactPoint: [
     {
       '@type': 'ContactPoint',
       contactType: 'customer support',
       email: 'hola@historias-infinitas.com',
-      availableLanguage: ['Spanish'],
+      availableLanguage: ['Spanish', 'English'],
+      areaServed: ['MX', 'US', 'CA'],
     },
     {
       '@type': 'ContactPoint',
@@ -146,28 +194,42 @@ const organizationJsonLd = {
       '@type': 'ContactPoint',
       contactType: 'sales',
       email: 'socios@historias-infinitas.com',
+      availableLanguage: ['Spanish', 'English'],
+      areaServed: ['MX', 'US', 'CA'],
+    },
+    {
+      '@type': 'ContactPoint',
+      contactType: 'billing support',
+      email: 'facturacion@historias-infinitas.com',
       availableLanguage: ['Spanish'],
+      areaServed: ['MX'],
     },
   ],
   makesOffer: [
-    { '@type': 'Offer', name: 'Nicho Virtual Digital',   price: 299,   priceCurrency: 'MXN' },
-    { '@type': 'Offer', name: 'Nicho Virtual Artístico', price: 599,   priceCurrency: 'MXN' },
-    { '@type': 'Offer', name: 'Nicho Virtual Eterno',    price: 1799,  priceCurrency: 'MXN' },
-    { '@type': 'Offer', name: 'Partner · Pack 30',  price: 4999,  priceCurrency: 'MXN' },
-    { '@type': 'Offer', name: 'Partner · Anual Pro',price: 14999, priceCurrency: 'MXN' },
+    { '@type': 'Offer', name: 'Nicho Virtual Digital',   price: 299,   priceCurrency: 'MXN', category: 'Consumer', url: `${SITE_URL}/empieza` },
+    { '@type': 'Offer', name: 'Nicho Virtual Artístico', price: 599,   priceCurrency: 'MXN', category: 'Consumer', url: `${SITE_URL}/empieza` },
+    { '@type': 'Offer', name: 'Nicho Virtual Eterno',    price: 1799,  priceCurrency: 'MXN', category: 'Consumer', url: `${SITE_URL}/empieza` },
+    { '@type': 'Offer', name: 'Partner · Pack 30',       price: 4999,  priceCurrency: 'MXN', category: 'Partner',  url: `${SITE_URL}/partners` },
+    { '@type': 'Offer', name: 'Partner · Anual Pro',     price: 14999, priceCurrency: 'MXN', category: 'Partner',  url: `${SITE_URL}/partners` },
   ],
 };
 
 const websiteJsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
+  '@id': `${SITE_URL}/#website`,
   name: SITE_NAME,
+  alternateName: 'HistoriasInfinitas',
   url: SITE_URL,
-  inLanguage: 'es',
-  publisher: { '@type': 'Organization', name: SITE_NAME },
+  description: DESCRIPTION,
+  inLanguage: ['es-MX', 'en-US'],
+  publisher: { '@id': `${SITE_URL}/#organization` },
   potentialAction: {
     '@type': 'SearchAction',
-    target: `${SITE_URL}/memorial/{search_term_string}`,
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: `${SITE_URL}/memorial/{search_term_string}`,
+    },
     'query-input': 'required name=search_term_string',
   },
 };

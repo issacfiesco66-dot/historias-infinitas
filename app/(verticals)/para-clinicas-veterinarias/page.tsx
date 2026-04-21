@@ -3,7 +3,7 @@ import { VerticalLanding } from '../vertical-landing';
 import { Heart, TrendingUp, HeartHandshake, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Nicho Virtual para Clínicas Veterinarias — Historias Infinitas',
+  title: 'Nichos Virtuales para Clínicas Veterinarias · Memorial con IA para Mascotas',
   description:
     'Ofrece a las familias de tus pacientes un nicho virtual con retrato IA para honrar a su mascota. Con el logo de tu clínica. Desde $999 MXN. 30 días de garantía.',
   alternates: {

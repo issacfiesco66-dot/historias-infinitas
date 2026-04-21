@@ -16,6 +16,7 @@ export function SiteHeader() {
           <Link href="/#mascotas" className="hover:text-pizarra-900 transition">Mascotas</Link>
           <Link href="/#seres-queridos" className="hover:text-pizarra-900 transition">Seres Queridos</Link>
           <Link href="/#como-funciona" className="hover:text-pizarra-900 transition">Cómo funciona</Link>
+          <Link href="/blog" className="hover:text-pizarra-900 transition">Blog</Link>
         </nav>
 
         <div className="flex items-center gap-3">

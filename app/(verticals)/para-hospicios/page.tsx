@@ -3,7 +3,7 @@ import { VerticalLanding } from '../vertical-landing';
 import { Heart, TrendingUp, HeartHandshake, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Nichos Virtuales para Hospicios y Cuidados Paliativos — Historias Infinitas',
+  title: 'Nichos Virtuales para Hospicios y Cuidados Paliativos',
   description:
     'Un regalo para las familias que acompañan a un ser querido en sus últimos días. Nicho Virtual con biografía, retrato IA y QR — con el logo de tu hospicio. Desde $999 MXN.',
   alternates: {

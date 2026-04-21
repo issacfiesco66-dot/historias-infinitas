@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Reveal, FadeH1, FadeH2, FadeP, DustParticles } from '@/components/viva-images';
 
 export const metadata: Metadata = {
-  title: 'Partner Program — Historias Infinitas',
+  title: 'Partner Program · Funeral Homes, Vet Clinics & Hospices',
   description:
     'Funeral homes, veterinary clinics and hospices: offer your families a new way to remember with branded digital memorials, AI portraits and engraved steel plates. Plans from $99 USD.',
   alternates: {
@@ -30,7 +30,7 @@ export const metadata: Metadata = {
     'funeral upsell program',
   ],
   openGraph: {
-    title: 'Partner Program — Historias Infinitas',
+    title: 'Partner Program · Funeral Homes, Vet Clinics & Hospices — Historias Infinitas',
     description:
       'Branded digital memorials for your families. Setup in under 48 hours.',
     url: '/en/partners',
@@ -114,9 +114,128 @@ function formatUSD(n: number): string {
   }).format(n);
 }
 
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.NEXT_PUBLIC_APP_URL ??
+  'https://historias-infinitas.com'
+).trim().replace(/\/+$/, '');
+
+const breadcrumbJsonLdEN = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/en` },
+    { '@type': 'ListItem', position: 2, name: 'Partner Program', item: `${SITE_URL}/en/partners` },
+  ],
+};
+
+const partnerProductsJsonLdEN = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': `${SITE_URL}/en/partners#plans`,
+  itemListElement: PLANS.map((plan, idx) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    item: {
+      '@type': 'Product',
+      '@id': `${SITE_URL}/en/partners#${plan.id}`,
+      name: `Historias Infinitas · ${plan.name}`,
+      description: plan.tagline + ' ' + plan.features.join(' · '),
+      category: 'B2B Digital Memorial Service',
+      brand: { '@type': 'Brand', name: 'Historias Infinitas' },
+      url: `${SITE_URL}/en/partners#plans`,
+      offers: {
+        '@type': 'Offer',
+        ...(plan.priceUSD !== null
+          ? {
+              price: plan.priceUSD,
+              priceCurrency: 'USD',
+              priceValidUntil: '2027-12-31',
+            }
+          : { priceSpecification: { '@type': 'PriceSpecification', description: 'Custom — talk to sales' } }),
+        availability: 'https://schema.org/InStock',
+        areaServed: [
+          { '@type': 'Country', name: 'United States' },
+          { '@type': 'Country', name: 'Canada' },
+        ],
+        seller: { '@id': `${SITE_URL}/#organization` },
+      },
+    },
+  })),
+};
+
+// FAQPage JSON-LD reflejando las preguntas visibles en la página.
+const partnerFaqJsonLdEN = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  inLanguage: 'en-US',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: 'What if I go over my plan\'s memorials?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'You can buy additional memorials at partner price ($12 USD each vs. $17 retail) or upgrade to the next plan — we credit what you have already paid.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can I cancel the annual plan?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes, at any time. Memorials already delivered to your families remain live forever. We never auto-renew without your confirmation.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Can you put our logo on the physical plates?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'Yes. Pack 30 includes 5 laser-engraved steel plates with your logo; Professional includes 40. Extra plates: $25 USD each.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'Do you train our team?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'The Professional plan includes a 60-minute Zoom training plus a sales script for your team. Other plans can add it as a paid service.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'How are we invoiced?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'US-based partners: invoice with W-9 / 1099 setup. International: Stripe invoice with tax IDs. Quarterly commission statements for upgrade revenue.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: 'What happens to the families\' data?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text: 'We are data controllers under GDPR-equivalent standards. Signed DPA on request. Data is only shared with technical processors listed in our Privacy Policy.',
+      },
+    },
+  ],
+};
+
 export default function PartnersEN() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLdEN) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(partnerProductsJsonLdEN) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(partnerFaqJsonLdEN) }}
+      />
       <SiteHeaderEN />
 
       {/* HERO */}

@@ -5,7 +5,7 @@ import { SiteFooterEN } from '@/components/site-footer-en';
 import { VerticalLandingEN } from '../vertical-landing-en';
 
 export const metadata: Metadata = {
-  title: 'Digital Memorials for Hospices and Palliative Care — Historias Infinitas',
+  title: 'Digital Memorials for Hospices and Palliative Care',
   description:
     'A gift for families accompanying a loved one in their final days. Digital memorial with biography, AI portrait and QR — with your hospice\'s logo. Plans from $59 USD.',
   alternates: {

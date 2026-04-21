@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { createClient } from '@/lib/supabase/server';
+import { getAllPublishedPosts } from '@/content/blog/posts';
 
 const SITE_URL = (
   process.env.NEXT_PUBLIC_SITE_URL ??
@@ -55,9 +56,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...pair('/contacto',                 '/en/contact',                { priority: 0.5, changeFrequency: 'monthly' }),
     ...pair('/privacidad',               '/en/privacy',                { priority: 0.3, changeFrequency: 'yearly' }),
     ...pair('/terminos',                 '/en/terms',                  { priority: 0.3, changeFrequency: 'yearly' }),
+    { url: `${SITE_URL}/blog`, lastModified: now, changeFrequency: 'daily', priority: 0.8 },
     { url: `${SITE_URL}/login`,    lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${SITE_URL}/register`, lastModified: now, changeFrequency: 'yearly', priority: 0.4 },
   ];
+
+  // Artículos del blog — editorial content es el motor de GEO.
+  const blogRoutes: MetadataRoute.Sitemap = getAllPublishedPosts().map((p) => ({
+    url: `${SITE_URL}/blog/${p.slug}`,
+    lastModified: new Date(p.dateModified),
+    changeFrequency: 'monthly' as const,
+    priority: 0.7,
+  }));
 
   // Memoriales públicos
   let memorialRoutes: MetadataRoute.Sitemap = [];
@@ -82,5 +92,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     // estáticas — mejor un sitemap pequeño que un 500.
   }
 
-  return [...staticRoutes, ...memorialRoutes];
+  return [...staticRoutes, ...blogRoutes, ...memorialRoutes];
 }

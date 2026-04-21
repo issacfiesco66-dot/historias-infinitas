@@ -5,7 +5,7 @@ import { SiteFooter } from '@/components/site-footer';
 import { EmpiezaWizard } from './wizard';
 
 export const metadata: Metadata = {
-  title: 'Empieza tu tributo — Historias Infinitas',
+  title: 'Empieza tu tributo',
   description:
     'Empieza a crear el nicho virtual de quien amas. Sin registro para comenzar — te pedimos el correo solo cuando estés listo para guardar.',
   alternates: { canonical: '/empieza' },

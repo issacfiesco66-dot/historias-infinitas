@@ -1,9 +1,15 @@
 import type { Metadata } from 'next';
 import { SiteHeaderEN } from '@/components/site-header-en';
 import { SiteFooterEN } from '@/components/site-footer-en';
+import { breadcrumbJsonLd } from '@/lib/seo/breadcrumbs';
+
+const bcLd = breadcrumbJsonLd([
+  { name: 'Home', path: '/en' },
+  { name: 'Terms of Service', path: '/en/terms' },
+]);
 
 export const metadata: Metadata = {
-  title: 'Terms of Service — Historias Infinitas',
+  title: 'Terms of Service',
   description:
     'Terms of service for Historias Infinitas — the digital memorial platform. Governing law, user rights, refund policy.',
   alternates: {
@@ -22,6 +28,10 @@ const LAST_UPDATED = 'April 17, 2026';
 export default function TermsEN() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLd) }}
+      />
       <SiteHeaderEN />
       <main className="container-solemn py-16 md:py-24">
         <article className="prose-legal mx-auto max-w-3xl">

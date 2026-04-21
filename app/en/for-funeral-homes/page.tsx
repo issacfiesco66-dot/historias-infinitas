@@ -5,7 +5,7 @@ import { SiteFooterEN } from '@/components/site-footer-en';
 import { VerticalLandingEN } from '../vertical-landing-en';
 
 export const metadata: Metadata = {
-  title: 'Digital Memorials for Funeral Homes — Historias Infinitas',
+  title: 'Digital Memorials for Funeral Homes · QR, AI Portrait & Engraved Plate',
   description:
     'Offer every family a digital memorial with QR, AI portrait and steel plate engraved with your funeral home\'s logo. Plans from $59 USD. 30-day guarantee. 15% commission on upgrades.',
   alternates: {

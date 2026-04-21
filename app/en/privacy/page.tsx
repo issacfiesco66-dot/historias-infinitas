@@ -1,9 +1,15 @@
 import type { Metadata } from 'next';
 import { SiteHeaderEN } from '@/components/site-header-en';
 import { SiteFooterEN } from '@/components/site-footer-en';
+import { breadcrumbJsonLd } from '@/lib/seo/breadcrumbs';
+
+const bcLd = breadcrumbJsonLd([
+  { name: 'Home', path: '/en' },
+  { name: 'Privacy Policy', path: '/en/privacy' },
+]);
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — Historias Infinitas',
+  title: 'Privacy Policy',
   description:
     'Privacy policy for Historias Infinitas, the digital memorial platform — how we collect, use and protect your data.',
   alternates: {
@@ -22,6 +28,10 @@ const LAST_UPDATED = 'April 17, 2026';
 export default function PrivacyEN() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLd) }}
+      />
       <SiteHeaderEN />
       <main className="container-solemn py-16 md:py-24">
         <article className="prose-legal mx-auto max-w-3xl">

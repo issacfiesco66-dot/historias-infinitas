@@ -16,10 +16,144 @@ import { createAdminClient } from '@/lib/supabase/admin';
 import type { PartnerLead } from '@/lib/partner-leads';
 
 export const metadata: Metadata = {
-  title: 'Programa de Socios — Historias Infinitas',
+  title: 'Programa de Socios · Funerarias, Veterinarias y Hospicios',
   description:
     'Funerarias, clínicas veterinarias y hospicios: ofrece a tus familias una nueva forma de recordar con nichos virtuales, retratos IA y placas físicas con tu logo.',
   alternates: { canonical: '/partners' },
+};
+
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.NEXT_PUBLIC_APP_URL ??
+  'https://historias-infinitas.com'
+).trim().replace(/\/+$/, '');
+
+// BreadcrumbList — ruta clara desde la raíz hasta esta página.
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL },
+    { '@type': 'ListItem', position: 2, name: 'Programa de Socios', item: `${SITE_URL}/partners` },
+  ],
+};
+
+// ItemList de productos (planes partner). Cada plan se modela como Product
+// con Offer — permite que Google muestre rich results de producto y que
+// los LLMs citen precios y beneficios concretos al responder "cuánto cuesta
+// el programa de socios de Historias Infinitas".
+const partnerProductsJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  '@id': `${SITE_URL}/partners#planes`,
+  itemListElement: PARTNER_PLANS.map((plan, idx) => ({
+    '@type': 'ListItem',
+    position: idx + 1,
+    item: {
+      '@type': 'Product',
+      '@id': `${SITE_URL}/partners#${plan.id}`,
+      name: `Historias Infinitas · ${plan.name}`,
+      description: plan.tagline + ' ' + plan.features.join(' · '),
+      category: 'B2B Digital Memorial Service',
+      brand: { '@type': 'Brand', name: 'Historias Infinitas' },
+      url: `${SITE_URL}/partners#planes`,
+      offers: {
+        '@type': 'Offer',
+        ...(plan.priceMXN !== null
+          ? {
+              price: plan.priceMXN,
+              priceCurrency: 'MXN',
+              priceValidUntil: '2027-12-31',
+            }
+          : { priceSpecification: { '@type': 'PriceSpecification', description: 'A medida · contacto comercial' } }),
+        availability: 'https://schema.org/InStock',
+        areaServed: [
+          { '@type': 'Country', name: 'Mexico' },
+          { '@type': 'Country', name: 'United States' },
+          { '@type': 'Country', name: 'Canada' },
+        ],
+        seller: { '@id': `${SITE_URL}/#organization` },
+      },
+      ...(plan.memorialsIncluded
+        ? {
+            additionalProperty: [
+              {
+                '@type': 'PropertyValue',
+                name: 'Memoriales incluidos',
+                value: plan.memorialsIncluded,
+              },
+              ...(plan.validityMonths
+                ? [{ '@type': 'PropertyValue', name: 'Vigencia (meses)', value: plan.validityMonths }]
+                : []),
+            ],
+          }
+        : {}),
+    },
+  })),
+};
+
+// FAQPage schema — debe reflejar las preguntas que aparecen visibles más
+// abajo en el componente <Faq>, de lo contrario Google considera el markup
+// inválido y puede penalizar la página.
+const partnerFaqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: [
+    {
+      '@type': 'Question',
+      name: '¿Qué pasa si supero los nichos virtuales de mi plan?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          'Puedes comprar nichos virtuales adicionales al precio preferente de socio ($199 MXN c/u vs. $299 MXN retail) o hacer upgrade al siguiente plan — te damos crédito por lo ya pagado.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Puedo cancelar el plan anual?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          'Sí, en cualquier momento. Los nichos virtuales ya entregados a tus familias siguen vivos para siempre. No hacemos renovación automática sin tu confirmación.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Se puede poner mi logo en las placas físicas?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          'Sí. En el plan Pack 30 incluimos 5 placas de acero con tu logo grabado; en el Profesional, 40 placas. Placas extra: $399 MXN cada una.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Ofrecen capacitación a nuestro equipo?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          'En el plan Profesional incluimos una capacitación de 60 min por videollamada + guión de venta para tu equipo. En los demás planes está disponible como servicio extra.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Cómo se factura y con qué CFDI?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          'Emitimos factura CFDI con uso "G03 — Gastos en general" o el que elijas. Requerimos Constancia de Situación Fiscal vigente.',
+      },
+    },
+    {
+      '@type': 'Question',
+      name: '¿Qué pasa con los datos de las familias?',
+      acceptedAnswer: {
+        '@type': 'Answer',
+        text:
+          'Somos responsables del tratamiento conforme a la LFPDPPP. Firmamos DPA si lo requieres. Los datos no se comparten con terceros salvo los procesadores técnicos descritos en nuestro Aviso de Privacidad.',
+      },
+    },
+  ],
 };
 
 export const dynamic = 'force-dynamic';
@@ -66,6 +200,18 @@ export default async function PartnersPage({
 
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(partnerProductsJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(partnerFaqJsonLd) }}
+      />
       <SiteHeader />
       <CalBookingScript />
 

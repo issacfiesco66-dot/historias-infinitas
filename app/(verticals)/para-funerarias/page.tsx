@@ -3,7 +3,7 @@ import { VerticalLanding } from '../vertical-landing';
 import { Heart, TrendingUp, HeartHandshake, ShieldCheck } from 'lucide-react';
 
 export const metadata: Metadata = {
-  title: 'Nichos Virtuales para Funerarias — Historias Infinitas',
+  title: 'Nichos Virtuales para Funerarias · QR, Retrato IA y Placa Grabada',
   description:
     'Ofrece a tus familias un nicho virtual con QR, retrato IA y placa física grabada con el logo de tu funeraria. Planes desde $999 MXN. Factura CFDI. 30 días de garantía.',
   alternates: {

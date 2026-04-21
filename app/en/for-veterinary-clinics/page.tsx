@@ -5,7 +5,7 @@ import { SiteFooterEN } from '@/components/site-footer-en';
 import { VerticalLandingEN } from '../vertical-landing-en';
 
 export const metadata: Metadata = {
-  title: 'Pet Memorial Service for Veterinary Clinics — Historias Infinitas',
+  title: 'Pet Memorial Service for Veterinary Clinics · AI Portrait & QR',
   description:
     'Offer grieving families a digital memorial with AI portrait to honor their pet. Branded with your clinic\'s logo. From $59 USD. 30-day guarantee.',
   alternates: {

@@ -4,9 +4,15 @@ import { Mail, MapPin, Phone, Clock, ShieldCheck } from 'lucide-react';
 import { SiteHeaderEN } from '@/components/site-header-en';
 import { SiteFooterEN } from '@/components/site-footer-en';
 import { ContactForm } from '@/app/(legal)/contacto/contact-form';
+import { breadcrumbJsonLd } from '@/lib/seo/breadcrumbs';
+
+const bcLd = breadcrumbJsonLd([
+  { name: 'Home', path: '/en' },
+  { name: 'Contact', path: '/en/contact' },
+]);
 
 export const metadata: Metadata = {
-  title: 'Contact — Historias Infinitas',
+  title: 'Contact',
   description:
     'Write to us. We respond to every message with the care your story deserves.',
   alternates: {
@@ -23,6 +29,10 @@ export const metadata: Metadata = {
 export default function ContactEN() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(bcLd) }}
+      />
       <SiteHeaderEN />
       <main className="container-solemn py-16 md:py-24">
         <div className="mx-auto max-w-5xl">

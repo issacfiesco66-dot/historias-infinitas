@@ -17,6 +17,50 @@ import {
   FadeP,
 } from '@/components/viva-images';
 
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.NEXT_PUBLIC_APP_URL ??
+  'https://historias-infinitas.com'
+).trim().replace(/\/+$/, '');
+
+// FAQs visibles al final del home. El schema FAQPage SOLO es válido si
+// las preguntas/respuestas son visibles al visitante — por eso la lista
+// aquí y el JSON-LD comparten la misma fuente.
+const HOME_FAQS: { q: string; a: string }[] = [
+  {
+    q: '¿Qué es un nicho virtual de Historias Infinitas?',
+    a: 'Un nicho virtual es una página web permanente en memoria de un ser querido o una mascota. Incluye biografía, galería de fotos y videos, retrato artístico generado con Inteligencia Artificial preservando la identidad real, un código QR para imprimir o grabar en placa, y un Portal opcional en Realidad Aumentada que se abre con el teléfono. Cuesta desde $299 MXN y el hosting es eterno.',
+  },
+  {
+    q: '¿Cuánto cuesta crear un memorial digital?',
+    a: 'Tenemos tres planes en México: Digital ($299 MXN) con memorial en línea y QR; Artístico ($599 MXN) que añade 3 estilos de retrato con IA; y Eterno ($1,799 MXN) que incluye además una placa física de acero inoxidable grabada con láser y envío nacional. El Portal AR es un complemento opcional de $199 MXN. Para Estados Unidos y Canadá los precios son $17, $35 y $105 USD respectivamente.',
+  },
+  {
+    q: '¿Para quién sirven los nichos virtuales?',
+    a: 'Los creamos para honrar a seres queridos y también a mascotas (perros, gatos, aves, caballos y otros). Las familias lo usan como lugar de recuerdo permanente; funerarias, clínicas veterinarias y hospicios lo ofrecen como servicio premium a través del Programa de Socios.',
+  },
+  {
+    q: '¿Cómo funciona el retrato hecho con Inteligencia Artificial?',
+    a: 'Subes una o varias fotografías reales. Un modelo de IA generativa (Flux Kontext Max de Black Forest Labs, ejecutado en Replicate) re-interpreta la imagen como retrato artístico preservando los rasgos de identidad. Puedes elegir entre varios estilos y descargar el archivo final para imprimir.',
+  },
+  {
+    q: '¿Qué es el Portal de Realidad Aumentada?',
+    a: 'Es un espacio tridimensional que aparece en el hogar del visitante al escanear el QR con la cámara del teléfono. Soporta escenas 2D de despedida ("No me olvides") o modelos 3D del ser querido o la mascota, cargados con tecnología WebXR. No hace falta instalar ninguna app.',
+  },
+  {
+    q: '¿Qué pasa con el memorial dentro de 10, 20 o 50 años?',
+    a: 'El hosting es permanente. La infraestructura está en Vercel + Supabase con respaldos automáticos. Si Historias Infinitas dejara de operar, entregamos a los titulares el contenido completo del memorial en formato estándar (HTML + archivos multimedia) para que puedan migrarlo libremente. El compromiso de permanencia es la base del servicio.',
+  },
+  {
+    q: '¿Puedo crear un memorial digital para mi mascota?',
+    a: 'Sí, es uno de nuestros casos de uso principales. El proceso es idéntico: subes fotos, escribes su historia, elegís un estilo de retrato con IA, y recibís la URL permanente + QR. Puedes añadir la placa física de acero para colgarla en su lugar favorito o conservarla como recuerdo.',
+  },
+  {
+    q: '¿Cómo me registro como funeraria, clínica veterinaria o hospicio partner?',
+    a: 'Entra a historias-infinitas.com/partners y elige el plan Pack 30 ($4,999 MXN por 30 memoriales más 5 placas con tu logo) o Profesional Anual ($14,999 MXN por 200 memoriales al año con subdominio propio). Hay garantía de 30 días y agendamos una demo de 15 minutos antes de contratar si lo prefieres.',
+  },
+];
+
 // Hero: ilustración personalizada del "árbol de memoria" — ya incluye título
 // "Historias Infinitas" y el tagline, así que NO superponemos texto encima.
 // Archivo en /public/images/hero-arbol-memoria.png
@@ -27,9 +71,40 @@ const HERO_IMG  = '/images/hero-arbol-memoria.png';
 const PET_IMG   = '/images/nicho-mascotas.png';
 const HUMAN_IMG = '/images/nicho-seres-queridos.png';
 
+// FAQPage JSON-LD — basado en las mismas FAQs visibles al final del home.
+// Elegible para rich snippets en Google y citación directa en ChatGPT /
+// Perplexity / Google AI Overviews.
+const faqJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${SITE_URL}/#faq`,
+  mainEntity: HOME_FAQS.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+// BreadcrumbList del home (raíz). Necesario para señal jerárquica clara.
+const breadcrumbJsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Inicio', item: SITE_URL },
+  ],
+};
+
 export default function HomePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
+      />
       <SiteHeader />
 
       {/* ============ HERO — ilustración personalizada, sin overlays ============ */}
@@ -38,6 +113,15 @@ export default function HomePage() {
           cubrir toda la pantalla aunque el viewport sea más ancho que el
           container padre — evita barras negras en pantallas grandes. */}
       <section className="relative">
+        {/*
+          H1 accesible: la ilustración del hero trae el título pintado dentro
+          del PNG, así que no lo repetimos visualmente. Esto es lo que leen
+          crawlers de Google y los LLMs (GPTBot, ClaudeBot, Gemini, Perplexity)
+          para identificar el tema principal de la página.
+        */}
+        <h1 className="sr-only">
+          Historias Infinitas · Nichos Virtuales con Inteligencia Artificial y Realidad Aumentada para mascotas y seres queridos
+        </h1>
         <Reveal>
           {/* 100vw + left-1/2/-translate garantiza full-bleed sin importar
               el ancho del container padre */}
@@ -221,6 +305,41 @@ export default function HomePage() {
             </div>
           </div>
         </Reveal>
+      </section>
+
+      {/* ============ FAQ (visible + structured data) ============ */}
+      {/*
+        Esta sección es la contraparte visible del FAQPage JSON-LD inyectado
+        arriba. Google y los LLMs solo consideran las FAQs estructuradas como
+        válidas si las ven renderizadas al usuario — por eso ambas leen del
+        mismo array HOME_FAQS.
+      */}
+      <section aria-labelledby="faq-heading" className="container-wide pb-24 pt-4 max-w-3xl">
+        <Reveal className="text-center mb-10">
+          <FadeP className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-3">
+            Preguntas frecuentes
+          </FadeP>
+          <h2 id="faq-heading" className="font-serif text-3xl md:text-4xl text-pizarra-800">
+            Lo que las familias nos preguntan
+          </h2>
+        </Reveal>
+
+        <div className="space-y-3">
+          {HOME_FAQS.map((f) => (
+            <details
+              key={f.q}
+              className="group bg-marfil rounded-xl border border-pizarra-100 p-5 open:shadow-solemn transition-shadow"
+            >
+              <summary className="font-serif text-lg text-pizarra-800 cursor-pointer list-none flex items-start justify-between gap-4">
+                <span>{f.q}</span>
+                <span className="text-dorado-500 text-2xl transition-transform group-open:rotate-45 shrink-0">
+                  +
+                </span>
+              </summary>
+              <p className="mt-3 text-sm text-pizarra-600 leading-relaxed">{f.a}</p>
+            </details>
+          ))}
+        </div>
       </section>
 
       {/* ============ GROWTH PARTNER / B2B ============ */}

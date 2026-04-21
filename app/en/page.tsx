@@ -17,7 +17,7 @@ import {
 } from '@/components/viva-images';
 
 export const metadata: Metadata = {
-  title: 'Historias Infinitas — Digital Memorials with AI Portraits and Augmented Reality',
+  title: { absolute: 'Historias Infinitas — Digital Memorials with AI Portraits and Augmented Reality' },
   description:
     'Preserve the memory of those you love. We create eternal digital memorials with AI-generated artistic portraits and Augmented Reality portals — for pets and loved ones. Plans from $17 USD.',
   alternates: {
@@ -46,17 +46,99 @@ export const metadata: Metadata = {
   ],
 };
 
+const SITE_URL = (
+  process.env.NEXT_PUBLIC_SITE_URL ??
+  process.env.NEXT_PUBLIC_APP_URL ??
+  'https://historias-infinitas.com'
+).trim().replace(/\/+$/, '');
+
+// Public FAQs for the English home. Both the visible section below AND the
+// FAQPage JSON-LD read from this array, keeping them perfectly in sync
+// (Google invalidates FAQPage markup if the answers are not visible).
+const HOME_FAQS_EN: { q: string; a: string }[] = [
+  {
+    q: 'What is a Historias Infinitas digital memorial?',
+    a: 'A digital memorial is a permanent web page in memory of a loved one or a pet. It includes a biography, a gallery of photos and videos, an AI-generated artistic portrait that preserves the real identity from a photograph, a printable QR code that can be engraved on a plate, and an optional Augmented Reality Portal that opens right from a phone. Plans start at $17 USD and hosting is eternal.',
+  },
+  {
+    q: 'How much does a digital memorial cost?',
+    a: 'There are three consumer plans for the United States and Canada: Digital ($17 USD) with online memorial and QR; Artistic ($35 USD) adding 3 AI portrait styles with a downloadable high-resolution file; and Eternal ($105 USD) that also includes a laser-engraved stainless steel plate shipped to US or Canada. The AR Portal is an optional $12 USD add-on.',
+  },
+  {
+    q: 'Who are digital memorials for?',
+    a: 'We build memorials to honor loved ones and also pets (dogs, cats, birds, horses and more). Families use them as a permanent place of remembrance; funeral homes, veterinary clinics and hospices offer them as a premium service through our Partner Program.',
+  },
+  {
+    q: 'How does the AI-generated portrait work?',
+    a: 'You upload one or several real photographs. A generative AI model (Flux Kontext Max by Black Forest Labs, run on Replicate) reinterprets the image as a fine-art portrait while preserving identity traits. You can pick from several artistic styles and download a high-resolution final file.',
+  },
+  {
+    q: 'What is the Augmented Reality Portal?',
+    a: 'A three-dimensional space that opens in the visitor\'s home when they scan the QR with their phone camera. It supports 2D farewell scenes ("Do not forget me") or 3D models of the loved one or the pet, delivered through WebXR. No app install required.',
+  },
+  {
+    q: 'What happens to the memorial in 10, 20 or 50 years?',
+    a: 'Hosting is permanent. Infrastructure lives on Vercel + Supabase with automatic backups. If Historias Infinitas were ever to cease operations, we commit to handing owners a complete export of the memorial in standard formats (HTML + media files) so they can migrate it freely. The permanence commitment is the foundation of the service.',
+  },
+  {
+    q: 'Can I build a memorial for my pet?',
+    a: 'Yes — it is one of our primary use cases. The process is identical: you upload photos, write their story, pick an AI portrait style, and receive the permanent URL plus QR. You can also add the steel plate to hang it in their favorite spot or keep it as a keepsake.',
+  },
+  {
+    q: 'How do I sign up as a funeral home, veterinary clinic or hospice partner?',
+    a: 'Go to historias-infinitas.com/en/partners and pick the Pack 30 plan ($299 USD for 30 memorials plus 5 plates with your logo) or Professional Annual ($899 USD for 200 memorials per year with a custom subdomain). Every partner plan has a 30-day guarantee and a free 15-minute onboarding demo.',
+  },
+];
+
 const HERO_IMG       = '/images/hero-arbol-memoria.png';
 const PET_IMG        = '/images/nicho-mascotas.png';
 const HUMAN_IMG      = '/images/nicho-seres-queridos.png';
 
+// FAQPage JSON-LD for the English home. Matches HOME_FAQS_EN above.
+const faqJsonLdEN = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  '@id': `${SITE_URL}/en/#faq`,
+  inLanguage: 'en-US',
+  mainEntity: HOME_FAQS_EN.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+};
+
+const breadcrumbJsonLdEN = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: `${SITE_URL}/en` },
+  ],
+};
+
 export default function HomePageEN() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLdEN) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLdEN) }}
+      />
       <SiteHeaderEN />
 
       {/* ============ HERO ============ */}
       <section className="relative">
+        {/*
+          Accessible H1: the hero illustration already contains the brand
+          title painted inside the PNG, so we don't repeat it visually.
+          This is what Google's crawler and LLMs (GPTBot, ClaudeBot, Gemini,
+          Perplexity) read to identify the primary topic of the page.
+        */}
+        <h1 className="sr-only">
+          Historias Infinitas · Digital Memorials with Artificial Intelligence and Augmented Reality for Pets and Loved Ones
+        </h1>
         <Reveal>
           <div className="relative w-screen left-1/2 -translate-x-1/2 overflow-hidden bg-pizarra-900">
             <div className="relative w-full aspect-[16/9] min-h-[320px] sm:min-h-[420px] md:min-h-[560px] lg:min-h-[700px] max-h-[900px]">
@@ -229,6 +311,35 @@ export default function HomePageEN() {
             </div>
           </div>
         </Reveal>
+      </section>
+
+      {/* ============ FAQ (visible + structured data) ============ */}
+      <section aria-labelledby="faq-heading-en" className="container-wide pb-24 pt-4 max-w-3xl">
+        <Reveal className="text-center mb-10">
+          <FadeP className="uppercase tracking-[0.3em] text-xs text-dorado-600 mb-3">
+            Frequently asked questions
+          </FadeP>
+          <h2 id="faq-heading-en" className="font-serif text-3xl md:text-4xl text-pizarra-800">
+            What families ask us
+          </h2>
+        </Reveal>
+
+        <div className="space-y-3">
+          {HOME_FAQS_EN.map((f) => (
+            <details
+              key={f.q}
+              className="group bg-marfil rounded-xl border border-pizarra-100 p-5 open:shadow-solemn transition-shadow"
+            >
+              <summary className="font-serif text-lg text-pizarra-800 cursor-pointer list-none flex items-start justify-between gap-4">
+                <span>{f.q}</span>
+                <span className="text-dorado-500 text-2xl transition-transform group-open:rotate-45 shrink-0">
+                  +
+                </span>
+              </summary>
+              <p className="mt-3 text-sm text-pizarra-600 leading-relaxed">{f.a}</p>
+            </details>
+          ))}
+        </div>
       </section>
 
       {/* ============ B2B PARTNERS ============ */}
