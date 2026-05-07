@@ -63,7 +63,15 @@ function LoginForm() {
           />
         </div>
         <div className="space-y-2">
-          <Label htmlFor="password">Contraseña</Label>
+          <div className="flex items-center justify-between">
+            <Label htmlFor="password">Contraseña</Label>
+            <Link
+              href={`/forgot-password${presetEmail ? `?email=${encodeURIComponent(presetEmail)}` : ''}`}
+              className="text-xs text-dorado-600 hover:underline"
+            >
+              ¿Olvidaste tu contraseña?
+            </Link>
+          </div>
           <Input id="password" name="password" type="password" placeholder="••••••••" required />
         </div>
 

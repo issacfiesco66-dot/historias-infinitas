@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import type { EmailOtpType } from '@supabase/supabase-js';
 import { createClient } from '@/lib/supabase/server';
 
 /**
@@ -24,14 +25,40 @@ function safeNext(raw: string | null): string {
   return trimmed;
 }
 
+const VALID_OTP_TYPES: EmailOtpType[] = ['signup', 'invite', 'magiclink', 'recovery', 'email_change', 'email'];
+
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get('code');
+  const tokenHash = searchParams.get('token_hash');
+  const rawType = searchParams.get('type');
+  const type = VALID_OTP_TYPES.includes(rawType as EmailOtpType) ? (rawType as EmailOtpType) : null;
   const next = safeNext(searchParams.get('next'));
 
+  const supabase = createClient();
+
+  // Flujo 1 — PKCE (link generado desde nuestro frontend: signup,
+  // resetPasswordForEmail iniciado por el usuario, magic-link, etc.)
   if (code) {
-    const supabase = createClient();
-    await supabase.auth.exchangeCodeForSession(code);
+    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error) {
+      return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`);
+    }
+    return NextResponse.redirect(`${origin}${next}`);
   }
+
+  // Flujo 2 — OTP / token_hash (link generado por Supabase Dashboard
+  // o por templates de email que usan {{ .TokenHash }}). Sin este branch,
+  // los emails de "Send password recovery" del Dashboard no logran sesión.
+  if (tokenHash && type) {
+    const { error } = await supabase.auth.verifyOtp({ type, token_hash: tokenHash });
+    if (error) {
+      return NextResponse.redirect(`${origin}/login?error=${encodeURIComponent(error.message)}`);
+    }
+    // Para recovery siempre forzamos al usuario a definir nueva contraseña.
+    const target = type === 'recovery' ? '/reset-password' : next;
+    return NextResponse.redirect(`${origin}${target}`);
+  }
+
   return NextResponse.redirect(`${origin}${next}`);
 }
