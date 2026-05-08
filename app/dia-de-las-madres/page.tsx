@@ -1,14 +1,13 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Image from 'next/image';
 import {
-  Heart, Sparkles, ScanLine, Gift, Flower2, Clock, Star, Check,
+  Heart, Sparkles, ScanLine, Gift, Flower2, Flower, Clock, Star, Check,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
-import { Reveal, FadeH1, FadeH2, FadeP, DustParticles } from '@/components/viva-images';
+import { Reveal, FadeH1, FadeH2, FadeP } from '@/components/viva-images';
 
 // Día de las Madres en México: 10 de mayo (fijo, no varía).
 // Revalidamos cada 6 horas para que el contador quede razonablemente vigente
@@ -180,38 +179,44 @@ export default function DiaDeLasMadresPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbLd) }}
       />
 
-      {/* ============ HERO ============ */}
-      <section className="relative overflow-hidden bg-pizarra-800 text-marfil">
+      {/* ============ HERO — paleta cálida (regalo + memorial) ============ */}
+      <section className="relative overflow-hidden bg-marfil-100 text-pizarra-800">
+        {/* Gradiente cálido: durazno → crema → blush. Cubre los dos intents:
+            celebración (rosa cálido) y memoria suave (dorado). */}
         <div
           aria-hidden
-          className="absolute inset-0 opacity-50"
+          className="absolute inset-0"
           style={{
             background:
-              'radial-gradient(ellipse at 25% 30%, rgba(183,148,90,0.40), transparent 55%), radial-gradient(ellipse at 80% 75%, rgba(220,90,120,0.18), transparent 50%)',
+              'radial-gradient(ellipse at 15% 20%, rgba(255,228,210,0.85), transparent 55%), radial-gradient(ellipse at 85% 80%, rgba(255,210,225,0.65), transparent 50%), radial-gradient(ellipse at 50% 50%, rgba(247,237,213,0.50), transparent 70%)',
           }}
         />
-        <DustParticles count={28} />
+
+        {/* Pétalos decorativos esquinas — sutiles, no compiten con el copy */}
+        <Flower className="hidden md:block absolute top-12 left-8 h-12 w-12 text-rose-300/40 rotate-12" strokeWidth={1} aria-hidden />
+        <Flower2 className="hidden md:block absolute top-32 right-1/3 h-8 w-8 text-dorado-300/50 -rotate-6" strokeWidth={1} aria-hidden />
+        <Flower className="hidden md:block absolute bottom-16 left-1/4 h-10 w-10 text-rose-200/50 rotate-45" strokeWidth={1} aria-hidden />
 
         <div className="container-wide relative py-20 md:py-28 grid md:grid-cols-2 gap-12 items-center">
           <Reveal>
-            <FadeP className="uppercase tracking-[0.3em] text-[11px] md:text-sm text-dorado-300 mb-5 flex items-center gap-3">
+            <FadeP className="uppercase tracking-[0.3em] text-[11px] md:text-sm text-rose-700 mb-5 flex items-center gap-3 font-medium">
               <Flower2 className="h-4 w-4" />
               10 de mayo · Día de las Madres
             </FadeP>
-            <FadeH1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.05] text-marfil">
+            <FadeH1 className="font-serif text-5xl md:text-6xl lg:text-7xl leading-[1.05] text-pizarra-800">
               Para mamá.{' '}
               <span className="text-gradient-dorado italic">Para siempre.</span>
             </FadeH1>
-            <FadeP delay={0.1} className="text-marfil/85 mt-6 max-w-xl text-lg md:text-xl leading-relaxed">
+            <FadeP delay={0.1} className="text-pizarra-600 mt-6 max-w-xl text-lg md:text-xl leading-relaxed">
               Un nicho virtual con su retrato hecho con IA, su historia y un QR único.
               Un regalo que dura más que un ramo de flores — para honrarla en vida
               o recordarla si ya no está.
             </FadeP>
 
             {days > 0 && (
-              <div className="mt-8 inline-flex items-center gap-3 rounded-full bg-dorado-500/15 border border-dorado-400/30 px-5 py-2.5">
-                <Clock className="h-4 w-4 text-dorado-300" />
-                <span className="text-dorado-200 text-sm">
+              <div className="mt-8 inline-flex items-center gap-3 rounded-full bg-rose-100/80 border border-rose-300/50 px-5 py-2.5 shadow-sm">
+                <Clock className="h-4 w-4 text-rose-600" />
+                <span className="text-rose-800 text-sm font-medium">
                   {days === 1
                     ? 'Mañana es el Día de las Madres'
                     : `Quedan ${days} días para el 10 de mayo`}
@@ -229,27 +234,23 @@ export default function DiaDeLasMadresPage() {
                 asChild
                 variant="outline"
                 size="lg"
-                className="!bg-transparent !text-marfil border-marfil/40 hover:!bg-marfil/10"
+                className="border-pizarra-300 text-pizarra-700 hover:bg-marfil-200"
               >
                 <Link href="#planes">Ver planes</Link>
               </Button>
             </div>
 
-            <FadeP delay={0.2} className="text-marfil/60 text-sm mt-6">
+            <FadeP delay={0.2} className="text-pizarra-500 text-sm mt-6">
               Desde $299 MXN · Pago seguro · Hosting permanente
             </FadeP>
           </Reveal>
 
+          {/* Composición floral: ramo de peonías estilizado en SVG.
+              Reemplaza la foto de pareja anciana — el contexto es regalo,
+              no funeral. */}
           <Reveal delay={0.15} className="hidden md:block">
             <div className="relative aspect-square max-w-md ml-auto">
-              <Image
-                src="/images/nicho-seres-queridos.png"
-                alt="Retrato artístico de mamá hecho con IA en un nicho virtual permanente"
-                fill
-                priority
-                sizes="(max-width: 768px) 100vw, 480px"
-                className="object-contain"
-              />
+              <FloralBouquet />
             </div>
           </Reveal>
         </div>
@@ -498,5 +499,140 @@ export default function DiaDeLasMadresPage() {
 
       <SiteFooter />
     </>
+  );
+}
+
+/* ============================================================================
+ *  FLORAL BOUQUET — SVG decorativo del hero
+ *  Ramo de peonías estilizado: 3 blooms + tallos + hojas. Dorado + rose.
+ *  Contexto: regalo del 10 de mayo, no funeral — paleta cálida deliberada.
+ * ========================================================================== */
+function FloralBouquet() {
+  return (
+    <svg
+      viewBox="0 0 400 400"
+      xmlns="http://www.w3.org/2000/svg"
+      className="w-full h-full"
+      role="img"
+      aria-label="Ramo de flores ilustrado para el Día de las Madres"
+    >
+      {/* Halo difuso detrás del ramo */}
+      <defs>
+        <radialGradient id="halo" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FFE4D6" stopOpacity="0.7" />
+          <stop offset="100%" stopColor="#FFE4D6" stopOpacity="0" />
+        </radialGradient>
+        <radialGradient id="bloomGold" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#E2CC99" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="#B7945A" stopOpacity="0.9" />
+        </radialGradient>
+        <radialGradient id="bloomRose" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FED7DC" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="#F4A4B0" stopOpacity="0.9" />
+        </radialGradient>
+        <radialGradient id="bloomBlush" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="#FCE4D8" stopOpacity="0.95" />
+          <stop offset="100%" stopColor="#E8B5A0" stopOpacity="0.9" />
+        </radialGradient>
+      </defs>
+
+      <circle cx="200" cy="200" r="180" fill="url(#halo)" />
+
+      {/* Tallos curvos saliendo de un punto inferior */}
+      <g stroke="#8F7245" strokeWidth="2" fill="none" strokeLinecap="round" opacity="0.7">
+        <path d="M 200 380 Q 180 320, 140 220" />
+        <path d="M 200 380 Q 200 300, 220 180" />
+        <path d="M 200 380 Q 230 320, 280 240" />
+        <path d="M 200 380 Q 190 350, 170 320" />
+        <path d="M 200 380 Q 215 350, 245 320" />
+      </g>
+
+      {/* Hojas: ovales elongadas en verde-dorado tenue */}
+      <g fill="#A8B57C" opacity="0.55">
+        <ellipse cx="155" cy="290" rx="22" ry="9" transform="rotate(-30 155 290)" />
+        <ellipse cx="245" cy="295" rx="22" ry="9" transform="rotate(35 245 295)" />
+        <ellipse cx="180" cy="240" rx="18" ry="7" transform="rotate(-50 180 240)" />
+        <ellipse cx="240" cy="245" rx="18" ry="7" transform="rotate(45 240 245)" />
+      </g>
+
+      {/* Bloom 1: peonía dorada (arriba-izquierda) */}
+      <g transform="translate(140 220)">
+        <FlowerBloom fill="url(#bloomGold)" core="#6B5534" />
+      </g>
+
+      {/* Bloom 2: peonía rosa (arriba-derecha, más grande) */}
+      <g transform="translate(280 240) scale(1.15)">
+        <FlowerBloom fill="url(#bloomRose)" core="#B7945A" />
+      </g>
+
+      {/* Bloom 3: peonía durazno (centro, frontal) */}
+      <g transform="translate(220 180) scale(1.25)">
+        <FlowerBloom fill="url(#bloomBlush)" core="#8F7245" />
+      </g>
+
+      {/* Capullos pequeños */}
+      <g transform="translate(170 320)">
+        <ellipse cx="0" cy="0" rx="10" ry="14" fill="url(#bloomRose)" opacity="0.85" />
+      </g>
+      <g transform="translate(245 320)">
+        <ellipse cx="0" cy="0" rx="9" ry="13" fill="url(#bloomGold)" opacity="0.85" />
+      </g>
+
+      {/* Listón sutil del ramo */}
+      <path
+        d="M 175 365 Q 200 358, 225 365 L 225 380 Q 200 372, 175 380 Z"
+        fill="#B7945A"
+        opacity="0.65"
+      />
+    </svg>
+  );
+}
+
+/* Una peonía estilizada: 8 capas de pétalos rotados + núcleo. */
+function FlowerBloom({ fill, core }: { fill: string; core: string }) {
+  const petals = [0, 45, 90, 135, 180, 225, 270, 315];
+  return (
+    <g>
+      {/* Pétalos exteriores grandes */}
+      {petals.map((deg) => (
+        <ellipse
+          key={`outer-${deg}`}
+          cx="0"
+          cy="-22"
+          rx="18"
+          ry="26"
+          fill={fill}
+          opacity="0.85"
+          transform={`rotate(${deg})`}
+        />
+      ))}
+      {/* Pétalos medios */}
+      {petals.map((deg) => (
+        <ellipse
+          key={`mid-${deg}`}
+          cx="0"
+          cy="-12"
+          rx="12"
+          ry="18"
+          fill={fill}
+          opacity="0.95"
+          transform={`rotate(${deg + 22})`}
+        />
+      ))}
+      {/* Pétalos centro */}
+      {[0, 60, 120, 180, 240, 300].map((deg) => (
+        <ellipse
+          key={`inner-${deg}`}
+          cx="0"
+          cy="-7"
+          rx="7"
+          ry="11"
+          fill={fill}
+          transform={`rotate(${deg})`}
+        />
+      ))}
+      {/* Núcleo */}
+      <circle cx="0" cy="0" r="5" fill={core} opacity="0.85" />
+    </g>
   );
 }
