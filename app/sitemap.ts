@@ -60,6 +60,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...pair('/privacidad',               '/en/privacy',                { priority: 0.3, changeFrequency: 'yearly' }),
     ...pair('/terminos',                 '/en/terms',                  { priority: 0.3, changeFrequency: 'yearly' }),
     ...pair('/blog', '/en/blog', { priority: 0.8, changeFrequency: 'daily' }),
+    {
+      url: `${SITE_URL}/dia-de-las-madres`,
+      lastModified: now,
+      changeFrequency: 'monthly',
+      priority: 0.9,
+    },
     { url: `${SITE_URL}/login`,    lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
     { url: `${SITE_URL}/register`, lastModified: now, changeFrequency: 'yearly', priority: 0.4 },
   ];
