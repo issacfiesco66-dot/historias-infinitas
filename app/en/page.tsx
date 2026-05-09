@@ -19,7 +19,7 @@ import {
 export const metadata: Metadata = {
   title: { absolute: 'Historias Infinitas — Digital Memorials with AI Portraits and Augmented Reality' },
   description:
-    'Preserve the memory of those you love. We create eternal digital memorials with AI-generated artistic portraits and Augmented Reality portals — for pets and loved ones. Plans from $17 USD.',
+    'Preserve the memory of those you love. We create eternal digital memorials with AI-generated artistic portraits and Augmented Reality portals — for pets and loved ones. Start free — only pay when you want to publish it permanently.',
   alternates: {
     canonical: '/en',
     languages: { 'es-MX': '/', 'en-US': '/en', 'x-default': '/' },
@@ -58,11 +58,11 @@ const SITE_URL = (
 const HOME_FAQS_EN: { q: string; a: string }[] = [
   {
     q: 'What is a Historias Infinitas digital memorial?',
-    a: 'A digital memorial is a permanent web page in memory of a loved one or a pet. It includes a biography, a gallery of photos and videos, an AI-generated artistic portrait that preserves the real identity from a photograph, a printable QR code that can be engraved on a plate, and an optional Augmented Reality Portal that opens right from a phone. Plans start at $17 USD and hosting is eternal.',
+    a: 'A digital memorial is a permanent web page in memory of a loved one or a pet. It includes a biography, a gallery of photos and videos, an AI-generated artistic portrait that preserves the real identity from a photograph, a printable QR code that can be engraved on a plate, and an optional Augmented Reality Portal that opens right from a phone. Hosting is eternal — and getting started is free, you only pay when you decide to publish it permanently.',
   },
   {
     q: 'How much does a digital memorial cost?',
-    a: 'There are three consumer plans for the United States and Canada: Digital ($17 USD) with online memorial and QR; Artistic ($35 USD) adding 3 AI portrait styles with a downloadable high-resolution file; and Eternal ($105 USD) that also includes a laser-engraved stainless steel plate shipped to US or Canada. The AR Portal is an optional $12 USD add-on.',
+    a: 'Getting started is free: you upload the photos, write the biography, pick the portrait style and see the complete memorial before any commitment. If you love how it looks, that is when you choose how to publish it permanently — from a simple digital version to one with a laser-engraved steel plate shipped to your home. We show the publishing options at the end of the process, once you have already seen the finished memorial.',
   },
   {
     q: 'Who are digital memorials for?',
