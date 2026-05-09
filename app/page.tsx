@@ -29,11 +29,11 @@ const SITE_URL = (
 const HOME_FAQS: { q: string; a: string }[] = [
   {
     q: '¿Qué es un nicho virtual de Historias Infinitas?',
-    a: 'Un nicho virtual es una página web permanente en memoria de un ser querido o una mascota. Incluye biografía, galería de fotos y videos, retrato artístico generado con Inteligencia Artificial preservando la identidad real, un código QR para imprimir o grabar en placa, y un Portal opcional en Realidad Aumentada que se abre con el teléfono. Cuesta desde $299 MXN y el hosting es eterno.',
+    a: 'Un nicho virtual es una página web permanente en memoria de un ser querido o una mascota. Incluye biografía, galería de fotos y videos, retrato artístico generado con Inteligencia Artificial preservando la identidad real, un código QR para imprimir o grabar en placa, y un Portal opcional en Realidad Aumentada que se abre con el teléfono. El hosting es eterno y empezar es gratuito — solo pagas cuando decides publicarlo de manera permanente.',
   },
   {
     q: '¿Cuánto cuesta crear un memorial digital?',
-    a: 'Tenemos tres planes en México: Digital ($299 MXN) con memorial en línea y QR; Artístico ($599 MXN) que añade 3 estilos de retrato con IA; y Eterno ($1,799 MXN) que incluye además una placa física de acero inoxidable grabada con láser y envío nacional. El Portal AR es un complemento opcional de $199 MXN. Para Estados Unidos y Canadá los precios son $17, $35 y $105 USD respectivamente.',
+    a: 'Empezar es gratuito: subes las fotos, escribes la biografía, eliges el retrato y ves cómo queda el memorial completo antes de cualquier compromiso. Si te emociona el resultado, ahí decides cómo publicarlo permanentemente — desde la versión digital simple hasta la versión con placa física de acero grabada con láser. Te mostramos las opciones al final del proceso, cuando ya viste tu memorial terminado.',
   },
   {
     q: '¿Para quién sirven los nichos virtuales?',

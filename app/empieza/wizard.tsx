@@ -550,7 +550,7 @@ function RegistroStage({
       <p className="mt-6 text-[11px] text-pizarra-400 text-center max-w-md mx-auto leading-relaxed">
         Al continuar aceptas los <Link href="/terminos" className="underline">Términos</Link> y
         el <Link href="/privacidad" className="underline">Aviso de Privacidad</Link>.
-        Crear el nicho virtual es gratis; para publicarlo elegirás plan desde $299 MXN.
+        Crear el nicho virtual es gratis. Cuando lo veas terminado eliges cómo publicarlo permanentemente.
       </p>
     </div>
   );
