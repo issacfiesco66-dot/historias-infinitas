@@ -66,8 +66,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       changeFrequency: 'monthly',
       priority: 0.9,
     },
-    { url: `${SITE_URL}/login`,    lastModified: now, changeFrequency: 'yearly', priority: 0.2 },
-    { url: `${SITE_URL}/register`, lastModified: now, changeFrequency: 'yearly', priority: 0.4 },
+    // /login y /register NO van aquí: están bloqueados en robots.txt y
+    // listarlos en el sitemap manda señales contradictorias a Google.
   ];
 
   // Artículos del blog ES — editorial content es el motor de GEO.

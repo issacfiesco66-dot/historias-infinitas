@@ -60,6 +60,184 @@ export interface BlogPost {
 }
 
 export const BLOG_POSTS: BlogPost[] = [
+  {
+    slug: 'esquela-digital-que-es-y-como-publicarla',
+    howTo: {
+      name: 'Cómo publicar una esquela digital',
+      totalMinutes: 30,
+      steps: [
+        { name: 'Reunir los datos', text: 'Confirma con la familia el nombre completo, fechas, y lugar y horario de velorio, misa o cremación (si se harán públicos).', minutes: 10 },
+        { name: 'Redactar el texto', text: 'Escribe un aviso breve: nombre, fecha de fallecimiento, quién lo comunica, datos del servicio y una frase de despedida.', minutes: 10 },
+        { name: 'Elegir una foto', text: 'Elige una foto reciente y nítida en la que la persona se vea como la recuerdan.', minutes: 5 },
+        { name: 'Publicar en una URL permanente', text: 'Publica la esquela en un memorial digital con URL propia para que el aviso no se pierda en el historial de chats.', minutes: 3 },
+        { name: 'Compartir el enlace', text: 'Comparte la URL por WhatsApp, redes sociales y correo; el mismo enlace sirve después como memorial.', minutes: 2 },
+      ],
+    },
+    title: 'Esquela digital: qué es y cómo publicarla paso a paso',
+    description:
+      'Una esquela digital es un aviso de fallecimiento en línea que se comparte por WhatsApp o redes. Qué debe incluir, un ejemplo de redacción y cómo publicarla.',
+    datePublished: '2026-11-04',
+    dateModified: '2026-11-04',
+    author: { name: 'Equipo editorial · Historias Infinitas' },
+    keywords: [
+      'esquela digital',
+      'esquela en línea',
+      'cómo publicar una esquela',
+      'aviso de fallecimiento',
+      'homenaje online',
+      'memorial digital',
+    ],
+    readingMinutes: 6,
+    image: '/images/blog/esquela-digital.webp',
+    imageAlt: 'Ilustración de un nicho virtual para seres queridos de Historias Infinitas',
+    excerpt:
+      'La esquela digital reemplaza al aviso impreso: se comparte en minutos por WhatsApp y redes, y puede convertirse en un memorial permanente. Qué incluir, un ejemplo y cómo publicarla.',
+    category: 'Memoriales digitales',
+    published: true,
+    body: `
+<p class="lede">Una <strong>esquela digital</strong> es un aviso de fallecimiento publicado en internet que se comparte con un enlace por WhatsApp, redes sociales o correo. Cumple la misma función que la esquela impresa en el periódico —avisar del fallecimiento y de los servicios funerarios—, pero llega a más personas en minutos y puede quedar publicada de forma permanente como memorial.</p>
+
+<h2>Esquela impresa vs esquela digital</h2>
+<table>
+  <thead>
+    <tr><th></th><th>Esquela impresa</th><th>Esquela digital</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Alcance</td><td>Lectores del periódico ese día</td><td>Cualquier persona con el enlace, en cualquier país</td></tr>
+    <tr><td>Tiempo de publicación</td><td>Depende del cierre de edición</td><td>Minutos</td></tr>
+    <tr><td>Fotos y video</td><td>Una foto pequeña, si acaso</td><td>Galería completa de fotos y videos</td></tr>
+    <tr><td>Duración</td><td>Un día</td><td>Permanente, si se publica en un memorial con URL propia</td></tr>
+    <tr><td>Condolencias</td><td>No se pueden dejar</td><td>Familiares y amigos pueden compartir recuerdos</td></tr>
+  </tbody>
+</table>
+
+<h2>Qué debe incluir una esquela digital</h2>
+<ul>
+  <li><strong>Nombre completo</strong> de la persona y, si la familia lo desea, el nombre con el que todos la conocían.</li>
+  <li><strong>Fecha de fallecimiento</strong> (y de nacimiento, si se quiere).</li>
+  <li><strong>Quién comunica</strong>: "Sus hijos, nietos y familia comunican…".</li>
+  <li><strong>Datos del servicio</strong>: velorio, misa, cremación o inhumación, con lugar y horario, solo si serán públicos.</li>
+  <li><strong>Una foto</strong> reciente y nítida.</li>
+  <li><strong>Una frase de despedida</strong> o una petición, como "En lugar de flores, agradecemos donativos a…".</li>
+</ul>
+
+<h2>Ejemplo de redacción</h2>
+<blockquote>
+  <p>Con profundo dolor, sus hijos Ana y Luis, sus nietos y toda la familia comunicamos el fallecimiento de <strong>María Elena Ramírez López</strong>, ocurrido el 2 de noviembre de 2026. La velaremos el día 3 de 17:00 a 22:00 h en [nombre y dirección de la funeraria]. Gracias por acompañarnos y por recordarla con cariño.</p>
+</blockquote>
+<p>Ajusta el tono a tu familia: puede ser más formal, más religioso o más cercano. Lo importante es que los datos del servicio sean exactos.</p>
+
+<h2>Cómo publicarla paso a paso</h2>
+<ol>
+  <li><strong>Reúne los datos</strong> con la familia y confirma qué información será pública.</li>
+  <li><strong>Redacta el texto</strong> con la estructura anterior. Pide a otra persona que lo revise: los errores en nombres y horarios son los más comunes.</li>
+  <li><strong>Elige una foto</strong> en la que la persona se vea como la recuerdan.</li>
+  <li><strong>Publica la esquela en una URL permanente.</strong> Un mensaje suelto de WhatsApp se pierde en el historial; un enlace a un <a href="/blog/que-es-un-nicho-virtual">memorial digital</a> se puede reenviar y consultar siempre.</li>
+  <li><strong>Comparte el enlace</strong> en los grupos familiares, en redes sociales y por correo con quienes no usan WhatsApp.</li>
+</ol>
+
+<h2>Cuidados de privacidad</h2>
+<ul>
+  <li>Evita publicar la dirección del domicilio familiar ni avisar públicamente que la casa estará sola durante el velorio.</li>
+  <li>Comparte horarios y lugares del servicio solo si la familia quiere que asista cualquier persona.</li>
+  <li>No publiques datos como CURP, número de póliza o información médica.</li>
+</ul>
+
+<h2>De esquela a memorial permanente</h2>
+<p>Pasados los servicios, la esquela digital puede convertirse en un <strong>homenaje online</strong> permanente: se le agregan la biografía, más fotos y videos, y los recuerdos que comparten familiares y amigos. En Historias Infinitas, cada memorial tiene URL propia y código QR, y puede incluir un retrato artístico creado con Inteligencia Artificial. El plan Digital cuesta $299 MXN en un solo pago y empezar a crearlo no cuesta nada: solo pagas cuando decides publicarlo.</p>
+<p><a href="/empieza">Crea el memorial de tu ser querido</a>.</p>
+
+<h2>Lectura relacionada</h2>
+<ul>
+  <li><a href="/blog/que-decir-cuando-alguien-pierde-un-ser-querido">Qué decir cuando alguien pierde a un ser querido</a></li>
+  <li><a href="/blog/rituales-despedida-tradiciones-mexicanas">Rituales de despedida y tradiciones mexicanas</a></li>
+  <li><a href="/blog/memorial-digital-vs-lapida-tradicional">Memorial digital vs lápida tradicional</a></li>
+</ul>
+`,
+  },
+  {
+    slug: 'como-hacer-un-memorial-para-mi-perro',
+    howTo: {
+      name: 'Cómo hacer un memorial digital para tu perro',
+      totalMinutes: 25,
+      steps: [
+        { name: 'Elegir las fotos', text: 'Reúne entre 10 y 40 fotos: de cachorro, de adulto, en su lugar favorito y una reciente.', minutes: 8 },
+        { name: 'Escribir su historia', text: 'Cuenta cómo llegó a tu vida, cómo era su carácter, sus manías y qué extrañas de él.', minutes: 10 },
+        { name: 'Elegir el retrato', text: 'Elige el estilo del retrato artístico creado con IA a partir de una foto real.', minutes: 3 },
+        { name: 'Publicar y obtener el QR', text: 'Publica el memorial para obtener su URL permanente y su código QR.', minutes: 2 },
+        { name: 'Compartir o colocar la placa', text: 'Comparte el enlace con la familia o coloca la placa con el QR en su lugar favorito.', minutes: 2 },
+      ],
+    },
+    title: 'Cómo hacer un memorial para tu perro: ideas y guía paso a paso',
+    description:
+      'Ideas para hacer un memorial para tu perro en casa o en línea, qué escribir, frases para despedirlo y cómo crear un memorial digital con QR paso a paso.',
+    datePublished: '2026-11-04',
+    dateModified: '2026-11-04',
+    author: { name: 'Equipo editorial · Historias Infinitas' },
+    keywords: [
+      'memorial para mi perro',
+      'cómo hacer un memorial para mi perro',
+      'memorial para mascota',
+      'frases para despedir a una mascota',
+      'memorial virtual mascota',
+      'nicho virtual mascota',
+    ],
+    readingMinutes: 6,
+    image: '/images/blog/memorial-perro.webp',
+    imageAlt: 'Ilustración de un nicho virtual para mascotas de Historias Infinitas',
+    excerpt:
+      'Un memorial ayuda a cerrar el ciclo cuando muere tu perro. Ideas para hacerlo en casa, qué escribir, frases de despedida y cómo crear un memorial digital con QR.',
+    category: 'Duelo y memoria',
+    published: true,
+    body: `
+<p class="lede">Hacer un <strong>memorial para tu perro</strong> es una forma concreta de despedirlo y de darle un lugar a su recuerdo. Puede ser algo físico en casa —una placa, una planta, una caja de recuerdos— o un <strong>memorial virtual</strong>: una página permanente con su historia, sus fotos y un código QR que toda la familia puede visitar.</p>
+
+<h2>Ideas de memorial en casa</h2>
+<ul>
+  <li><strong>Plantar algo en su honor</strong>: un árbol o una planta en el rincón del jardín donde le gustaba echarse.</li>
+  <li><strong>Caja de recuerdos</strong> con su collar, su placa, su juguete favorito y algunas fotos impresas.</li>
+  <li><strong>Huella en arcilla o yeso</strong>: muchas clínicas veterinarias la hacen antes de la cremación si se les pide.</li>
+  <li><strong>Un retrato</strong>: una pintura o un retrato artístico a partir de su mejor foto.</li>
+  <li><strong>Placa con QR</strong>: una placa de acero en su lugar favorito que, al escanearla con el teléfono, abre su memorial en línea.</li>
+</ul>
+
+<h2>Por qué un memorial digital</h2>
+<p>Un memorial digital reúne en un solo enlace lo que en casa queda disperso: cientos de fotos en el teléfono, videos, y las historias que cada integrante de la familia recuerda distinto. Los familiares que viven lejos pueden visitarlo, y no se pierde si cambia el teléfono o se borra un chat. Si quieres entender mejor el concepto, lee <a href="/blog/que-es-un-nicho-virtual">qué es un nicho virtual</a>.</p>
+
+<h2>Cómo hacerlo paso a paso</h2>
+<ol>
+  <li><strong>Elige las fotos.</strong> Entre 10 y 40: de cachorro, de adulto, en su lugar favorito y una reciente. Los videos cortos con su ladrido o sus juegos son de lo más valioso.</li>
+  <li><strong>Escribe su historia.</strong> Cómo llegó a tu vida, cómo se llamaba de cariño, sus manías, a quién seguía por toda la casa, qué extrañas de él.</li>
+  <li><strong>Elige su retrato.</strong> En Historias Infinitas, un modelo de IA crea un retrato artístico a partir de una foto real y conserva sus rasgos.</li>
+  <li><strong>Publica y obtén el QR.</strong> El memorial queda en una URL permanente con su propio código QR.</li>
+  <li><strong>Compártelo</strong> con la familia, o coloca la placa con el QR en su lugar favorito.</li>
+</ol>
+
+<h2>Qué escribir: frases para despedir a una mascota</h2>
+<ul>
+  <li>"Gracias por cada paseo, cada espera en la puerta y cada día que nos hiciste mejores."</li>
+  <li>"Fuiste familia desde el primer día. Te vamos a extrañar siempre."</li>
+  <li>"Tu lugar en el sillón sigue siendo tuyo."</li>
+  <li>"Corriste a nuestro lado toda tu vida; ahora te llevamos en el corazón."</li>
+  <li>"No eras solo un perro: eras nuestro compañero."</li>
+</ul>
+<p>La mejor frase suele ser la más personal: un apodo, una costumbre suya o algo que solo tu familia entiende.</p>
+
+<h2>Cuánto cuesta un memorial digital para tu perro</h2>
+<p>En Historias Infinitas, el plan Digital cuesta $299 MXN (memorial en línea, QR y hosting permanente), el Artístico $599 MXN (agrega el retrato con IA) y el Eterno $1,799 MXN (agrega la placa de acero con el QR grabado y envío nacional). Es un solo pago, y puedes crear el memorial completo y verlo antes de pagar.</p>
+<p><a href="/empieza">Crea el memorial de tu perro</a>.</p>
+
+<h2>Si el duelo pesa</h2>
+<p>Perder a un perro duele como perder a un integrante de la familia, y es normal que el duelo dure semanas o meses. Si hay niños en casa, te puede ayudar esta guía sobre <a href="/blog/como-hablar-con-ninos-sobre-muerte-mascota">cómo hablar con ellos de la muerte de una mascota</a>.</p>
+
+<h2>Lectura relacionada</h2>
+<ul>
+  <li><a href="/blog/como-superar-duelo-perdida-mascota">Cómo superar el duelo por la pérdida de una mascota</a></li>
+  <li><a href="/blog/que-es-un-nicho-virtual">Qué es un nicho virtual: guía 2026</a></li>
+  <li><a href="/blog/codigo-qr-lapidas-guia-legal-tecnica-mexico">Códigos QR en lápidas: guía legal y técnica</a></li>
+</ul>
+`,
+  },
   // ============================================================
   // 1. Duelo por mascotas — anclaje del cluster "duelo + memoria"
   // ============================================================
@@ -82,7 +260,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     readingMinutes: 9,
     image: '/images/blog/duelo-mascota.webp',
-    imageAlt: 'Una mano sobre la huella de una mascota, con luz suave al atardecer',
+    imageAlt: 'Ilustración de un nicho virtual para mascotas de Historias Infinitas',
     excerpt:
       'El duelo por una mascota es un duelo real. Esta guía recorre las fases normales, cómo acompañar a niños, los rituales que ayudan a cerrar, y señales de cuándo pedir apoyo profesional.',
     category: 'Duelo y memoria',
@@ -197,7 +375,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     readingMinutes: 7,
     image: '/images/blog/que-es-nicho-virtual.webp',
-    imageAlt: 'Un código QR grabado en una placa de acero junto a flores blancas',
+    imageAlt: 'Ilustración del árbol de memoria de Historias Infinitas',
     excerpt:
       'El nicho virtual es la evolución digital de la lápida: una URL permanente con biografía, galería, retrato con IA y QR. Esta guía lo define, explica cómo funciona y cuánto cuesta en México, EEUU y Canadá.',
     category: 'Memoriales digitales',
@@ -300,7 +478,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     readingMinutes: 6,
     image: '/images/blog/memorial-vs-lapida.webp',
-    imageAlt: 'Una lápida de mármol junto a la pantalla de un teléfono mostrando un memorial digital',
+    imageAlt: 'Ilustración de un nicho virtual para seres queridos de Historias Infinitas',
     excerpt:
       'Una lápida y un nicho virtual no compiten — se complementan. Esta comparativa ayuda a entender dónde destaca cada uno: costo, permanencia, alcance, personalización y cuál elegir según el caso.',
     category: 'Memoriales digitales',
@@ -395,7 +573,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     readingMinutes: 8,
     image: '/images/blog/que-decir-duelo.webp',
-    imageAlt: 'Dos manos juntas sobre una mesa de madera, gesto de acompañamiento silencioso',
+    imageAlt: 'Ilustración de un nicho virtual para seres queridos de Historias Infinitas',
     excerpt:
       'Cuando alguien cercano pierde a un ser querido, la mayoría tememos decir algo que hiera. Esta guía da 20 frases honestas que sí ayudan, 10 que deberían evitarse, y cómo adaptarlas según el medio.',
     category: 'Duelo y memoria',
@@ -520,7 +698,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     readingMinutes: 7,
     image: '/images/blog/ninos-duelo-mascota.webp',
-    imageAlt: 'Una niña abrazando una foto de su perro junto a una vela encendida',
+    imageAlt: 'Ilustración de un nicho virtual para mascotas de Historias Infinitas',
     excerpt:
       'La muerte de una mascota suele ser la primera pérdida que vive un niño. Esta guía explica qué decir según la edad, qué eufemismos evitar, cómo incluirlo en el ritual y cuándo pedir ayuda profesional.',
     category: 'Duelo y memoria',
@@ -610,7 +788,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     readingMinutes: 9,
     image: '/images/blog/flux-kontext-max.webp',
-    imageAlt: 'Una fotografía de un perro transformándose progresivamente en un retrato al óleo sobre el mismo lienzo',
+    imageAlt: 'Ilustración del árbol de memoria de Historias Infinitas',
     excerpt:
       'Los retratos artísticos con IA solían deformar las caras. Hoy, modelos como Flux Kontext Max preservan la identidad con una fidelidad medible. Este artículo explica cómo, por qué y qué implica para los memoriales digitales.',
     category: 'Tecnología IA',
@@ -731,7 +909,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     readingMinutes: 10,
     image: '/images/blog/funeraria-digitaliza.webp',
-    imageAlt: 'Un empleado de funeraria mostrando una tableta con un memorial digital a una familia',
+    imageAlt: 'Ilustración de un nicho virtual para seres queridos de Historias Infinitas',
     excerpt:
       'El sector funerario mexicano compite cada vez más en diferenciación emocional. Esta guía práctica describe semana por semana cómo una funeraria incorpora memoriales digitales a su catálogo en 30 días.',
     category: 'B2B',
@@ -868,7 +1046,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     readingMinutes: 10,
     image: '/images/blog/rituales-mexicanos.webp',
-    imageAlt: 'Un altar de Día de Muertos con veladoras, cempasúchil y fotografías familiares',
+    imageAlt: 'Ilustración de un nicho virtual para seres queridos de Historias Infinitas',
     excerpt:
       'México es uno de los países con tradición funeraria más rica del mundo. Este recorrido explica Día de Muertos, novenario, 40 días, levantar cruz y cabo de año — y cómo complementarlos hoy sin perder su raíz.',
     category: 'Duelo y memoria',
@@ -959,7 +1137,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     readingMinutes: 8,
     image: '/images/blog/qr-lapida.webp',
-    imageAlt: 'Una placa de acero inoxidable con un QR grabado en láser sobre una lápida de mármol',
+    imageAlt: 'Ilustración del árbol de memoria de Historias Infinitas',
     excerpt:
       'Incluir un QR en una lápida es más simple de lo que parece. Esta guía cubre materiales (acero vs latón vs cerámica), técnicas de grabado, normativa por tipo de cementerio, durabilidad real y costos promedio.',
     category: 'Memoriales digitales',
@@ -1077,7 +1255,7 @@ export const BLOG_POSTS: BlogPost[] = [
     ],
     readingMinutes: 9,
     image: '/images/blog/historia-memoriales.webp',
-    imageAlt: 'Una línea de tiempo visual que recorre los hitos de los memoriales digitales desde 2000 hasta 2026',
+    imageAlt: 'Ilustración del árbol de memoria de Historias Infinitas',
     excerpt:
       'Los memoriales digitales no nacieron con la IA. Tienen 26 años de historia. Este recorrido muestra cómo pasamos de los obituarios estáticos de 2000 a los nichos virtuales con retrato IA y Realidad Aumentada de 2026.',
     category: 'Memoriales digitales',
