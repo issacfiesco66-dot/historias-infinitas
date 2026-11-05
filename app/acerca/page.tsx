@@ -23,7 +23,8 @@ const FOUNDER_EXPERTISE =
   'Tecnología aplicada al duelo,IA generativa,Diseño de producto emocional';
 
 export const metadata: Metadata = {
-  title: 'Acerca de · Historias Infinitas',
+  // El layout ya agrega " — Historias Infinitas" vía title.template.
+  title: 'Acerca de',
   description:
     'Historias Infinitas es una plataforma mexicana de memoriales digitales que une Inteligencia Artificial, Realidad Aumentada y placas físicas de acero para preservar la memoria de quienes amas. Fundada en 2026.',
   alternates: {

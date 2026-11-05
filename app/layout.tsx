@@ -10,9 +10,9 @@ const SITE_URL = (
 ).trim().replace(/\/+$/, '');
 
 const SITE_NAME = 'Historias Infinitas';
-const TITLE = 'Historias Infinitas — Nichos Virtuales con IA y Realidad Aumentada';
+const TITLE = 'Memoriales Digitales y Nichos Virtuales con IA — Historias Infinitas';
 const DESCRIPTION =
-  'Preserva la memoria de quienes amas. Creamos nichos virtuales eternos con retratos artísticos generados por IA y Portales de Recuerdos en Realidad Aumentada — para mascotas y seres queridos.';
+  'Crea un memorial digital para tu ser querido o tu mascota: nicho virtual permanente con retrato artístico por IA, código QR y Portal de Realidad Aumentada.';
 
 // sameAs para schema.org Organization. Se llena vía env vars para que
 // puedas publicar perfiles a medida que los crees sin redeploy.
@@ -39,6 +39,10 @@ export const metadata: Metadata = {
   generator: 'Next.js',
   referrer: 'origin-when-cross-origin',
   keywords: [
+    'memorial digital',
+    'memorial virtual',
+    'homenaje online',
+    'esquela digital',
     'nicho virtual',
     'nichos virtuales para mascotas',
     'nichos virtuales para seres queridos',
@@ -65,7 +69,7 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: 'website',
-    locale: 'es_ES',
+    locale: 'es_MX',
     url: SITE_URL,
     siteName: SITE_NAME,
     title: TITLE,

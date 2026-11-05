@@ -28,6 +28,14 @@ const SITE_URL = (
 // aquí y el JSON-LD comparten la misma fuente.
 const HOME_FAQS: { q: string; a: string }[] = [
   {
+    q: '¿Qué es un memorial digital o memorial virtual?',
+    a: 'Un memorial digital (también llamado memorial virtual) es una página web permanente dedicada a una persona o mascota que falleció, donde familia y amigos pueden ver su historia, fotos y videos desde cualquier lugar. En Historias Infinitas cada memorial digital es un nicho virtual con URL propia, código QR y retrato artístico creado con Inteligencia Artificial.',
+  },
+  {
+    q: '¿Sirve como homenaje online o esquela digital?',
+    a: 'Sí. Cada memorial tiene una URL permanente que puedes compartir por WhatsApp, redes sociales o correo como homenaje online o esquela digital, para avisar del fallecimiento y que todos puedan recordar a tu ser querido. A diferencia de una esquela impresa, el memorial no caduca y puede crecer con nuevas fotos y recuerdos.',
+  },
+  {
     q: '¿Qué es un nicho virtual de Historias Infinitas?',
     a: 'Un nicho virtual es una página web permanente en memoria de un ser querido o una mascota. Incluye biografía, galería de fotos y videos, retrato artístico generado con Inteligencia Artificial preservando la identidad real, un código QR para imprimir o grabar en placa, y un Portal opcional en Realidad Aumentada que se abre con el teléfono. El hosting es eterno y empezar es gratuito — solo pagas cuando decides publicarlo de manera permanente.',
   },
@@ -53,7 +61,7 @@ const HOME_FAQS: { q: string; a: string }[] = [
   },
   {
     q: '¿Puedo crear un memorial digital para mi mascota?',
-    a: 'Sí, es uno de nuestros casos de uso principales. El proceso es idéntico: subes fotos, escribes su historia, elegís un estilo de retrato con IA, y recibís la URL permanente + QR. Puedes añadir la placa física de acero para colgarla en su lugar favorito o conservarla como recuerdo.',
+    a: 'Sí, es uno de nuestros casos de uso principales. El proceso es idéntico: subes fotos, escribes su historia, eliges un estilo de retrato con IA y recibes la URL permanente + QR. Puedes añadir la placa física de acero para colgarla en su lugar favorito o conservarla como recuerdo.',
   },
   {
     q: '¿Cómo me registro como funeraria, clínica veterinaria o hospicio partner?',

@@ -64,7 +64,7 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
     ],
     readingMinutes: 9,
     image: '/images/blog/pet-loss-grief.webp',
-    imageAlt: 'A hand resting over a pet\'s paw print at sunset',
+    imageAlt: 'Illustration of a Historias Infinitas virtual niche for pets',
     excerpt:
       'Pet loss grief is real grief. This guide walks through the typical phases, how to support children, the rituals that help, and the signs that warrant professional support.',
     category: 'Grief & Memory',
@@ -182,7 +182,7 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
     ],
     readingMinutes: 7,
     image: '/images/blog/what-is-digital-memorial.webp',
-    imageAlt: 'A QR code laser-engraved on a steel plate next to white flowers',
+    imageAlt: 'Illustration of the Historias Infinitas memory tree',
     excerpt:
       'A digital memorial is the digital evolution of the headstone: a permanent URL with biography, gallery, AI portrait, and QR code. This guide defines it, explains how it works, and what it costs in the US and Canada.',
     category: 'Digital Memorials',
@@ -285,7 +285,7 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
     ],
     readingMinutes: 6,
     image: '/images/blog/memorial-vs-headstone.webp',
-    imageAlt: 'A marble headstone next to a phone showing a digital memorial',
+    imageAlt: 'Illustration of a Historias Infinitas virtual niche for loved ones',
     excerpt:
       'A headstone and a digital memorial do not compete — they complement each other. This comparison makes clear where each shines: cost, permanence, reach, personalization, and which to choose in each case.',
     category: 'Digital Memorials',
@@ -380,7 +380,7 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
     ],
     readingMinutes: 8,
     image: '/images/blog/what-to-say-grief.webp',
-    imageAlt: 'Two hands resting together on a wooden table — a gesture of quiet companionship',
+    imageAlt: 'Illustration of a Historias Infinitas virtual niche for loved ones',
     excerpt:
       'When someone close loses a loved one, most of us fear saying the wrong thing. This guide gives 20 honest phrases that actually help, 10 to avoid, and how to adapt them to each medium.',
     category: 'Grief & Memory',
@@ -499,7 +499,7 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
     ],
     readingMinutes: 7,
     image: '/images/blog/kids-pet-loss.webp',
-    imageAlt: 'A child hugging a framed photo of their dog next to a lit candle',
+    imageAlt: 'Illustration of a Historias Infinitas virtual niche for pets',
     excerpt:
       'The death of a pet is often the first loss a child experiences. This guide lays out what to say by age, which euphemisms to avoid, how to include them in the ritual, and when to seek professional help.',
     category: 'Grief & Memory',
@@ -589,7 +589,7 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
     ],
     readingMinutes: 9,
     image: '/images/blog/flux-kontext-max-en.webp',
-    imageAlt: 'A photograph of a dog progressively transforming into an oil portrait on the same canvas',
+    imageAlt: 'Illustration of the Historias Infinitas memory tree',
     excerpt:
       'AI portraits used to deform faces. Today, models like Flux Kontext Max preserve identity with measurable fidelity. This article explains how, why, and what it means for digital memorials.',
     category: 'AI Technology',
@@ -711,7 +711,7 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
     ],
     readingMinutes: 10,
     image: '/images/blog/funeral-home-digitization.webp',
-    imageAlt: 'A funeral home staff member showing a tablet with a digital memorial to a family',
+    imageAlt: 'Illustration of a Historias Infinitas virtual niche for loved ones',
     excerpt:
       'The funeral industry increasingly competes on emotional differentiation. This practical guide walks through the 30-day plan for a US or Canadian funeral home to add digital memorials to its catalog.',
     category: 'B2B',
@@ -848,7 +848,7 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
     ],
     readingMinutes: 9,
     image: '/images/blog/memorial-traditions.webp',
-    imageAlt: 'A small shrine at home with candles, family photos, and fresh flowers',
+    imageAlt: 'Illustration of a Historias Infinitas virtual niche for loved ones',
     excerpt:
       'US and Canadian families have moved far beyond the church-only funeral. This guide walks through wakes, celebrations of life, scattering ceremonies, Memorial Day — and how digital memorials fit into each.',
     category: 'Grief & Memory',
@@ -942,7 +942,7 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
     ],
     readingMinutes: 8,
     image: '/images/blog/qr-headstone.webp',
-    imageAlt: 'A laser-engraved stainless steel QR plaque on a marble headstone',
+    imageAlt: 'Illustration of the Historias Infinitas memory tree',
     excerpt:
       'Adding a QR to a headstone is simpler than it looks. This guide covers materials (steel vs. brass vs. ceramic), engraving techniques, cemetery rules by state and province, real-world durability, and average costs.',
     category: 'Digital Memorials',
@@ -1062,7 +1062,7 @@ export const BLOG_POSTS_EN: BlogPostEN[] = [
     ],
     readingMinutes: 9,
     image: '/images/blog/history-digital-memorials.webp',
-    imageAlt: 'A visual timeline showing the milestones of digital memorials from 2000 to 2026',
+    imageAlt: 'Illustration of the Historias Infinitas memory tree',
     excerpt:
       'Digital memorials did not arrive with AI. They have a 26-year history. This tour shows how we moved from static 2000 obituaries to 2026 digital memorials with AI portraits and Augmented Reality.',
     category: 'Digital Memorials',
